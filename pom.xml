@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../calculator-app</module>
-        <module>../calculator-console</module>
+        <module>calculator-app</module>
+        <module>calculator-console</module>
     </modules>
 
     <properties>

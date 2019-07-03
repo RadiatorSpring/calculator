@@ -6,7 +6,7 @@ public class NumberToken implements Token {
 
     private char symbolToAdd;
 
-    public NumberToken(char symbolToAdd) {
+    NumberToken(char symbolToAdd) {
         this.symbolToAdd = symbolToAdd;
     }
 

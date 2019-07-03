@@ -1,5 +1,6 @@
 package calculator;
 
+import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.*;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -30,7 +31,7 @@ public class CalculatorTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void testPlusWithSpaces() {
+    public void testPlusWithSpaces() throws CannotDivideByZeroException {
         String expressionRPN = "1  + 1  + 2 / 2";
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("1", "1", "+", "2", "2", "/", "+"));
         parserSetUP(expressionRPN, mockQueue);
@@ -45,7 +46,7 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testMultiplyAndPlusAndMinus() {
+    public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException {
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("2", "2", "2", "2", "-", "*", "-"));
         String expression = "2-2*(2-2)";
         factorySetUp("2",new Operand(2));
@@ -55,15 +56,17 @@ public class CalculatorTest {
         Assert.assertEquals("PRN calculator : expected to return 2", 2.0, calculator.compute(expression), 0.001);
     }
 
+    //todo empty queue
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneArgument() {
+    public void testWithOneArgument() throws CannotDivideByZeroException {
         parserSetUP("1", new LinkedList<>(Collections.singletonList("1")));
-        Assert.assertEquals("should return IllegalArgumentException", 0.0, calculator.compute("1"), 0.1);
+        calculator.compute("1");
+        verify(operationFactory, times(0)).getOperation(any());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneOperation() {
+    public void testWithOneOperation() throws CannotDivideByZeroException {
         parserSetUP("+",new LinkedList<>(Collections.singletonList("+")));
         Assert.assertEquals(0.0, calculator.compute("+"), 0.1);
     }

@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Parser {
 
+    //todo add Token as dependency
     private Checker checker;
 
     public Parser() {
@@ -22,10 +23,10 @@ public class Parser {
 
     List<String> textToInfix(String text) {
         if (checker.validateExpression(text) || text.isEmpty()) {
-            throw new IllegalArgumentException("There cannot be spaces between numbers and letters");
+            throw new IllegalArgumentException("There cannot be spaces between numbers, there cannot be letters");
         }
 
-        TokenFactory tokenFactory = new TokenFactory();
+        TokenFactory tokenFactory = new TokenFactory(new Checker());
         StringBuilder builder = new StringBuilder();
         List<String> elements = new ArrayList<>();
 

@@ -13,8 +13,6 @@ public class OperationToken implements Token {
         this.symbolToAdd = symbolToAdd;
     }
 
-
-
     @Override
     public void process(StringBuilder numberBuilder, List<String> list) {
         attemptAddAndClearNumberBuilder(list,numberBuilder);

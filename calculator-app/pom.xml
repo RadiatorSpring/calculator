@@ -13,7 +13,6 @@
         <artifactId>ParentPOM</artifactId>
         <groupId>SAP</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../ParentPOM/pom.xml</relativePath>
     </parent>
 
     <dependencies>
