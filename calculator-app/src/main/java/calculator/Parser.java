@@ -1,18 +1,17 @@
 package calculator;
 
-import calculator.tokens.Token;
-import calculator.tokens.TokenFactory;
 import calculator.validators.Checker;
 
 import java.util.*;
 
 public class Parser {
 
-    //todo add Token as dependency
+
     private Checker checker;
 
-    public Parser() {
-        this.checker = new Checker();
+
+    public Parser(Checker checker) {
+        this.checker = checker;
     }
 
     Queue<String> convertInfixToRPN(String expression) {
@@ -25,14 +24,22 @@ public class Parser {
         if (checker.validateExpression(text) || text.isEmpty()) {
             throw new IllegalArgumentException("There cannot be spaces between numbers, there cannot be letters");
         }
-
-        TokenFactory tokenFactory = new TokenFactory(new Checker());
         StringBuilder builder = new StringBuilder();
         List<String> elements = new ArrayList<>();
+        char[] symbols = text.toCharArray();
 
-        for (char c : text.toCharArray()) {
-            Token token = tokenFactory.getTokenOfExpression(c);
-            token.process(builder, elements);
+        for (char symbol : symbols) {
+            String symbolString = Character.toString(symbol);
+
+            if (checker.isOperationOrBracket(symbol) && builder.length() != 0) {
+                elements.add(builder.toString());
+                elements.add(symbolString);
+                builder.delete(0, builder.length());
+            } else if (checker.isNumber(symbol)) {
+                builder.append(symbol);
+            } else {
+                elements.add(symbolString);
+            }
         }
         addRemainingNumber(elements, builder);
 
@@ -44,7 +51,7 @@ public class Parser {
     }
 
 
-    private Queue<String> convertInfixToRPN(List<String> infixNotation) {
+    Queue<String> convertInfixToRPN(List<String> infixNotation) {
 
         Map<String, Integer> operations = new HashMap<>();
         initPriorities(operations);

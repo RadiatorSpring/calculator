@@ -59,6 +59,13 @@ public class CalculatorTest {
     //todo empty queue
 
     @Test(expected = IllegalArgumentException.class)
+    public void testWithEmptyQueue() throws CannotDivideByZeroException {
+        parserSetUP(" ", new LinkedList<>(Collections.singletonList("")));
+        calculator.compute(" ");
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testWithOneArgument() throws CannotDivideByZeroException {
         parserSetUP("1", new LinkedList<>(Collections.singletonList("1")));
         calculator.compute("1");
