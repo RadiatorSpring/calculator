@@ -10,7 +10,7 @@ public class Checker {
         return isNumber(str.toCharArray()[0]);
     }
 
-    public boolean isNumber(char c) {
+    private boolean isNumber(char c) {
         try {
             Double.valueOf(Character.toString(c));
             return true;
@@ -27,11 +27,15 @@ public class Checker {
         return matcher.matches() || spaceMatcher.matches();
 
     }
-    public boolean isOperationOrBracket(char c) {
+    boolean isOperationOrBracket(char c) {
         return Character.toString(c).matches("[-+/*)(]");
     }
 
-    public boolean isOperationOrBracket(String s){
-        return isOperationOrBracket(s.toCharArray()[0]);
+    public boolean isDigit(char c){
+        return isNumber(c);
+    }
+
+    public boolean isOperation(String token) {
+        return token.matches("[-+*/]");
     }
 }

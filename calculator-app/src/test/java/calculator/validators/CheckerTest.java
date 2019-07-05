@@ -29,8 +29,13 @@ public class CheckerTest {
 
     @Test
     public void testOperationOrBracket(){
-        assertTrue(checker.isOperationOrBracket("("));
-        assertFalse(checker.isOperationOrBracket("1"));
-        assertFalse(checker.isOperationOrBracket(" "));
+        assertTrue(checker.isOperationOrBracket('('));
+        assertFalse(checker.isOperationOrBracket('1'));
+        assertFalse(checker.isOperationOrBracket(' '));
+    }
+    @Test
+    public void testIsDigit(){
+        assertTrue(checker.isDigit('1'));
+        assertFalse(checker.isDigit(' '));
     }
 }

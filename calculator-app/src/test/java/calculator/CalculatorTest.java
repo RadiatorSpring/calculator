@@ -79,7 +79,7 @@ public class CalculatorTest {
     }
 
     private void parserSetUP(String expression, Queue<String> mockQueue) {
-        when(parser.convertInfixToRPN(expression)).thenReturn(mockQueue);
+        when(parser.convertExpressionToRPN(expression)).thenReturn(mockQueue);
     }
 
     private void factorySetUp(String element, Operation operation) {
