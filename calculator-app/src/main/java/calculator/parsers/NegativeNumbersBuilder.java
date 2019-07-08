@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NegativeNumbersBuilder {
-
-
-    //todo fix algorithm
-
-
     public List<String> buildListWithOperatorsAndNegativeNumbers(List<String> numbersAndOperations) {
         numbersAndOperations = deleteWhiteSpaces(numbersAndOperations);
         Iterator iterator = numbersAndOperations.iterator();

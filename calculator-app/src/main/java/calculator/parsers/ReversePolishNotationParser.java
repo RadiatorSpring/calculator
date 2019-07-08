@@ -55,6 +55,7 @@ public class ReversePolishNotationParser {
     private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
         Map<String, Integer> operations = initPrioritiesOfOperations();
 
+
         while (!stack.empty() && operations.get(token) <= operations.get(stack.peek())) {
             queue.add(stack.pop());
         }

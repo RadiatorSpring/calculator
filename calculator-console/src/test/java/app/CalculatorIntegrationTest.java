@@ -73,4 +73,8 @@ public class CalculatorIntegrationTest {
     public void testWithMinusAndBrackets() throws IOException {
         setUpConsoleTest("1*(-1)","-1.0");
     }
+    @Test
+    public void testWithEmptyExpression() throws IOException {
+        setUpConsoleTest("\"\"",tooShortExpressionMessage);
+    }
 }

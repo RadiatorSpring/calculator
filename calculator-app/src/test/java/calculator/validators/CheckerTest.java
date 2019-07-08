@@ -18,6 +18,7 @@ public class CheckerTest {
     public void testIsNumber() {
         assertTrue(checker.isNumber("1"));
         assertFalse(checker.isNumber("-"));
+        assertFalse(checker.isNumber(" "));
     }
 
     @Test
@@ -25,17 +26,21 @@ public class CheckerTest {
         assertTrue(checker.validateExpression("q23`o1ref wmlc knlsnlrne"));
         assertFalse(checker.validateExpression("(1+  1)/2"));
         assertTrue(checker.validateExpression("1  1+1/2+(1-20)"));
+        assertTrue(checker.validateExpression("+ 11 11"));
     }
 
-//    @Test
-//    public void testOperationOrBracket(){
-//        assertTrue(checker.isOperationOrBracket('('));
-//        assertFalse(checker.isOperationOrBracket('1'));
-//        assertFalse(checker.isOperationOrBracket(' '));
-//    }
     @Test
     public void testIsDigit(){
         assertTrue(checker.isDigit('1'));
         assertFalse(checker.isDigit(' '));
+        assertFalse(checker.isDigit('a'));
+    }
+
+    @Test
+    public void isOperation(){
+        assertTrue(checker.isOperation("-"));
+        assertFalse(checker.isOperation(" "));
+        assertFalse(checker.isOperation("("));
+        assertFalse(checker.isOperation("1"));
     }
 }
