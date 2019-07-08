@@ -8,8 +8,12 @@ public class ReversePolishNotationParser {
 
     private Checker checker;
 
-    public ReversePolishNotationParser(Checker checker) {
+    private ReversePolishNotationParser(Checker checker) {
         this.checker = checker;
+    }
+
+    public ReversePolishNotationParser() {
+        this(new Checker());
     }
 
     public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
@@ -49,15 +53,15 @@ public class ReversePolishNotationParser {
     }
 
     private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
-        Map<String, Integer> operations = initPrioritiesOf();
+        Map<String, Integer> operations = initPrioritiesOfOperations();
 
         while (!stack.empty() && operations.get(token) <= operations.get(stack.peek())) {
             queue.add(stack.pop());
         }
         stack.push(token);
     }
-
-    private Map<String, Integer> initPrioritiesOf() {
+//todo refactor this
+    private Map<String, Integer> initPrioritiesOfOperations() {
         Map<String, Integer> priority = new HashMap<>();
         priority.put("/", 2);
         priority.put("*", 2);

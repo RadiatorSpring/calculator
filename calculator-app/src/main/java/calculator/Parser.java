@@ -1,33 +1,39 @@
 package calculator;
 
 import calculator.parsers.ExpressionParser;
+import calculator.parsers.NegativeNumbersBuilder;
 import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 
-import java.util.*;
+import java.util.List;
+import java.util.Queue;
 
-public class Parser {
+class Parser {
     private Checker checker;
     private ExpressionParser expressionParser;
     private ReversePolishNotationParser parserRPN;
+    private NegativeNumbersBuilder negativeNumbersBuilder;
 
-    Parser(Checker checker, ExpressionParser expressionParser, ReversePolishNotationParser parserRPN) {
+    private Parser(Checker checker, ExpressionParser expressionParser,
+                   ReversePolishNotationParser parserRPN, NegativeNumbersBuilder negativeNumbersBuilder) {
         this.checker = checker;
         this.expressionParser = expressionParser;
         this.parserRPN = parserRPN;
-    }
-    public Parser(){
-
+        this.negativeNumbersBuilder = negativeNumbersBuilder;
     }
 
-    Queue<String> convertExpressionToRPN(String expression) {
+    Parser() {
+        this(new Checker(), new ExpressionParser(), new ReversePolishNotationParser(), new NegativeNumbersBuilder());
+    }
+
+    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
         if (checker.validateExpression(expression) || expression.isEmpty()) {
-            throw new IllegalArgumentException("There cannot be spaces between numbers, there cannot be letters");
+            throw new IllegalArgumentException("There cannot be spaces between digits, there cannot be letters");
         }
         List<String> elementsOfExpression = expressionParser.expressionToNumbersAndOperations(expression);
-        return parserRPN.buildRPNfromElementsOfExpression(elementsOfExpression);
+        List<String> elementsOfExpressionWithNegativeNumbers = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(elementsOfExpression);
+        return parserRPN.buildRPNfromElementsOfExpression(elementsOfExpressionWithNegativeNumbers);
     }
-
 
 
 }

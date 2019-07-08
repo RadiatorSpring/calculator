@@ -4,18 +4,17 @@ import calculator.validators.Checker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ExpressionParser {
 
     private Checker checker;
 
-    public ExpressionParser(Checker checker) {
+    private ExpressionParser(Checker checker) {
         this.checker = checker;
     }
 
-    ExpressionParser() {
-        checker = new Checker();
+    public ExpressionParser() {
+        this(new Checker());
     }
 
     public List<String> expressionToNumbersAndOperations(String text) {
@@ -41,5 +40,7 @@ public class ExpressionParser {
     private void addRemainingNumber(List<String> elements, StringBuilder builder) {
         if (builder.length() != 0) elements.add(builder.toString());
     }
+
+
 
 }

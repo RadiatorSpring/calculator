@@ -1,5 +1,8 @@
 package calculator;
 
+import calculator.parsers.ExpressionParser;
+import calculator.parsers.NegativeNumbersBuilder;
+import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -19,6 +22,12 @@ public class ParserTest {
     private Parser parser;
     @Mock
     private Checker checker;
+    @Mock
+    private ExpressionParser expressionParser;
+    @Mock
+    private ReversePolishNotationParser reversePolishNotationParser;
+    @Mock
+    private NegativeNumbersBuilder negativeNumbersBuilder;
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -42,5 +51,19 @@ public class ParserTest {
         when(checker.validateExpression(expression)).thenReturn(true);
         parser.convertExpressionToRPN(expression);
 
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testWIthEmptyString(){
+        parser.convertExpressionToRPN("");
+    }
+
+    @Test
+    public void testWithCorrectInput(){
+        List<String> list = new ArrayList<>(Arrays.asList("1","+","1"));
+        Queue<String> expectedQueue = new LinkedList<>(Arrays.asList("1","+","1"));
+        when(expressionParser.expressionToNumbersAndOperations("1+1")).thenReturn(list);
+        when(reversePolishNotationParser.buildRPNfromElementsOfExpression(list)).thenReturn(expectedQueue);
+        when(negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(list)).thenReturn(list);
+        Assert.assertEquals(expectedQueue,parser.convertExpressionToRPN("1+1"));
     }
 }

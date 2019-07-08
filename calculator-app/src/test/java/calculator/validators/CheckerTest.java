@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
+//todo add more tests
 public class CheckerTest {
 
     private Checker checker;
@@ -27,12 +27,12 @@ public class CheckerTest {
         assertTrue(checker.validateExpression("1  1+1/2+(1-20)"));
     }
 
-    @Test
-    public void testOperationOrBracket(){
-        assertTrue(checker.isOperationOrBracket('('));
-        assertFalse(checker.isOperationOrBracket('1'));
-        assertFalse(checker.isOperationOrBracket(' '));
-    }
+//    @Test
+//    public void testOperationOrBracket(){
+//        assertTrue(checker.isOperationOrBracket('('));
+//        assertFalse(checker.isOperationOrBracket('1'));
+//        assertFalse(checker.isOperationOrBracket(' '));
+//    }
     @Test
     public void testIsDigit(){
         assertTrue(checker.isDigit('1'));

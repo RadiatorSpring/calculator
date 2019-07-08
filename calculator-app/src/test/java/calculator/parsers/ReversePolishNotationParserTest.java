@@ -20,7 +20,8 @@ public class ReversePolishNotationParserTest {
     @Mock
     private Checker checker;
     @Rule
-    public MockitoRule mockitoRule= MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     @Test
     public void testInfixToRPNConversionWithTrivialInput() {
         List<String> input = new ArrayList<>(Arrays.asList("1", "+", "1"));
@@ -36,7 +37,7 @@ public class ReversePolishNotationParserTest {
 
     @Test
     public void testInfixToRPNConversionWithDifficultBrackets() {
-        List<String> input = new ArrayList<>(Arrays.asList("2", "+", "2", "*", "(", "2", "-", "2", ")"));
+        List<String> input = new ArrayList<>(Arrays.asList(" ", "2", "+", "2", "*", "(", " ", "2", "-", "2", ")"));
         when(checker.isNumber("2")).thenReturn(true);
         when(checker.isOperation("-")).thenReturn(true);
         when(checker.isOperation("+")).thenReturn(true);
@@ -47,5 +48,6 @@ public class ReversePolishNotationParserTest {
 
         Assert.assertEquals("expected expression is 2 2 2 2 - * +", expected, actual);
     }
+
 
 }

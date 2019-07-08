@@ -11,15 +11,16 @@ public class Calculator {
     private Parser parser;
     private OperationFactory operationFactory;
 
-     Calculator(Parser parser, OperationFactory operationFactory) {
+    private Calculator(Parser parser, OperationFactory operationFactory) {
         this.parser = parser;
         this.operationFactory = operationFactory;
     }
 
     public Calculator() {
+       this(new Parser(),new OperationFactory());
     }
 
-    public double compute(String expression) throws CannotDivideByZeroException, EmptyStackException {
+    public double compute(String expression) throws CannotDivideByZeroException, EmptyStackException, IllegalArgumentException {
         Queue<String> expressionQueue = parser.convertExpressionToRPN(expression);
         if (expressionQueue.size() < 3) {
             throw new IllegalArgumentException("There should be at least 2 operands and 1 operator in infix order");

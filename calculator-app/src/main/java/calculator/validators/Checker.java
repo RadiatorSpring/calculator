@@ -7,16 +7,17 @@ public class Checker {
 
 
     public boolean isNumber(String str) {
-        return isNumber(str.toCharArray()[0]);
-    }
-
-    private boolean isNumber(char c) {
         try {
-            Double.valueOf(Character.toString(c));
+            Double.valueOf(str);
             return true;
         } catch (Exception e) {
             return false;
         }
+
+    }
+
+    private boolean isNumber(char c) {
+        return isNumber(Character.toString(c));
     }
 
     public boolean validateExpression(String text) {
@@ -27,9 +28,7 @@ public class Checker {
         return matcher.matches() || spaceMatcher.matches();
 
     }
-    boolean isOperationOrBracket(char c) {
-        return Character.toString(c).matches("[-+/*)(]");
-    }
+
 
     public boolean isDigit(char c){
         return isNumber(c);

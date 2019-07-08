@@ -47,16 +47,17 @@ public class CalculatorTest {
 
     @Test
     public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException {
-        Queue<String> mockQueue = new LinkedList<>(Arrays.asList("2", "2", "2", "2", "-", "*", "-"));
-        String expression = "2-2*(2-2)";
+        Queue<String> mockQueue = new LinkedList<>(Arrays.asList("2", "2", "2", "-2", "+", "*", "-"));
+        String expression = "2-2*(2+-2)";
         factorySetUp("2",new Operand(2));
+        factorySetUp("-2",new Operand(-2));
         factorySetUp("-",new Substraction());
         factorySetUp("*",new Multiplication());
+        factorySetUp("+",new Addition());
         parserSetUP(expression, mockQueue);
         Assert.assertEquals("PRN calculator : expected to return 2", 2.0, calculator.compute(expression), 0.001);
     }
 
-    //todo empty queue
 
     @Test(expected = IllegalArgumentException.class)
     public void testWithEmptyQueue() throws CannotDivideByZeroException {
