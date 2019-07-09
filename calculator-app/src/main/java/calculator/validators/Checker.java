@@ -21,11 +21,13 @@ public class Checker {
     }
 
     public boolean validateExpression(String text) {
-        Pattern pattern = Pattern.compile(".*[^\\d()+\\-*/^ ].*");
-        Matcher matcher = pattern.matcher(text);
+        Pattern noLettersPattern = Pattern.compile(".*[^\\d()+\\-*/^ ].*");
+        Matcher noLettersMatcher = noLettersPattern.matcher(text);
         Pattern spacesPattern = Pattern.compile(".*\\d+ +\\d+.*");
         Matcher spaceMatcher = spacesPattern.matcher(text);
-        return matcher.matches() || spaceMatcher.matches();
+        Pattern invalidBracketsPattern = Pattern.compile("(.*\\d+\\(.*)|(.*\\) \\d+)|(\\( *\\).*)");
+        Matcher invalidBracketsMatcher = invalidBracketsPattern.matcher(text);
+        return noLettersMatcher.matches() || spaceMatcher.matches() || invalidBracketsMatcher.matches();
 
     }
 

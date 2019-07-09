@@ -5,6 +5,7 @@ import calculator.parsers.NegativeNumbersBuilder;
 import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
@@ -26,7 +27,7 @@ class Parser {
         this(new Checker(), new ExpressionParser(), new ReversePolishNotationParser(), new NegativeNumbersBuilder());
     }
 
-    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
+    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException, IOException {
         if (checker.validateExpression(expression) || expression.isEmpty()) {
             throw new IllegalArgumentException("There cannot be spaces between digits, there cannot be letters");
         }

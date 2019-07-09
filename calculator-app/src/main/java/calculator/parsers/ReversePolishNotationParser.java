@@ -2,6 +2,10 @@ package calculator.parsers;
 
 import calculator.validators.Checker;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class ReversePolishNotationParser {
@@ -16,7 +20,7 @@ public class ReversePolishNotationParser {
         this(new Checker());
     }
 
-    public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
+    public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) throws IOException {
 
         Queue<String> queue = new LinkedList<>();
         Stack<String> stack = new Stack<>();
@@ -52,25 +56,23 @@ public class ReversePolishNotationParser {
         stack.pop();
     }
 
-    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
-        Map<String, Integer> operations = initPrioritiesOfOperations();
+    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) throws IOException {
+        Properties mapProperties = new Properties();
+        InputStream mapPropertiesStream = ClassLoader.getSystemResourceAsStream("map.properties");
+        mapProperties.load(Objects.requireNonNull(mapPropertiesStream));
 
-
-        while (!stack.empty() && operations.get(token) <= operations.get(stack.peek())) {
-            queue.add(stack.pop());
+        while (!stack.empty()) {
+            int topOfStackPriorityValue = Integer.parseInt(mapProperties.getProperty(stack.peek()));
+            int currTokenPriorityValue = Integer.parseInt(mapProperties.getProperty(token));
+            if (currTokenPriorityValue <= topOfStackPriorityValue) {
+                queue.add(stack.pop());
+            } else {
+                break;
+            }
         }
         stack.push(token);
     }
-//todo refactor this
-    private Map<String, Integer> initPrioritiesOfOperations() {
-        Map<String, Integer> priority = new HashMap<>();
-        priority.put("/", 2);
-        priority.put("*", 2);
-        priority.put("+", 1);
-        priority.put("-", 1);
-        priority.put("(", 0);
-        return priority;
-    }
+
 
     private void addRemainingTokens(Queue<String> queue, Stack<String> stack) {
 

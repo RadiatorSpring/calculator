@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-//todo add more tests
+//todo maybe parameterized
 public class CheckerTest {
 
     private Checker checker;
@@ -27,6 +27,9 @@ public class CheckerTest {
         assertFalse(checker.validateExpression("(1+  1)/2"));
         assertTrue(checker.validateExpression("1  1+1/2+(1-20)"));
         assertTrue(checker.validateExpression("+ 11 11"));
+        assertTrue(checker.validateExpression("2()5+22"));
+        assertTrue(checker.validateExpression("1(+)5"));
+        assertTrue(checker.validateExpression("()+4+5"));
     }
 
     @Test

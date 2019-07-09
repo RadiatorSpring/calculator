@@ -7,13 +7,17 @@ import java.util.EmptyStackException;
 
 public class CalculatorStarter {
     //todo add java doc where necessary
+    //todo add TDD rest services
     public static void main(String[] args) {
-        if (args == null || args[0].length() < 3) {
+        if (args == null || args.length == 0) {
+            System.out.println("There should be at least 2 operands and 1 operator");
+            return;
+        }
+        if (args[0].length() < 3) {
             System.out.println("There should be at least 2 operands and 1 operator");
             return;
         }
         Calculator calculator = new Calculator();
-
         try {
             double result = calculator.compute(args[0]);
             System.out.print(result);
@@ -23,7 +27,7 @@ public class CalculatorStarter {
             System.out.println("The number of operators cannot be greater than the number of operands, using negative numbers requires brackets");
         } catch (IllegalArgumentException e) {
             System.out.println("There cannot be letters nor spaces between digits" +
-                                 " and there should be at least 2 operands and 1 operator");
+                    " and there should be at least 2 operands and 1 operator");
         } catch (Exception e) {
             System.out.println("Something went wrong");
         }

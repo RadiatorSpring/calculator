@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -31,7 +32,7 @@ public class CalculatorTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void testPlusWithSpaces() throws CannotDivideByZeroException {
+    public void testPlusWithSpaces() throws CannotDivideByZeroException, IOException {
         String expressionRPN = "1  + 1  + 2 / 2";
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("1", "1", "+", "2", "2", "/", "+"));
         parserSetUP(expressionRPN, mockQueue);
@@ -46,7 +47,7 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException {
+    public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException, IOException {
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("2", "2", "2", "-2", "+", "*", "-"));
         String expression = "2-2*(2+-2)";
         factorySetUp("2",new Operand(2));
@@ -60,26 +61,26 @@ public class CalculatorTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithEmptyQueue() throws CannotDivideByZeroException {
+    public void testWithEmptyQueue() throws CannotDivideByZeroException, IOException {
         parserSetUP(" ", new LinkedList<>(Collections.singletonList("")));
         calculator.compute(" ");
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneArgument() throws CannotDivideByZeroException {
+    public void testWithOneArgument() throws CannotDivideByZeroException, IOException {
         parserSetUP("1", new LinkedList<>(Collections.singletonList("1")));
         calculator.compute("1");
         verify(operationFactory, times(0)).getOperation(any());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneOperation() throws CannotDivideByZeroException {
+    public void testWithOneOperation() throws CannotDivideByZeroException, IOException {
         parserSetUP("+",new LinkedList<>(Collections.singletonList("+")));
         Assert.assertEquals(0.0, calculator.compute("+"), 0.1);
     }
 
-    private void parserSetUP(String expression, Queue<String> mockQueue) {
+    private void parserSetUP(String expression, Queue<String> mockQueue) throws IOException {
         when(parser.convertExpressionToRPN(expression)).thenReturn(mockQueue);
     }
 

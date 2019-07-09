@@ -4,6 +4,7 @@ import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.Operation;
 import calculator.operations.OperationFactory;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Calculator {
@@ -20,7 +21,7 @@ public class Calculator {
        this(new Parser(),new OperationFactory());
     }
 
-    public double compute(String expression) throws CannotDivideByZeroException, EmptyStackException, IllegalArgumentException {
+    public double compute(String expression) throws CannotDivideByZeroException, EmptyStackException, IllegalArgumentException, IOException {
         Queue<String> expressionQueue = parser.convertExpressionToRPN(expression);
         if (expressionQueue.size() < 3) {
             throw new IllegalArgumentException("There should be at least 2 operands and 1 operator in infix order");
