@@ -39,9 +39,6 @@ class RomanNumbersParser {
 
 
     private int init(char romanNumber){
-
         return RomanNumbers.valueOf(Character.toString(romanNumber)).getValue();
-
-
     }
 }

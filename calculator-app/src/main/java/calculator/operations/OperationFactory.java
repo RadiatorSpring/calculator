@@ -1,5 +1,8 @@
 package calculator.operations;
 
+/**
+ * Used for operation creation.
+ */
 public class OperationFactory {
 
     public Operation getOperation(String inputOperation) {
@@ -8,7 +11,7 @@ public class OperationFactory {
             case "*":
                 return new Multiplication();
             case "-":
-                return new Substraction();
+                return new Subtraction();
             case "+":
                 return new Addition();
             case "/":

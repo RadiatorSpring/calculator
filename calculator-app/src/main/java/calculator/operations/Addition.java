@@ -1,9 +1,10 @@
 package calculator.operations;
 
 import java.util.Stack;
-
+/**
+ * Used to add the top 2 elements of stack
+ */
 public class Addition implements Operation {
-    private int value;
 
     @Override
     public void process(Stack<Double> stack) {

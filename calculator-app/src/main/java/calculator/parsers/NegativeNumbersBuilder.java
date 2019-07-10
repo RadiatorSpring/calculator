@@ -1,13 +1,20 @@
 package calculator.parsers;
 
-import calculator.validators.Checker;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Used for finding and adding negative numbers to the List of elements of expression
+ */
 public class NegativeNumbersBuilder {
+
+    /**
+     *  Searches for brackets with minus and number only inside if one is found they are concated and added to the list
+     * @param numbersAndOperations the List of elements to find and add negative numbers
+     * @return List with operations and numbers, which can now include negative numbers
+     */
     public List<String> buildListWithOperatorsAndNegativeNumbers(List<String> numbersAndOperations) {
         numbersAndOperations = deleteWhiteSpaces(numbersAndOperations);
         Iterator iterator = numbersAndOperations.iterator();

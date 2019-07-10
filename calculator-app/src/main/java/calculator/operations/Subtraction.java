@@ -2,7 +2,10 @@ package calculator.operations;
 
 import java.util.Stack;
 
-public class Substraction implements Operation {
+/**
+ * Used to subtract the top 2 elements of stack
+ */
+public class Subtraction implements Operation {
 
     @Override
     public void process(Stack<Double> stack) {

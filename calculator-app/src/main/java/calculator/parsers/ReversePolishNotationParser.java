@@ -1,26 +1,31 @@
 package calculator.parsers;
 
 import calculator.validators.Checker;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * Orders the given expression into a RPN Queue
+ */
 public class ReversePolishNotationParser {
 
     private Checker checker;
 
-    private ReversePolishNotationParser(Checker checker) {
+    /**
+     *
+     * @param checker used to check for certain types
+     */
+    public ReversePolishNotationParser(Checker checker) {
         this.checker = checker;
     }
 
-    public ReversePolishNotationParser() {
-        this(new Checker());
-    }
-
-    public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) throws IOException {
+    /**
+     * Converts the expression into Queue Ordered in RPN
+     * @param infixNotation the expression separated in logical elements in infix notation
+     * @return Queue ordered in Reverse Polish Notation
+     */
+    public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
 
         Queue<String> queue = new LinkedList<>();
         Stack<String> stack = new Stack<>();
@@ -56,14 +61,21 @@ public class ReversePolishNotationParser {
         stack.pop();
     }
 
-    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) throws IOException {
+    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token)  {
         Properties mapProperties = new Properties();
         InputStream mapPropertiesStream = ClassLoader.getSystemResourceAsStream("map.properties");
-        mapProperties.load(Objects.requireNonNull(mapPropertiesStream));
+        try {
+            mapProperties.load(Objects.requireNonNull(mapPropertiesStream));
+        } catch (IOException e) {
+            System.out.println("The file map.properties is missing form your directory");
+            e.printStackTrace();
+        }
+
 
         while (!stack.empty()) {
             int topOfStackPriorityValue = Integer.parseInt(mapProperties.getProperty(stack.peek()));
             int currTokenPriorityValue = Integer.parseInt(mapProperties.getProperty(token));
+
             if (currTokenPriorityValue <= topOfStackPriorityValue) {
                 queue.add(stack.pop());
             } else {
@@ -80,4 +92,6 @@ public class ReversePolishNotationParser {
             queue.add(stack.pop());
         }
     }
+
+
 }

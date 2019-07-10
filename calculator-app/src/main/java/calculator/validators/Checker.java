@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 public class Checker {
 
-
     public boolean isNumber(String str) {
         try {
             Double.valueOf(str);
@@ -28,7 +27,6 @@ public class Checker {
         Pattern invalidBracketsPattern = Pattern.compile("(.*\\d+\\(.*)|(.*\\) \\d+)|(\\( *\\).*)");
         Matcher invalidBracketsMatcher = invalidBracketsPattern.matcher(text);
         return noLettersMatcher.matches() || spaceMatcher.matches() || invalidBracketsMatcher.matches();
-
     }
 
 

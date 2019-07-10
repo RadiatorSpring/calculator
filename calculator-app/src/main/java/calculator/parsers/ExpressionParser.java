@@ -5,18 +5,26 @@ import calculator.validators.Checker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Makes the initial separation of logical elements of the expression
+ */
 public class ExpressionParser {
 
     private Checker checker;
 
-    private ExpressionParser(Checker checker) {
+    /**
+     * @param checker used to check for certain types
+     */
+    public ExpressionParser(Checker checker) {
         this.checker = checker;
     }
 
-    public ExpressionParser() {
-        this(new Checker());
-    }
 
+    /**
+     * Finds and adds numbers and operations in the List
+     * @param text the mathematical expression
+     * @return a List of logically separated elements of expression e.g. 11+11 -> {"11", "+", "11"}
+     */
     public List<String> expressionToNumbersAndOperations(String text) {
         StringBuilder numberBuilder = new StringBuilder();
         List<String> elements = new ArrayList<>();
@@ -37,10 +45,14 @@ public class ExpressionParser {
         return elements;
     }
 
-    private void addRemainingNumber(List<String> elements, StringBuilder builder) {
-        if (builder.length() != 0) elements.add(builder.toString());
+    /**
+     * Adds the remaining number from builder if there is one
+     * @param elements the List of elements
+     * @param numberBuilder the stringBuilder used for number creation
+     */
+    private void addRemainingNumber(List<String> elements, StringBuilder numberBuilder) {
+        if (numberBuilder.length() != 0) elements.add(numberBuilder.toString());
     }
-
 
 
 }
