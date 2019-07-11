@@ -24,7 +24,7 @@ public class ReversePolishNotationParserTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void testInfixToRPNConversionWithTrivialInput() throws IOException {
+    public void testInfixToRPNConversionWithTrivialInput() {
         List<String> input = new ArrayList<>(Arrays.asList("1", "+", "1"));
         when(checker.isOperation("+")).thenReturn(true);
         when(checker.isNumber("1")).thenReturn(true);
@@ -35,7 +35,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void testInfixToRPNConversionWithDifficultBrackets() throws IOException {
+    public void testInfixToRPNConversionWithDifficultBrackets() {
         List<String> input = new ArrayList<>(Arrays.asList(" ", "2", "+", "2", "*", "(", " ", "2", "-", "2", ")"));
         when(checker.isNumber("2")).thenReturn(true);
         when(checker.isOperation("-")).thenReturn(true);

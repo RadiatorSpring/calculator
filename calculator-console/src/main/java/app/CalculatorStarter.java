@@ -12,7 +12,7 @@ import calculator.validators.Checker;
 import java.util.EmptyStackException;
 
 public class CalculatorStarter {
-    //todo add java doc where necessary
+
     //todo add TDD rest services
     public static void main(String[] args) {
         if (args == null || args.length == 0) {

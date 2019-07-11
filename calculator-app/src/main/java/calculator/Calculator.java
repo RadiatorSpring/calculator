@@ -15,18 +15,9 @@ import java.util.*;
  *  which in turn returns the expression as Reverse Polish Notation.
  */
 public class Calculator {
-    /**
-     * Parses the expression and makes it in Reverse Polish Notation
-     */
     private Parser parser;
-    /**
-     * Returns mathematical operation as a class.
-     * Each operation has a process method which uses a stack to compute its elements.
-     */
     private OperationFactory operationFactory;
-    /**
-     * Creates a calculator
-     */
+
     public Calculator(Parser parser, OperationFactory operationFactory) {
         this.parser = parser;
         this.operationFactory = operationFactory;

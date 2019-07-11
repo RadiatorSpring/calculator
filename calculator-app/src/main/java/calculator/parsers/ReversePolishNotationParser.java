@@ -49,7 +49,6 @@ public class ReversePolishNotationParser {
         return ")".equals(input);
     }
 
-
     private boolean isOpeningBracket(String input) {
         return "(".equals(input);
     }
@@ -70,8 +69,6 @@ public class ReversePolishNotationParser {
             System.out.println("The file map.properties is missing form your directory");
             e.printStackTrace();
         }
-
-
         while (!stack.empty()) {
             int topOfStackPriorityValue = Integer.parseInt(mapProperties.getProperty(stack.peek()));
             int currTokenPriorityValue = Integer.parseInt(mapProperties.getProperty(token));

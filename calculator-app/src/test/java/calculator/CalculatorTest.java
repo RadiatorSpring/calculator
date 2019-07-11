@@ -86,7 +86,6 @@ public class CalculatorTest {
 
     private void factorySetUp(String element, Operation operation) {
         when(operationFactory.getOperation(element)).thenReturn(operation);
-
     }
 
 }

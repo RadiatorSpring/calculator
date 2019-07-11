@@ -32,7 +32,7 @@ public class NegativeNumbersBuilderTest {
     public void testWithEmpty() {
         List<String> input = new ArrayList<>();
         List<String> expected = new ArrayList<>();
-        List actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
+        List<String> actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
         Assert.assertEquals("expected empty list", expected, actual);
     }
 
@@ -40,7 +40,7 @@ public class NegativeNumbersBuilderTest {
     public void testWithOneNegativeNumber() {
         List<String> input = new ArrayList<>(Arrays.asList("-", "1", "*", "1"));
         List<String> expected = new ArrayList<>(Arrays.asList("-1", "*", "1"));
-        List actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
+        List<String> actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
         Assert.assertEquals("expected -1*1", expected, actual);
     }
 
@@ -48,7 +48,15 @@ public class NegativeNumbersBuilderTest {
     public void testWithBrackets() {
         List<String> input = new ArrayList<>(Arrays.asList("1", "*", "(", "-", "1", ")"));
         List<String> expected = new ArrayList<>(Arrays.asList("1", "*", "(", "-1", ")"));
-        List actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
+        List<String> actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
+        Assert.assertEquals("expected 1*(-1)", expected, actual);
+    }
+    @Test
+    public void testWithDoubleBrackets(){
+        //((1+1)-1)*2
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("(","(","1", "+", ")", "-", "1", ")","*","2"));
+        List<String> expected = new ArrayList<>(Arrays.asList("(","(","1", "+", ")", "-", "1", ")","*","2"));
+        List<String> actual = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(input);
         Assert.assertEquals("expected 1*(-1)", expected, actual);
     }
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class NegativeNumbersBuilder {
 
     /**
-     *  Searches for brackets with minus and number only inside if one is found they are concated and added to the list
+     *  Searches for brackets with minus and number only inside, if one is found they are concated and added to the list
      * @param numbersAndOperations the List of elements to find and add negative numbers
      * @return List with operations and numbers, which can now include negative numbers
      */
@@ -23,7 +23,7 @@ public class NegativeNumbersBuilder {
         String prev = "";
         while (iterator.hasNext()) {
             String curr = (String) iterator.next();
-            if (isMinus(curr) && isBracketOrEmpty(prev) && iterator.hasNext()) {
+            if (isMinus(curr) && isOpeningBracketOrEmpty(prev) && iterator.hasNext()) {
                 String next = (String) iterator.next();
                 curr = curr.concat(next);
                 iterator.remove();
@@ -42,8 +42,8 @@ public class NegativeNumbersBuilder {
         return s.equals("-");
     }
 
-    private boolean isBracketOrEmpty(String s) {
-        return s.matches("[()]") || s.isEmpty();
+    private boolean isOpeningBracketOrEmpty(String s) {
+        return s.matches("\\(") || s.isEmpty();
     }
 
 }

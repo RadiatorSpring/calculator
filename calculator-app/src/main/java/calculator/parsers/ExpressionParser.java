@@ -53,6 +53,4 @@ public class ExpressionParser {
     private void addRemainingNumber(List<String> elements, StringBuilder numberBuilder) {
         if (numberBuilder.length() != 0) elements.add(numberBuilder.toString());
     }
-
-
 }
