@@ -10,7 +10,7 @@
     <name>calculator-app</name>
 
     <parent>
-        <artifactId>ParentPOM</artifactId>
+        <artifactId>calculator</artifactId>
         <groupId>SAP</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>

@@ -21,9 +21,10 @@ public class Parser {
 
     /**
      * creates the Parser
-     * @param checker checks for validity of expression
-     * @param expressionParser makes the initial separation of elements
-     * @param parserRPN creates Queue in RPN
+     *
+     * @param checker                checks for validity of expression
+     * @param expressionParser       makes the initial separation of elements
+     * @param parserRPN              creates Queue in RPN
      * @param negativeNumbersBuilder decides which minuses are part of expression and which are part of a number
      */
     public Parser(Checker checker, ExpressionParser expressionParser,
@@ -40,8 +41,8 @@ public class Parser {
      * @return the expression that is ready to be computed
      * @throws IllegalArgumentException if the validation fails
      */
-    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException{
-        if (checker.validateExpression(expression)) {
+    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
+        if (checker.validateExpression(expression) || expression.isEmpty()) {
             throw new IllegalArgumentException("There cannot be spaces between digits, there cannot be letters");
         }
         List<String> elementsOfExpression = expressionParser.expressionToNumbersAndOperations(expression);

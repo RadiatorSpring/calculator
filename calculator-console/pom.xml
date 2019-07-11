@@ -6,6 +6,12 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>calculator</artifactId>
+        <groupId>SAP</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>calculator-console</artifactId>
     <dependencies>
         <dependency>
@@ -16,11 +22,7 @@
         </dependency>
     </dependencies>
 
-    <parent>
-        <artifactId>ParentPOM</artifactId>
-        <groupId>SAP</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <build>
         <plugins>
             <plugin>
