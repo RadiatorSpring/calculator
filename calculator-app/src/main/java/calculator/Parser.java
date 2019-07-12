@@ -35,7 +35,6 @@ public class Parser {
         this.negativeNumbersBuilder = negativeNumbersBuilder;
     }
 
-
     /**
      * @param expression the mathematical expression
      * @return the expression that is ready to be computed

@@ -25,13 +25,14 @@ public class ReversePolishNotationParserTest {
 
     @Test
     public void testInfixToRPNConversionWithTrivialInput() {
-        List<String> input = new ArrayList<>(Arrays.asList("1", "+", "1"));
+        List<String> input = new ArrayList<>(Arrays.asList("1", "+", "1", "*", "2", "+", "1"));
         when(checker.isOperation("+")).thenReturn(true);
         when(checker.isNumber("1")).thenReturn(true);
-
+        when(checker.isOperation("*")).thenReturn(true);
+        when(checker.isNumber("2")).thenReturn(true);
         Queue<String> actual = parserRPN.buildRPNfromElementsOfExpression(input);
-        Queue<String> expected = new LinkedList<>(Arrays.asList("1", "1", "+"));
-        Assert.assertEquals("expected to return 1 1 +", expected, actual);
+        Queue<String> expected = new LinkedList<>(Arrays.asList("1", "1", "2", "*", "+", "1", "+"));
+        Assert.assertEquals("expected to return 1 1 2 * +", expected, actual);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package calculator.parsers;
 
 import calculator.validators.Checker;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -13,7 +14,6 @@ public class ReversePolishNotationParser {
     private Checker checker;
 
     /**
-     *
      * @param checker used to check for certain types
      */
     public ReversePolishNotationParser(Checker checker) {
@@ -22,6 +22,7 @@ public class ReversePolishNotationParser {
 
     /**
      * Converts the expression into Queue Ordered in RPN
+     *
      * @param infixNotation the expression separated in logical elements in infix notation
      * @return Queue ordered in Reverse Polish Notation
      */
@@ -60,7 +61,7 @@ public class ReversePolishNotationParser {
         stack.pop();
     }
 
-    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token)  {
+    private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
         Properties mapProperties = new Properties();
         InputStream mapPropertiesStream = ClassLoader.getSystemResourceAsStream("map.properties");
         try {
@@ -84,7 +85,6 @@ public class ReversePolishNotationParser {
 
 
     private void addRemainingTokens(Queue<String> queue, Stack<String> stack) {
-
         while (!stack.isEmpty()) {
             queue.add(stack.pop());
         }

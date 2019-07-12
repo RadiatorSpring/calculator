@@ -40,7 +40,14 @@ public class Calculator {
 
     }
 
-    private double compute(Queue<String> expr) throws ArithmeticException, EmptyStackException, CannotDivideByZeroException {
+    /**
+     *
+     * @param expr the RPN representation of the String expression
+     * @return the evaluation to the passed expression
+     * @throws EmptyStackException if there are too many operators and too little operands in the expression
+     * @throws CannotDivideByZeroException if it is attempted to divide by zero
+     */
+    private double compute(Queue<String> expr) throws  EmptyStackException, CannotDivideByZeroException {
         Stack<Double> stack = new Stack<>();
         for (String token : expr) {
             Operation operation = operationFactory.getOperation(token);
