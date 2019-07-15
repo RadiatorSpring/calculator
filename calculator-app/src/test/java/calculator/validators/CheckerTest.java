@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-//todo maybe parameterized
+
 public class CheckerTest {
 
     private Checker checker;

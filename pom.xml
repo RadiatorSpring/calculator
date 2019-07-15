@@ -12,6 +12,7 @@
         <module>calculator-app</module>
         <module>calculator-console</module>
         <module>calculator-api</module>
+        <module>calculator-console-tests</module>
     </modules>
 
     <properties>
@@ -28,6 +29,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.28.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

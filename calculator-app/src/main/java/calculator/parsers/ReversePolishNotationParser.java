@@ -1,5 +1,6 @@
 package calculator.parsers;
 
+import calculator.enums.OperationPriority;
 import calculator.validators.Checker;
 
 import java.io.IOException;
@@ -62,17 +63,9 @@ public class ReversePolishNotationParser {
     }
 
     private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
-        Properties mapProperties = new Properties();
-        InputStream mapPropertiesStream = ClassLoader.getSystemResourceAsStream("map.properties");
-        try {
-            mapProperties.load(Objects.requireNonNull(mapPropertiesStream));
-        } catch (IOException e) {
-            System.out.println("The file map.properties is missing form your directory");
-            e.printStackTrace();
-        }
         while (!stack.empty()) {
-            int topOfStackPriorityValue = Integer.parseInt(mapProperties.getProperty(stack.peek()));
-            int currTokenPriorityValue = Integer.parseInt(mapProperties.getProperty(token));
+            int topOfStackPriorityValue = OperationPriority.getOperationPriority(stack.peek());
+            int currTokenPriorityValue = OperationPriority.getOperationPriority(token);
 
             if (currTokenPriorityValue <= topOfStackPriorityValue) {
                 queue.add(stack.pop());

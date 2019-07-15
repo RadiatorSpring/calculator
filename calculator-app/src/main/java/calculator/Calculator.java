@@ -25,6 +25,7 @@ public class Calculator {
 
 
     /**
+     * Passes the initial String to Parser in order to get RPN
      * @param expression the string representation of mathematical expression
      * @return the same function now with Queue representing the expression as Reverse Polish Notation
      * @throws CannotDivideByZeroException if the expression tries to divide by zero
@@ -41,7 +42,7 @@ public class Calculator {
     }
 
     /**
-     *
+     * Uses RPN and OperationFactory to compute the answer
      * @param expr the RPN representation of the String expression
      * @return the evaluation to the passed expression
      * @throws EmptyStackException if there are too many operators and too little operands in the expression
