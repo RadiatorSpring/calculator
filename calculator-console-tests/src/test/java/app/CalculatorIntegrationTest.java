@@ -33,10 +33,10 @@ public class CalculatorIntegrationTest {
     public String input;
     @Parameter(1)
     public String expected;
-    //todo make as separate project
     @Test
     public void consoleTest() throws IOException {
-        String path = "java -jar target/calculator-console-1.0-SNAPSHOT-jar-with-dependencies.jar ";
+        String jarPath ="../calculator-console/target/calculator-console-1.0-SNAPSHOT-jar-with-dependencies.jar";
+        String path = "java -jar " + jarPath + " ";
         Runtime runtime = Runtime.getRuntime();
         Process process = runtime.exec(path + input);
         Scanner scanner = new Scanner(process.getInputStream());
