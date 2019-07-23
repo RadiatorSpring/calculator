@@ -10,7 +10,7 @@ import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import errors.ExceptionMessages;
-import errors.StatusCodeMessage;
+import errors.ErrorCodeMessage;
 import models.CalculatorResult;
 import services.CalculatorService;
 
@@ -48,19 +48,19 @@ public class CalculatorServlet extends HttpServlet {
                 processMessageAndStatusCode(ExceptionMessages.emptyStackExceptionMessage, 400, response);
             } catch (Exception e) {
                 processMessageAndStatusCode(ExceptionMessages.generalExceptionMessage, 500, response);
-
             }
         } else {
-            processMessageAndStatusCode("The expression parameter cannot be empty", 400, response);
+            processMessageAndStatusCode(ExceptionMessages.emptyParameterException, 400, response);
         }
     }
 
     private void processMessageAndStatusCode(String message, int code, HttpServletResponse response) throws IOException {
         PrintWriter printWriter = new PrintWriter(response.getWriter());
         response.setStatus(code);
-        StatusCodeMessage statusCodeMessage = new StatusCodeMessage(message, code);
-        String jsonString = mapper.writeValueAsString(statusCodeMessage);
+        ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(message, code);
+        String jsonString = mapper.writeValueAsString(errorCodeMessage);
         printWriter.println(jsonString);
     }
 
 }
+

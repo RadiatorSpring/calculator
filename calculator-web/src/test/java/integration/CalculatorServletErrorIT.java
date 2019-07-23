@@ -1,7 +1,6 @@
 package integration;
 
 import errors.ExceptionMessages;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -22,16 +21,17 @@ import static org.junit.Assert.assertEquals;
 
 
 //todo test response code, response message and response body in API Testing.
+
 @RunWith(Parameterized.class)
 public class CalculatorServletErrorIT {
 
-    private static final String LocalURL = "http://localhost:8080";
+    private static final String LocalURL = "http://localhost:9090/calculator/api/v1/";
 
     @Parameters
     public static Collection<Object> data() {
         return Arrays.asList(new Object[][]{
-                {LocalURL + "/api/v1/calculate?expression=50--4", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyStackExceptionMessage}, {LocalURL + "/api/v1/calculate", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException},
-                {LocalURL + "/api/v1/calculate?expression", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException}
+                {LocalURL + "calculate?expression=50--4", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyStackExceptionMessage}, {LocalURL + "calculate", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException},
+                {LocalURL + "calculate?expression", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException}
         });
     }
 
@@ -49,9 +49,10 @@ public class CalculatorServletErrorIT {
         HttpResponse response = HttpClientBuilder.create().build().execute(request);
         Scanner scanner = new Scanner(response.getEntity().getContent());
         String json = "{\"message\":\"" + message + "\"," + "\"code\":" + code + "}";
+        assertEquals("status code expected[400,200 or 500]", code, response.getStatusLine().getStatusCode());
+        assertEquals("message for status code, or result as json", json, scanner.nextLine());
 
-        assertEquals("message for certain request", json, scanner.nextLine());
-        assertEquals("status code for bad request", code, response.getStatusLine().getStatusCode());
+
     }
 
 

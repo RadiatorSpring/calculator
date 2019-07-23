@@ -11,12 +11,13 @@ import java.util.*;
 
 /**
  *  Represents a simple calculator.
- *  A compute method is provided which passes the expression to Parser
- *  which in turn returns the expression as Reverse Polish Notation.
+ *  A compute method is provided
+ *  which in turn returns the result.
  */
 public class Calculator {
     private Parser parser;
     private OperationFactory operationFactory;
+
 
     public Calculator(Parser parser, OperationFactory operationFactory) {
         this.parser = parser;
@@ -25,9 +26,9 @@ public class Calculator {
 
 
     /**
-     * Passes the initial String to Parser in order to get RPN
+     * Passes the initial String to the parser in order to get RPN and calculate it
      * @param expression the string representation of mathematical expression
-     * @return the same function now with Queue representing the expression as Reverse Polish Notation
+     * @return the resulting number
      * @throws CannotDivideByZeroException if the expression tries to divide by zero
      * @throws EmptyStackException if there are too many operators and too little operands in the expression
      * @throws IllegalArgumentException if the passed expression has less than 3 arguments
@@ -41,13 +42,7 @@ public class Calculator {
 
     }
 
-    /**
-     * Uses RPN and OperationFactory to compute the answer
-     * @param expr the RPN representation of the String expression
-     * @return the evaluation to the passed expression
-     * @throws EmptyStackException if there are too many operators and too little operands in the expression
-     * @throws CannotDivideByZeroException if it is attempted to divide by zero
-     */
+
     private double compute(Queue<String> expr) throws  EmptyStackException, CannotDivideByZeroException {
         Stack<Double> stack = new Stack<>();
         for (String token : expr) {

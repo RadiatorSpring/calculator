@@ -1,6 +1,6 @@
 package errors;
 
-public class StatusCodeMessage {
+public class ErrorCodeMessage {
     private String message;
     private int code;
 
@@ -20,7 +20,7 @@ public class StatusCodeMessage {
         this.message = message;
     }
 
-    public StatusCodeMessage(String message, int code) {
+    public ErrorCodeMessage(String message, int code) {
         this.message = message;
         this.code = code;
     }

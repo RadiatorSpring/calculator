@@ -11,7 +11,7 @@
     <modules>
         <module>calculator-app</module>
         <module>calculator-console</module>
-        <module>calculator-api</module>
+        <module>calculator-web</module>
         <module>calculator-console-tests</module>
     </modules>
 
