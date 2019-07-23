@@ -1,6 +1,5 @@
 package integration;
 
-import errors.ExceptionMessages;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -11,12 +10,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 
+import static errors.ExceptionMessages.*;
 import static org.junit.Assert.assertEquals;
 
 
@@ -30,8 +29,9 @@ public class CalculatorServletErrorIT {
     @Parameters
     public static Collection<Object> data() {
         return Arrays.asList(new Object[][]{
-                {LocalURL + "calculate?expression=50--4", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyStackExceptionMessage}, {LocalURL + "calculate", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException},
-                {LocalURL + "calculate?expression", HttpStatus.SC_BAD_REQUEST, ExceptionMessages.emptyParameterException}
+                {LocalURL + "calculate?expression=50--4", HttpStatus.SC_BAD_REQUEST, emptyStackExceptionMessage}, {LocalURL + "calculate", HttpStatus.SC_BAD_REQUEST, emptyParameterException},
+                {LocalURL + "calculate?expression", HttpStatus.SC_BAD_REQUEST, emptyParameterException}, {LocalURL + "calculate?expression=5%2012", HttpStatus.SC_BAD_REQUEST, illegalArgumentExceptionMessage},
+                {LocalURL + "calculate?expression=cvbjk33nbjlkb22", HttpStatus.SC_BAD_REQUEST, illegalArgumentExceptionMessage}
         });
     }
 

@@ -16,9 +16,7 @@ public class ErrorCodeMessage {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+
 
     public ErrorCodeMessage(String message, int code) {
         this.message = message;

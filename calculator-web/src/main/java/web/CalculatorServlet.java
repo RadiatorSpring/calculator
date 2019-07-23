@@ -9,7 +9,6 @@ import calculator.parsers.NegativeNumbersBuilder;
 import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import errors.ExceptionMessages;
 import errors.ErrorCodeMessage;
 import models.CalculatorResult;
 import services.CalculatorService;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.EmptyStackException;
+
+import static errors.ExceptionMessages.*;
 
 @WebServlet(urlPatterns = {"/calculate"})
 public class CalculatorServlet extends HttpServlet {
@@ -41,16 +42,16 @@ public class CalculatorServlet extends HttpServlet {
                 jsonString = mapper.writeValueAsString(calculatorResult);
                 printWriter.println(jsonString);
             } catch (CannotDivideByZeroException e) {
-                processMessageAndStatusCode(ExceptionMessages.cannotDivideByZero, 400, response);
+                processMessageAndStatusCode(cannotDivideByZero, 400, response);
             } catch (IllegalArgumentException e) {
-                processMessageAndStatusCode(ExceptionMessages.illegalArgumentExceptionMessage, 400, response);
+                processMessageAndStatusCode(illegalArgumentExceptionMessage, 400, response);
             } catch (EmptyStackException e) {
-                processMessageAndStatusCode(ExceptionMessages.emptyStackExceptionMessage, 400, response);
+                processMessageAndStatusCode(emptyStackExceptionMessage, 400, response);
             } catch (Exception e) {
-                processMessageAndStatusCode(ExceptionMessages.generalExceptionMessage, 500, response);
+                processMessageAndStatusCode(generalExceptionMessage, 500, response);
             }
         } else {
-            processMessageAndStatusCode(ExceptionMessages.emptyParameterException, 400, response);
+            processMessageAndStatusCode(emptyParameterException, 400, response);
         }
     }
 
