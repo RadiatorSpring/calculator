@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import pages.ErrorPage;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,9 +19,7 @@ import java.util.Scanner;
 
 import static errors.ExceptionMessages.*;
 import static org.junit.Assert.assertEquals;
-
-
-//todo test response code, response message and response body in API Testing.
+import static org.junit.Assert.assertThat;
 
 @RunWith(Parameterized.class)
 public class CalculatorServletErrorIT {
@@ -44,15 +44,9 @@ public class CalculatorServletErrorIT {
 
     @Test
     public void testForStatusCode() throws IOException {
-        HttpUriRequest request = new HttpGet(requestURL);
-
-        HttpResponse response = HttpClientBuilder.create().build().execute(request);
-        Scanner scanner = new Scanner(response.getEntity().getContent());
-        String json = "{\"message\":\"" + message + "\"," + "\"code\":" + code + "}";
-        assertEquals("status code expected[400,200 or 500]", code, response.getStatusLine().getStatusCode());
-        assertEquals("message for status code, or result as json", json, scanner.nextLine());
-
-
+        ErrorPage errorPage = new ErrorPage(requestURL);
+        errorPage.verifyMessage(message)
+                .verifyStatusCode(code);
     }
 
 

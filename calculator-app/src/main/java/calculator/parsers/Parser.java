@@ -1,11 +1,7 @@
-package calculator;
+package calculator.parsers;
 
-import calculator.parsers.ExpressionParser;
-import calculator.parsers.NegativeNumbersBuilder;
-import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
@@ -40,7 +36,7 @@ public class Parser {
      * @return the expression that is ready to be computed
      * @throws IllegalArgumentException if the validation fails
      */
-    Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
+    public Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
         if (checker.validateExpression(expression) || expression.isEmpty()) {
             throw new IllegalArgumentException("There cannot be spaces between digits, there cannot be letters");
         }

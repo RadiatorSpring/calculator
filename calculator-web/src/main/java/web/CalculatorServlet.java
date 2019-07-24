@@ -1,7 +1,7 @@
 package web;
 
 import calculator.Calculator;
-import calculator.Parser;
+import calculator.parsers.Parser;
 import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.OperationFactory;
 import calculator.parsers.ExpressionParser;
@@ -23,6 +23,8 @@ import java.util.EmptyStackException;
 
 import static errors.ExceptionMessages.*;
 
+//todo read about rest in neo
+
 @WebServlet(urlPatterns = {"/calculate"})
 public class CalculatorServlet extends HttpServlet {
 
@@ -36,7 +38,6 @@ public class CalculatorServlet extends HttpServlet {
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
             String jsonString;
-
             try {
                 CalculatorResult calculatorResult = new CalculatorResult(calculatorService.compute(expression));
                 jsonString = mapper.writeValueAsString(calculatorResult);

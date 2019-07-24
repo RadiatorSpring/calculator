@@ -25,7 +25,7 @@ public class ExpressionParser {
      * @param text the mathematical expression
      * @return a List of logically separated elements of expression e.g. 11+11 -> {"11", "+", "11"}
      */
-    public List<String> expressionToNumbersAndOperations(String text) {
+    List<String> expressionToNumbersAndOperations(String text) {
         StringBuilder numberBuilder = new StringBuilder();
         List<String> elements = new ArrayList<>();
         char[] symbols = text.toCharArray();
@@ -51,6 +51,7 @@ public class ExpressionParser {
      * @param numberBuilder the stringBuilder used for number creation
      */
     private void addRemainingNumber(List<String> elements, StringBuilder numberBuilder) {
-        if (numberBuilder.length() != 0) elements.add(numberBuilder.toString());
+        if (numberBuilder.length() != 0)
+            elements.add(numberBuilder.toString());
     }
 }

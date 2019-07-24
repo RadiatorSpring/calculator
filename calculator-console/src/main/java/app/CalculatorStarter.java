@@ -2,7 +2,7 @@ package app;
 
 import calculator.Calculator;
 import calculator.exceptions.CannotDivideByZeroException;
-import calculator.Parser;
+import calculator.parsers.Parser;
 import calculator.operations.OperationFactory;
 import calculator.parsers.ExpressionParser;
 import calculator.parsers.NegativeNumbersBuilder;

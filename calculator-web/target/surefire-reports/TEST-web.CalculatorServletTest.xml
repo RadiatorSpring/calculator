@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="web.CalculatorServletTest" time="0.536" errors="0" skipped="0">
+<testsuite tests="9" failures="0" name="web.CalculatorServletTest" time="0.479" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="12.0.1+12"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-12.0.1\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\i516445\IdeaProjects\calculator"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\i516445\IdeaProjects\calculator\calculator-web"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
-    <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.script" value=""/>
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="user.script" value=""/>
-    <property name="sun.os.patch.level" value=""/>
-    <property name="user.dir" value="C:\Users\i516445\IdeaProjects\calculator"/>
-    <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\i516445\IdeaProjects\calculator\calculator-web"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="12.0.1+12"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
     <property name="os.arch" value="amd64"/>
@@ -40,11 +40,11 @@
     <property name="user.timezone" value="Europe/Chisinau"/>
     <property name="file.encoding" value="Cp1252"/>
     <property name="java.specification.version" value="12"/>
-    <property name="java.class.path" value="C:\Program Files\apache-maven-3.6.1\bin\..\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="user.name" value="I516445"/>
+    <property name="java.class.path" value="C:\Program Files\apache-maven-3.6.1\bin\..\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="12"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install -P integration-test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean verify -P integration-test"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-12.0.1"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -57,11 +57,19 @@
     <property name="file.separator" value="\"/>
     <property name="java.version.date" value="2019-04-16"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="cp437"/>
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="web.CalculatorServletTest" name="testFormatAndAnswer" time="0.536"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[0]" time="0.464"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[1]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[2]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[3]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[4]" time="0.015"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[5]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[6]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[7]" time="0"/>
+  <testcase classname="web.CalculatorServletTest" name="testExpressionAndResult[8]" time="0"/>
 </testsuite>

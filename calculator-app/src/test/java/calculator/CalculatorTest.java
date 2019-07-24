@@ -2,6 +2,7 @@ package calculator;
 
 import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.*;
+import calculator.parsers.Parser;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;

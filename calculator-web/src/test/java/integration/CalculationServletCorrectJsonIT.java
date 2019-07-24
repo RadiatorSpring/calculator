@@ -5,17 +5,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-
+//todo page object
+//todo rest assured
 public class CalculationServletCorrectJsonIT {
     @Test
     public void testForCorrectInput() throws IOException {
-        String localHostAppURL = "http://localhost:8080/calculator/api/v1/calculate?expression=";
+        String localHostAppURL = "http://localhost:9090/calculator/api/v1/calculate?expression=";
         String expression = "1-1";
         HttpUriRequest request = new HttpGet(localHostAppURL + expression);
 

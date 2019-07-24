@@ -1,8 +1,15 @@
 package errors;
 
+
+
 public class ErrorCodeMessage {
-    private String message;
-    private int code;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getCode() {
         return code;
@@ -12,10 +19,8 @@ public class ErrorCodeMessage {
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
+    private String message;
+    private int code;
 
 
     public ErrorCodeMessage(String message, int code) {

@@ -46,13 +46,11 @@
                     <plugin>
                         <groupId>org.apache.tomcat.maven</groupId>
                         <artifactId>tomcat7-maven-plugin</artifactId>
-
                         <version>2.2</version>
                         <configuration>
                             <port>9090</port>
                             <path>/calculator/api/v1</path>
                         </configuration>
-
                         <executions>
                             <execution>
                                 <id>tomcat-run</id>
@@ -60,7 +58,6 @@
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
-
                                 <configuration>
                                     <fork>true</fork>
                                 </configuration>
@@ -135,7 +132,6 @@
             <version>4.12</version>
             <scope>compile</scope>
         </dependency>
-
 
     </dependencies>
 
