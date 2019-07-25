@@ -76,7 +76,6 @@ public class ReversePolishNotationParser {
         stack.push(token);
     }
 
-
     private void addRemainingTokens(Queue<String> queue, Stack<String> stack) {
         while (!stack.isEmpty()) {
             queue.add(stack.pop());

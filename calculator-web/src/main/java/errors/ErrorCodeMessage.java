@@ -3,6 +3,7 @@ package errors;
 
 
 public class ErrorCodeMessage {
+
     public String getMessage() {
         return message;
     }
