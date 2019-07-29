@@ -1,11 +1,9 @@
 package integration.pages;
 
-import org.apache.http.HttpResponse;
 import org.junit.Assert;
 
 import java.io.IOException;
 
-//todo verifyCode verifyMessage sendRequest getResponse
 public class ErrorResponsePage extends BasePage{
 
 

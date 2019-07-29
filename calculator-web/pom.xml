@@ -11,6 +11,9 @@
 
     <artifactId>calculator-web</artifactId>
     <packaging>war</packaging>
+    <properties>
+        <path>/calculator</path>
+    </properties>
 
 
     <profiles>
@@ -18,11 +21,6 @@
             <id>integration-test</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>3.2.3</version>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
@@ -47,16 +45,17 @@
                         <groupId>org.apache.tomcat.maven</groupId>
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
+
                         <configuration>
                             <port>9090</port>
-                            <path>/calculator/api/v1</path>
+                            <path>${path}</path>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>tomcat-run</id>
+                                <id>tomcat-run-only</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
-                                    <goal>run-war-only</goal>
+                                    <goal>run-war</goal>
                                 </goals>
                                 <configuration>
                                     <fork>true</fork>
@@ -76,6 +75,7 @@
         </profile>
 
     </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -84,30 +84,54 @@
                 <version>2.2</version>
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
-                    <server>TomcatServer</server>
-                    <path>/calculator/api/v1</path>
+                    <path>${path}</path>
+                    <username>admin</username>
+                    <password>admin</password>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
+            <version>2.29</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.29</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
+            <artifactId>jersey-server</artifactId>
             <version>2.29</version>
         </dependency>
 
 
         <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.28</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -129,11 +153,6 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.9</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-            <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
-            <version>2.29</version>
         </dependency>
 
         <dependency>

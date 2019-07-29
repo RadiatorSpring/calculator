@@ -16,8 +16,8 @@ import services.CalculatorService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.EmptyStackException;
@@ -26,22 +26,24 @@ import static errors.ExceptionMessages.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-
+//todo create init method or add DI with Jersey
 @Path("/calculate")
+@Produces(MediaType.APPLICATION_JSON)
 public class CalculatorJerseyServlet {
 
-    private CalculatorService calculatorService;
-    private ObjectMapper mapper;
+    private CalculatorService calculatorService = new CalculatorService(new Calculator(new Parser(new Checker(), new ExpressionParser(new Checker()), new ReversePolishNotationParser(new Checker()), new NegativeNumbersBuilder()), new OperationFactory()));
 
-    public CalculatorJerseyServlet(CalculatorService calculatorService, ObjectMapper mapper) {
-        this.calculatorService = calculatorService;
-        this.mapper = mapper;
-    }
+    private ObjectMapper mapper = new ObjectMapper();
+
+//    @Inject
+//    public CalculatorJerseyServlet(CalculatorService calculatorService, ObjectMapper mapper) {
+//        this.calculatorService = calculatorService;
+//        this.mapper = mapper;
+//    }
 
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response calculate(@PathParam("expression") String expression) throws JsonProcessingException {
+    public Response calculate(@QueryParam("expression") String expression) throws JsonProcessingException {
         if (expression != null && !expression.isEmpty()) {
             try {
                 double result = calculatorService.compute(expression);

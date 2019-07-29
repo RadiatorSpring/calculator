@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(Parameterized.class)
 public class CalculatorServletErrorIT {
 
-    private static final String LocalURL = "http://localhost:9090/calculator/api/v1/";
+    private static final String LocalURL = "http://localhost:8080/calculator/api/";
 
     @Parameters
     public static Collection<Object> data() {
@@ -40,8 +40,9 @@ public class CalculatorServletErrorIT {
     @Test
     public void testForStatusCode() throws IOException {
         ErrorResponsePage errorResponsePage = new ErrorResponsePage(requestURL);
-        errorResponsePage.verifyMessage(message);
         errorResponsePage.verifyStatusCode(code);
+        errorResponsePage.verifyMessage(message);
+
     }
 
 

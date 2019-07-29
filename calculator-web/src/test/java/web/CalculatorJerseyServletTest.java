@@ -1,19 +1,10 @@
 package web;
 
-import calculator.Calculator;
 import calculator.exceptions.CannotDivideByZeroException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import errors.ErrorCodeMessage;
-import models.CalculatorResult;
-import org.apache.http.HttpStatus;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -22,16 +13,12 @@ import services.CalculatorService;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.EmptyStackException;
-import java.util.Scanner;
 
 import static errors.ExceptionMessages.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.when;
 
 
@@ -49,7 +36,6 @@ public class CalculatorJerseyServletTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
 
-
     @Test
     public void testExpressionAndResult() throws IOException, CannotDivideByZeroException {
         String expression = "1-1";
@@ -59,6 +45,7 @@ public class CalculatorJerseyServletTest {
         Response response = calculatorJerseyServlet.calculate(expression);
         String actual = (String) response.getEntity();
         assertEquals(result, actual);
+
 
     }
 

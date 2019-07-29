@@ -10,7 +10,7 @@ import java.io.IOException;
 public class CalculationServletCorrectJsonIT {
     @Test
     public void testForCorrectInput() throws IOException {
-        String url = "http://localhost:9090/calculator/api/v1/calculate?expression=1-1";
+        String url = "http://localhost:9090/calculator/api/calculate?expression=1-1";
         CorrectResponsePage responsePage = new CorrectResponsePage(url);
         responsePage.verifyResult(0.0);
         responsePage.verifyStatusCode(200);
