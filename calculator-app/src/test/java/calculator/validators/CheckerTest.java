@@ -30,6 +30,7 @@ public class CheckerTest {
         assertTrue(checker.validateExpression("2()5+22"));
         assertTrue(checker.validateExpression("1(+)5"));
         assertTrue(checker.validateExpression("()+4+5"));
+        assertTrue(checker.validateExpression("1.1-1.2"));
     }
 
     @Test

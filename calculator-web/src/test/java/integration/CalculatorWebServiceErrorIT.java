@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Parameterized.class)
-public class CalculatorServletErrorIT {
+public class CalculatorWebServiceErrorIT {
 
     private static final String LocalURL = "http://localhost:8080/calculator/api/";
 

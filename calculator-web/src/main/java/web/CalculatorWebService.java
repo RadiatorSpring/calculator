@@ -27,7 +27,7 @@ import static errors.ExceptionMessages.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-//todo create init method or add DI with Jersey
+
 @Path("/calculate")
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {

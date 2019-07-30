@@ -14,14 +14,12 @@ import javax.inject.Inject;
 
 public class CalculatorService {
     private Calculator calculator;
-    private CalculatorFactory calculatorFactory = new CalculatorFactory();
+
 
     @Inject
     public CalculatorService(CalculatorFactory calculatorFactory) {
         this.calculator = calculatorFactory.createCalculator();
     }
-
-
 
     public double compute(String expression) throws CannotDivideByZeroException {
         return calculator.compute(expression);
