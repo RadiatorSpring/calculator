@@ -3,6 +3,8 @@ package calculator.validators;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.IllegalFormatException;
+
 import static org.junit.Assert.*;
 
 public class CheckerTest {
@@ -19,6 +21,9 @@ public class CheckerTest {
         assertTrue(checker.isNumber("1"));
         assertFalse(checker.isNumber("-"));
         assertFalse(checker.isNumber(" "));
+        assertTrue(checker.isNumber("1.1"));
+        assertFalse(checker.isNumber("1.2.3.4"));
+        assertTrue(checker.isNumber(".1"));
     }
 
     @Test
@@ -30,7 +35,7 @@ public class CheckerTest {
         assertTrue(checker.validateExpression("2()5+22"));
         assertTrue(checker.validateExpression("1(+)5"));
         assertTrue(checker.validateExpression("()+4+5"));
-        assertTrue(checker.validateExpression("1.1-1.2"));
+        assertFalse(checker.validateExpression("1.1-1.2"));
     }
 
     @Test

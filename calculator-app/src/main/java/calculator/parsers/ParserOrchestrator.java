@@ -6,29 +6,36 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * The Parser exists solely to convert the expression that is given
+ * The ParserOrchestrator exists solely to convert the expression that is given
  * to Calculator to something that is computable with Reverse polish notation
  */
-public class Parser {
+public class ParserOrchestrator {
     private Checker checker;
     private ExpressionParser expressionParser;
     private ReversePolishNotationParser parserRPN;
     private NegativeNumbersBuilder negativeNumbersBuilder;
 
     /**
-     * creates the Parser
+     * creates the ParserOrchestrator
      *
      * @param checker                checks for validity of expression
      * @param expressionParser       makes the initial separation of elements
      * @param parserRPN              creates Queue in RPN
      * @param negativeNumbersBuilder decides which minuses are part of expression and which are part of a number
      */
-    public Parser(Checker checker, ExpressionParser expressionParser,
-                  ReversePolishNotationParser parserRPN, NegativeNumbersBuilder negativeNumbersBuilder) {
+    public ParserOrchestrator(Checker checker, ExpressionParser expressionParser,
+                              ReversePolishNotationParser parserRPN, NegativeNumbersBuilder negativeNumbersBuilder) {
         this.checker = checker;
         this.expressionParser = expressionParser;
         this.parserRPN = parserRPN;
         this.negativeNumbersBuilder = negativeNumbersBuilder;
+    }
+
+    public ParserOrchestrator() {
+        this.checker = new Checker();
+        this.expressionParser = new ExpressionParser();
+        this.parserRPN = new ReversePolishNotationParser();
+        this.negativeNumbersBuilder = new NegativeNumbersBuilder();
     }
 
     /**

@@ -2,7 +2,7 @@ package calculator;
 
 import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.*;
-import calculator.parsers.Parser;
+import calculator.parsers.ParserOrchestrator;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class CalculatorTest {
     @InjectMocks
     private Calculator calculator;
     @Mock
-    private Parser parser;
+    private ParserOrchestrator parserOrchestrator;
     @Mock
     private OperationFactory operationFactory;
 
@@ -32,14 +32,14 @@ public class CalculatorTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void testPlusWithSpaces() throws CannotDivideByZeroException  {
+    public void testPlusWithSpaces() throws CannotDivideByZeroException {
         String expressionRPN = "1  + 1  + 2 / 2";
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("1", "1", "+", "2", "2", "/", "+"));
         parserSetUP(expressionRPN, mockQueue);
-        factorySetUp("+",new Addition());
-        factorySetUp("/",new Division());
-        factorySetUp("1",new Operand(1));
-        factorySetUp("2",new Operand(2));
+        factorySetUp("+", new Addition());
+        factorySetUp("/", new Division());
+        factorySetUp("1", new Operand(1));
+        factorySetUp("2", new Operand(2));
         Assert.assertEquals(3.0, calculator.compute(expressionRPN), 0.001);
         verify(operationFactory, times(2)).getOperation("+");
 
@@ -47,41 +47,50 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException  {
+    public void testMultiplyAndPlusAndMinus() throws CannotDivideByZeroException {
         Queue<String> mockQueue = new LinkedList<>(Arrays.asList("2", "2", "2", "-2", "+", "*", "-"));
         String expression = "2-2*(2+-2)";
-        factorySetUp("2",new Operand(2));
-        factorySetUp("-2",new Operand(-2));
-        factorySetUp("-",new Subtraction());
-        factorySetUp("*",new Multiplication());
-        factorySetUp("+",new Addition());
+        factorySetUp("2", new Operand(2));
+        factorySetUp("-2", new Operand(-2));
+        factorySetUp("-", new Subtraction());
+        factorySetUp("*", new Multiplication());
+        factorySetUp("+", new Addition());
         parserSetUP(expression, mockQueue);
         Assert.assertEquals("PRN calculator : expected to return 2", 2.0, calculator.compute(expression), 0.001);
     }
 
+    @Test
+    public void testDecimalNumbers() throws CannotDivideByZeroException {
+        Queue<String> mockQueue = new LinkedList<>(Arrays.asList("1.1", "1.1","-"));
+        String expression = "1.1 - 1.1";
+        factorySetUp("1.1", new Operand(1.1));
+        factorySetUp("-", new Subtraction());
+        parserSetUP(expression, mockQueue);
+        Assert.assertEquals(0.0, calculator.compute(expression), 0.001);
+    }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithEmptyQueue() throws CannotDivideByZeroException  {
+    public void testWithEmptyQueue() throws CannotDivideByZeroException {
         parserSetUP(" ", new LinkedList<>(Collections.singletonList("")));
         calculator.compute(" ");
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneArgument() throws CannotDivideByZeroException  {
+    public void testWithOneArgument() throws CannotDivideByZeroException {
         parserSetUP("1", new LinkedList<>(Collections.singletonList("1")));
         calculator.compute("1");
         verify(operationFactory, times(0)).getOperation(any());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithOneOperation() throws CannotDivideByZeroException  {
-        parserSetUP("+",new LinkedList<>(Collections.singletonList("+")));
+    public void testWithOneOperation() throws CannotDivideByZeroException {
+        parserSetUP("+", new LinkedList<>(Collections.singletonList("+")));
         Assert.assertEquals(0.0, calculator.compute("+"), 0.1);
     }
 
-    private void parserSetUP(String expression, Queue<String> mockQueue)  {
-        when(parser.convertExpressionToRPN(expression)).thenReturn(mockQueue);
+    private void parserSetUP(String expression, Queue<String> mockQueue) {
+        when(parserOrchestrator.convertExpressionToRPN(expression)).thenReturn(mockQueue);
     }
 
     private void factorySetUp(String element, Operation operation) {

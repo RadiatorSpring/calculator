@@ -21,13 +21,17 @@ public class ReversePolishNotationParser {
         this.checker = checker;
     }
 
+    ReversePolishNotationParser() {
+        this.checker = new Checker();
+    }
+
     /**
      * Converts the expression into Queue Ordered in RPN
      *
      * @param infixNotation the expression separated in logical elements in infix notation
      * @return Queue ordered in Reverse Polish Notation
      */
-    public Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
+    Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
 
         Queue<String> queue = new LinkedList<>();
         Stack<String> stack = new Stack<>();

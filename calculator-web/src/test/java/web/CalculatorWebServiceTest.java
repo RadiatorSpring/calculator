@@ -45,8 +45,6 @@ public class CalculatorWebServiceTest {
         Response response = calculatorWebService.calculate(expression);
         String actual = (String) response.getEntity();
         assertEquals(result, actual);
-
-
     }
 
     @Test

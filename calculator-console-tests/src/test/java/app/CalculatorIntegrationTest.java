@@ -26,7 +26,8 @@ public class CalculatorIntegrationTest {
                 {"", tooShortExpressionMessage}, {"+", tooShortExpressionMessage},
                 {"---", illegalArgumentExceptionMessage}, {"111", illegalArgumentExceptionMessage},
                 {"1*-(-1)", emptyStackExceptionMessage}, {"1*--1", emptyStackExceptionMessage},
-                {"1*(-1)", "-1.0"}, {"\"\"", tooShortExpressionMessage}, {"2()5+22", illegalArgumentExceptionMessage}
+                {"1*(-1)", "-1.0"}, {"\"\"", tooShortExpressionMessage}, {"2()5+22", illegalArgumentExceptionMessage},
+                {"13+1.1-.1","14.0"},{"1.1-1.1","0.0"}
         });
     }
     @Parameter

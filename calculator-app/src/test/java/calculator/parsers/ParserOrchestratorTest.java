@@ -1,9 +1,5 @@
 package calculator.parsers;
 
-import calculator.parsers.ExpressionParser;
-import calculator.parsers.NegativeNumbersBuilder;
-import calculator.parsers.Parser;
-import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -19,9 +15,9 @@ import java.util.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ParserTest {
+public class ParserOrchestratorTest {
     @InjectMocks
-    private Parser parser;
+    private ParserOrchestrator parserOrchestrator;
     @Mock
     private Checker checker;
     @Mock
@@ -37,27 +33,27 @@ public class ParserTest {
     public void testWrongInputWithSpaces() {
         String expression = "q213 12 + 3     7";
         when(checker.validateExpression(expression)).thenReturn(true);
-        parser.convertExpressionToRPN(expression);
+        parserOrchestrator.convertExpressionToRPN(expression);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testExpectedException() {
         String expression = "asvcx1232+12ws";
         when(checker.validateExpression(expression)).thenReturn(true);
-        parser.convertExpressionToRPN(expression);
+        parserOrchestrator.convertExpressionToRPN(expression);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNumbersWithSpacesBetweenThem() {
         String expression = "1   1+ 1 ";
         when(checker.validateExpression(expression)).thenReturn(true);
-        parser.convertExpressionToRPN(expression);
+        parserOrchestrator.convertExpressionToRPN(expression);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testWIthEmptyString() {
-        parser.convertExpressionToRPN("");
+        parserOrchestrator.convertExpressionToRPN("");
     }
 
     @Test
@@ -67,7 +63,11 @@ public class ParserTest {
         when(expressionParser.expressionToNumbersAndOperations("1+1")).thenReturn(list);
         when(reversePolishNotationParser.buildRPNfromElementsOfExpression(list)).thenReturn(expectedQueue);
         when(negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(list)).thenReturn(list);
-        Assert.assertEquals(expectedQueue, parser.convertExpressionToRPN("1+1"));
+        Assert.assertEquals(expectedQueue, parserOrchestrator.convertExpressionToRPN("1+1"));
+    }
+    @Test
+    public void testWithDecimalNumbers(){
+
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ParserTest {
         when(negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(anyList())).thenReturn(new ArrayList<>());
         when(reversePolishNotationParser.buildRPNfromElementsOfExpression(anyList())).thenReturn(new LinkedList<>());
 
-        parser.convertExpressionToRPN("098ygvhjb");
+        parserOrchestrator.convertExpressionToRPN("098ygvhjb");
 
         InOrder inOrder = inOrder(checker, expressionParser,negativeNumbersBuilder,reversePolishNotationParser);
         inOrder.verify(checker).validateExpression(anyString());
