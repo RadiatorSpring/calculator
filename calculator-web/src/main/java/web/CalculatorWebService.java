@@ -14,6 +14,7 @@ import errors.ErrorCodeMessage;
 import models.CalculatorResult;
 import services.CalculatorService;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,18 +30,11 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 //todo create init method or add DI with Jersey
 @Path("/calculate")
 @Produces(MediaType.APPLICATION_JSON)
-public class CalculatorJerseyServlet {
-
-    private CalculatorService calculatorService = new CalculatorService(new Calculator(new Parser(new Checker(), new ExpressionParser(new Checker()), new ReversePolishNotationParser(new Checker()), new NegativeNumbersBuilder()), new OperationFactory()));
-
-    private ObjectMapper mapper = new ObjectMapper();
-
-//    @Inject
-//    public CalculatorJerseyServlet(CalculatorService calculatorService, ObjectMapper mapper) {
-//        this.calculatorService = calculatorService;
-//        this.mapper = mapper;
-//    }
-
+public class CalculatorWebService {
+    @Inject
+    private CalculatorService calculatorService ;
+    @Inject
+    private ObjectMapper mapper;
 
     @GET
     public Response calculate(@QueryParam("expression") String expression) throws JsonProcessingException {

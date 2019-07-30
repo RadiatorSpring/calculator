@@ -22,11 +22,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
-public class CalculatorJerseyServletTest {
+public class CalculatorWebServiceTest {
 
 
     @InjectMocks
-    private CalculatorJerseyServlet calculatorJerseyServlet;
+    private CalculatorWebService calculatorWebService;
     @Mock
     private CalculatorService calculatorService;
     @Mock
@@ -42,7 +42,7 @@ public class CalculatorJerseyServletTest {
         String result = "{\"result\":0.0}";
         when(calculatorService.compute(expression)).thenReturn(0.0);
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
-        Response response = calculatorJerseyServlet.calculate(expression);
+        Response response = calculatorWebService.calculate(expression);
         String actual = (String) response.getEntity();
         assertEquals(result, actual);
 
@@ -74,7 +74,7 @@ public class CalculatorJerseyServletTest {
         String result = messageAsJSON(message, code);
         when(calculatorService.compute(expression)).thenThrow(e);
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
-        Response response = calculatorJerseyServlet.calculate(expression);
+        Response response = calculatorWebService.calculate(expression);
         assertEquals(result, response.getEntity().toString());
     }
 

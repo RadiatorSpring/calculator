@@ -141,12 +141,7 @@
             <version>2.9.8</version>
         </dependency>
 
-        <dependency>
-            <groupId>SAP</groupId>
-            <artifactId>calculator-app</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -160,6 +155,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>SAP</groupId>
+            <artifactId>calculator-app</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
