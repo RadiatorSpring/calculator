@@ -13,7 +13,7 @@ import calculator.validators.Checker;
 public class CalculatorFactory {
 
     public Calculator createCalculator(){
-        return new Calculator(new ParserOrchestrator(new Checker(), new ExpressionParser(new Checker()), new ReversePolishNotationParser(new Checker()), new NegativeNumbersBuilder()), new OperationFactory());
+        return new Calculator();
     }
 
 }

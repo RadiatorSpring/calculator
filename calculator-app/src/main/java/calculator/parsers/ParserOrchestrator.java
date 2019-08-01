@@ -4,6 +4,8 @@ import calculator.validators.Checker;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The ParserOrchestrator exists solely to convert the expression that is given
@@ -44,12 +46,26 @@ public class ParserOrchestrator {
      * @throws IllegalArgumentException if the validation fails
      */
     public Queue<String> convertExpressionToRPN(String expression) throws IllegalArgumentException {
-        if (checker.validateExpression(expression) || expression.isEmpty()) {
+        if (validateExpression(expression) || expression.isEmpty()) {
             throw new IllegalArgumentException("There cannot be spaces between digits, there cannot be letters");
         }
         List<String> elementsOfExpression = expressionParser.expressionToNumbersAndOperations(expression);
         List<String> elementsOfExpressionWithNegativeNumbers = negativeNumbersBuilder.buildListWithOperatorsAndNegativeNumbers(elementsOfExpression);
         return parserRPN.buildRPNfromElementsOfExpression(elementsOfExpressionWithNegativeNumbers);
+    }
+
+    boolean validateExpression(String text) {
+        Pattern noLettersPattern = Pattern.compile(".*[^\\d().+\\-*/^ ].*");
+        Matcher noLettersMatcher = noLettersPattern.matcher(text);
+
+        Pattern spacesPattern = Pattern.compile(".*\\d+ +\\d+.*");
+        Matcher spaceMatcher = spacesPattern.matcher(text);
+
+        Pattern invalidBracketsPattern = Pattern.compile("(.*\\d+\\(.*)|(.*\\) \\d+)|(\\( *\\).*)");
+        Matcher invalidBracketsMatcher = invalidBracketsPattern.matcher(text);
+
+        return noLettersMatcher.matches() || spaceMatcher.matches() || invalidBracketsMatcher.matches();
+
     }
 
 

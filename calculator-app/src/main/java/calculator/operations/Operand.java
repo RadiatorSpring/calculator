@@ -8,6 +8,7 @@ import java.util.Stack;
 public class Operand implements Operation {
     private double val;
 
+
     public Operand(double val) {
         this.val = val;
     }
@@ -16,4 +17,6 @@ public class Operand implements Operation {
     public void process(Stack<Double> stack) {
         stack.push(val);
     }
+
+
 }

@@ -1,11 +1,12 @@
 package calculator.parsers;
 
-import calculator.enums.OperationPriority;
+import calculator.operations.OperationFactory;
 import calculator.validators.Checker;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * Orders the given expression into a RPN Queue
@@ -13,16 +14,19 @@ import java.util.*;
 public class ReversePolishNotationParser {
 
     private Checker checker;
+    private OperationFactory operationFactory;
 
     /**
      * @param checker used to check for certain types
      */
-    public ReversePolishNotationParser(Checker checker) {
+    public ReversePolishNotationParser(Checker checker, OperationFactory operationFactory) {
         this.checker = checker;
+        this.operationFactory = operationFactory;
     }
 
     ReversePolishNotationParser() {
         this.checker = new Checker();
+        this.operationFactory = new OperationFactory();
     }
 
     /**
@@ -68,8 +72,8 @@ public class ReversePolishNotationParser {
 
     private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
         while (!stack.empty()) {
-            int topOfStackPriorityValue = OperationPriority.getOperationPriority(stack.peek());
-            int currTokenPriorityValue = OperationPriority.getOperationPriority(token);
+            int topOfStackPriorityValue = operationFactory.getOperationPriority(stack.peek());
+            int currTokenPriorityValue = operationFactory.getOperationPriority(token);
 
             if (currTokenPriorityValue <= topOfStackPriorityValue) {
                 queue.add(stack.pop());

@@ -11,8 +11,8 @@ public class CalculatorService {
 
 
     @Inject
-    public CalculatorService(CalculatorFactory calculatorFactory) {
-        this.calculator = calculatorFactory.createCalculator();
+    public CalculatorService(Calculator calculator) {
+        this.calculator = calculator;
     }
 
     public double compute(String expression) throws CannotDivideByZeroException {

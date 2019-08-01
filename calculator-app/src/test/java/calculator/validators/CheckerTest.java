@@ -26,17 +26,7 @@ public class CheckerTest {
         assertTrue(checker.isNumber(".1"));
     }
 
-    @Test
-    public void testValidateExpression(){
-        assertTrue(checker.validateExpression("q23`o1ref wmlc knlsnlrne"));
-        assertFalse(checker.validateExpression("(1+  1)/2"));
-        assertTrue(checker.validateExpression("1  1+1/2+(1-20)"));
-        assertTrue(checker.validateExpression("+ 11 11"));
-        assertTrue(checker.validateExpression("2()5+22"));
-        assertTrue(checker.validateExpression("1(+)5"));
-        assertTrue(checker.validateExpression("()+4+5"));
-        assertFalse(checker.validateExpression("1.1-1.2"));
-    }
+
 
     @Test
     public void testIsDigit(){

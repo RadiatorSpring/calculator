@@ -19,19 +19,7 @@ public class Checker {
         return isNumber(Character.toString(c));
     }
 
-    public boolean validateExpression(String text) {
-        Pattern noLettersPattern = Pattern.compile(".*[^\\d().+\\-*/^ ].*");
-        Matcher noLettersMatcher = noLettersPattern.matcher(text);
 
-        Pattern spacesPattern = Pattern.compile(".*\\d+ +\\d+.*");
-        Matcher spaceMatcher = spacesPattern.matcher(text);
-
-        Pattern invalidBracketsPattern = Pattern.compile("(.*\\d+\\(.*)|(.*\\) \\d+)|(\\( *\\).*)");
-        Matcher invalidBracketsMatcher = invalidBracketsPattern.matcher(text);
-
-        return noLettersMatcher.matches() || spaceMatcher.matches() || invalidBracketsMatcher.matches();
-
-    }
 
 
     public boolean isDigit(char c) {

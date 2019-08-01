@@ -13,6 +13,7 @@
         <module>calculator-console</module>
         <module>calculator-web</module>
         <module>calculator-console-tests</module>
+        <module>calculator-web-tests</module>
     </modules>
 
     <properties>
