@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * to Calculator to something that is computable with Reverse polish notation
  */
 public class ParserOrchestrator {
-    private Checker checker;
+
     private ExpressionParser expressionParser;
     private ReversePolishNotationParser parserRPN;
     private NegativeNumbersBuilder negativeNumbersBuilder;
@@ -27,14 +27,12 @@ public class ParserOrchestrator {
      */
     public ParserOrchestrator(Checker checker, ExpressionParser expressionParser,
                               ReversePolishNotationParser parserRPN, NegativeNumbersBuilder negativeNumbersBuilder) {
-        this.checker = checker;
         this.expressionParser = expressionParser;
         this.parserRPN = parserRPN;
         this.negativeNumbersBuilder = negativeNumbersBuilder;
     }
 
     public ParserOrchestrator() {
-        this.checker = new Checker();
         this.expressionParser = new ExpressionParser();
         this.parserRPN = new ReversePolishNotationParser();
         this.negativeNumbersBuilder = new NegativeNumbersBuilder();
@@ -67,6 +65,4 @@ public class ParserOrchestrator {
         return noLettersMatcher.matches() || spaceMatcher.matches() || invalidBracketsMatcher.matches();
 
     }
-
-
 }

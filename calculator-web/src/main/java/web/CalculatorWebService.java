@@ -24,10 +24,15 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 @Path("/calculate")
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {
-    @Inject
+
     private CalculatorService calculatorService ;
-    @Inject
     private ObjectMapper mapper;
+
+    @Inject
+    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper) {
+        this.calculatorService = calculatorService;
+        this.mapper = mapper;
+    }
 
     @GET
     public Response calculate(@QueryParam("expression") String expression) throws JsonProcessingException {
