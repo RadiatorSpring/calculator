@@ -4,6 +4,7 @@ package calculator;
 import calculator.exceptions.CannotDivideByZeroException;
 import calculator.operations.Operation;
 import calculator.operations.OperationFactory;
+import calculator.parsers.Parser;
 import calculator.parsers.ParserOrchestrator;
 
 import java.util.*;
@@ -14,25 +15,25 @@ import java.util.*;
  * A compute method is provided
  * which in turn returns the result.
  */
-public class Calculator {
-    private ParserOrchestrator parserOrchestrator;
+public class Calculator implements Computable{
+    private Parser parser;
     private OperationFactory operationFactory;
 
 
-    public Calculator(ParserOrchestrator parserOrchestrator, OperationFactory operationFactory) {
-        this.parserOrchestrator = parserOrchestrator;
+    public Calculator(Parser parser, OperationFactory operationFactory) {
+        this.parser = parser;
         this.operationFactory = operationFactory;
     }
 
 
     public Calculator() {
-        this.parserOrchestrator = new ParserOrchestrator();
+        this.parser = new ParserOrchestrator();
         this.operationFactory = new OperationFactory();
     }
 
 
     /**
-     * Passes the initial String to the parserOrchestrator in order to get RPN and calculate it
+     * Passes the initial String to the parser in order to get RPN and calculate it
      *
      * @param expression the string representation of mathematical expression
      * @return the resulting number
@@ -40,8 +41,8 @@ public class Calculator {
      * @throws EmptyStackException         if there are too many operators and too little operands in the expression
      * @throws IllegalArgumentException    if the passed expression has less than 3 arguments
      */
-    public double compute(String expression) throws CannotDivideByZeroException, EmptyStackException, IllegalArgumentException {
-        Queue<String> expressionQueue = parserOrchestrator.convertExpressionToRPN(expression);
+    public double compute(String expression) throws EmptyStackException, IllegalArgumentException, CannotDivideByZeroException {
+        Queue<String> expressionQueue = parser.parse(expression);
         if (expressionQueue.size() < 3) {
             throw new IllegalArgumentException("There should be at least 2 operands and 1 operator in infix order");
         }

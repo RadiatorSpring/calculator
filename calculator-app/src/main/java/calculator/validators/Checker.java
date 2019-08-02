@@ -19,9 +19,6 @@ public class Checker {
         return isNumber(Character.toString(c));
     }
 
-
-
-
     public boolean isDigit(char c) {
         return isNumber(c);
     }

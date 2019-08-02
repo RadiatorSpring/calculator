@@ -1,5 +1,6 @@
 package calculator.parsers;
 
+import calculator.operations.OperationEvaluator;
 import calculator.operations.OperationFactory;
 import calculator.validators.Checker;
 
@@ -14,19 +15,19 @@ import java.util.Stack;
 public class ReversePolishNotationParser {
 
     private Checker checker;
-    private OperationFactory operationFactory;
+    private OperationEvaluator evaluator;
 
     /**
      * @param checker used to check for certain types
      */
-    public ReversePolishNotationParser(Checker checker, OperationFactory operationFactory) {
+    public ReversePolishNotationParser(Checker checker, OperationEvaluator evaluator) {
         this.checker = checker;
-        this.operationFactory = operationFactory;
+        this.evaluator = evaluator;
     }
 
     ReversePolishNotationParser() {
         this.checker = new Checker();
-        this.operationFactory = new OperationFactory();
+        this.evaluator = new OperationEvaluator();
     }
 
     /**
@@ -35,7 +36,7 @@ public class ReversePolishNotationParser {
      * @param infixNotation the expression separated in logical elements in infix notation
      * @return Queue ordered in Reverse Polish Notation
      */
-    Queue<String> buildRPNfromElementsOfExpression(List<String> infixNotation) {
+    Queue<String> convertToRPN(List<String> infixNotation) {
 
         Queue<String> queue = new LinkedList<>();
         Stack<String> stack = new Stack<>();
@@ -72,8 +73,8 @@ public class ReversePolishNotationParser {
 
     private void addOperationsAccordingToPriority(Queue<String> queue, Stack<String> stack, String token) {
         while (!stack.empty()) {
-            int topOfStackPriorityValue = operationFactory.getOperationPriority(stack.peek());
-            int currTokenPriorityValue = operationFactory.getOperationPriority(token);
+            int topOfStackPriorityValue = evaluator.getOperationPriority(stack.peek());
+            int currTokenPriorityValue = evaluator.getOperationPriority(token);
 
             if (currTokenPriorityValue <= topOfStackPriorityValue) {
                 queue.add(stack.pop());

@@ -22,12 +22,9 @@ public class OperationFactory {
         return (Operation) operation;
     }
 
-    public int getOperationPriority(String inputOperation) {
-        BasicExpressionElement operation = getBasicOperation(inputOperation);
-        return ((PriorityValue) operation).getValue();
-    }
 
-    private BasicExpressionElement getBasicOperation(String s) {
+
+     BasicExpressionElement getBasicOperation(String s) {
         switch (s) {
             case "*":
                 return new Multiplication();

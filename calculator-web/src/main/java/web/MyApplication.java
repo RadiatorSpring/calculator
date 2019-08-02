@@ -1,6 +1,6 @@
 package web;
 
-import calculator.CalculatorFactory;
+import calculator.Calculator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -18,7 +18,7 @@ public class MyApplication extends ResourceConfig {
             protected void configure() {
                 bind(ObjectMapper.class).to(ObjectMapper.class);
                 bind(CalculatorService.class).to(CalculatorService.class);
-                bind(CalculatorFactory.class).to(CalculatorFactory.class);
+                bind(Calculator.class).to(Calculator.class);
             }
         });
 
