@@ -8,7 +8,6 @@ import javax.inject.Inject;
 public class CalculatorService {
     private Computable computable;
 
-
     @Inject
     public CalculatorService(Computable computable) {
         this.computable = computable;
