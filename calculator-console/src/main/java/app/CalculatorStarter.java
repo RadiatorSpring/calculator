@@ -2,11 +2,8 @@ package app;
 
 import calculator.Calculator;
 import calculator.exceptions.CannotDivideByZeroException;
-import calculator.parsers.ParserOrchestrator;
+import calculator.parsers.*;
 import calculator.operations.OperationFactory;
-import calculator.parsers.ExpressionParser;
-import calculator.parsers.NegativeNumbersBuilder;
-import calculator.parsers.ReversePolishNotationParser;
 import calculator.validators.Checker;
 
 import java.util.EmptyStackException;
@@ -23,9 +20,9 @@ public class CalculatorStarter {
             System.out.println("There should be at least 2 operands and 1 operator");
             return;
         }
-        ParserOrchestrator parserOrchestrator = new ParserOrchestrator(new Checker(), new ExpressionParser(new Checker()),new ReversePolishNotationParser(new Checker()),new NegativeNumbersBuilder());
 
-        Calculator calculator = new Calculator(parserOrchestrator,new OperationFactory());
+        Calculator calculator = new Calculator();
+
         try {
             double result = calculator.compute(args[0]);
             System.out.print(result);

@@ -36,6 +36,7 @@ public class OperationFactory {
                 return new Division();
             case "(":
                 return new Bracket();
+
         }
         if (checker.isNumber(s)) {
             return new Operand(Double.parseDouble(s));

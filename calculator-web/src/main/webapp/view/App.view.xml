@@ -8,7 +8,7 @@
 					<content>
 						<Panel headerText="{i18n>helloPanelTitle}" class="sapUiResponsiveMargin" width="auto">
 							<content>
-								<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.HelloPanel">
+								<mvc:XMLView viewName="sap.ui.demo.walkthrough.view.HelloPanel"/>
 							</content>
 						</Panel>
 					</content>
