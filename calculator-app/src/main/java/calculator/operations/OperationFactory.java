@@ -1,32 +1,30 @@
 package calculator.operations;
 
+import calculator.validators.Checker;
+
 /**
  * Used for operation creation.
  */
 public class OperationFactory {
 
+    private Checker checker;
+
+    public OperationFactory(Checker checker) {
+        this.checker = checker;
+    }
+
+    public OperationFactory() {
+        this.checker = new Checker();
+    }
 
     public Operation getOperation(String inputOperation) {
-        Operation operation = getBasicOperation(inputOperation);
-        if (isBasicOperation(operation)) {
-            return operation;
-        } else {
-            return createOperand(inputOperation);
-        }
-
+        BasicExpressionElement operation = getBasicOperation(inputOperation);
+        return (Operation) operation;
     }
 
-    public int getOperationPriority(String inputOperation) {
-        Operation operation = getBasicOperation(inputOperation);
-        if (isBasicOperation(operation)) {
-            return ((PriorityValue) operation).getValue();
-        }
-        else{
-            return new Bracket().getValue();
-        }
-    }
 
-    private Operation getBasicOperation(String s) {
+
+     BasicExpressionElement getBasicOperation(String s) {
         switch (s) {
             case "*":
                 return new Multiplication();
@@ -36,17 +34,14 @@ public class OperationFactory {
                 return new Addition();
             case "/":
                 return new Division();
-            default:
-                return null;
+            case "(":
+                return new Bracket();
         }
+        if (checker.isNumber(s)) {
+            return new Operand(Double.parseDouble(s));
+        }
+
+        throw new IllegalArgumentException("You can only use basic operations");
     }
 
-    private boolean isBasicOperation(Operation operation) {
-        return operation != null;
-    }
-
-    private Operation createOperand(String inputOperation) {
-        double input = Double.parseDouble(inputOperation);
-        return new Operand(input);
-    }
 }

@@ -1,21 +1,19 @@
 package services;
 
-import calculator.Calculator;
-import calculator.CalculatorFactory;
+import calculator.Computable;
 import calculator.exceptions.CannotDivideByZeroException;
 
 import javax.inject.Inject;
 
 public class CalculatorService {
-    private Calculator calculator;
-
+    private Computable computable;
 
     @Inject
-    public CalculatorService(Calculator calculator) {
-        this.calculator = calculator;
+    public CalculatorService(Computable computable) {
+        this.computable = computable;
     }
 
     public double compute(String expression) throws CannotDivideByZeroException {
-        return calculator.compute(expression);
+        return computable.compute(expression);
     }
 }

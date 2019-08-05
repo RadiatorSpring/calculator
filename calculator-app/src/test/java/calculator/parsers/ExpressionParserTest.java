@@ -83,12 +83,12 @@ public class ExpressionParserTest {
     @Test(expected = IllegalArgumentException.class)
     public void testWithIllegalDecimalNumbers3() {
         String expression = "1.2.1+11.1";
-        List<String> expected = new ArrayList<>(Arrays.asList("0.11", "+", "11.1"));
+
         when(checker.isDigit('1')).thenReturn(true);
         when(checker.isDigit('0')).thenReturn(true);
-        when(checker.isNumber("1.2.1")).thenReturn(false);
-        List<String> actual = parser.expressionToNumbersAndOperations(expression);
-        Assert.assertEquals("expected list with [0.11] [+] [11.1] ", expected, actual);
+        when(checker.isNumber("1.")).thenReturn(false);
+
+        parser.expressionToNumbersAndOperations(expression);
     }
 
 

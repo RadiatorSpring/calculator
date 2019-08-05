@@ -1,5 +1,5 @@
 package calculator.operations;
 
-public interface PriorityValue {
+public interface PriorityValue extends BasicExpressionElement {
     int getValue();
 }
