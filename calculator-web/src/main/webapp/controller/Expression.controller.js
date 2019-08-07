@@ -1,18 +1,20 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/m/MessageToast",
-	"sap/m/Text"
-], function (Controller, Text) {
+	"sap/ui/model/JSONModel"
+
+], function (Controller,JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Expression", {
 
 		onCalculate: function (Text) {
-			var expression = this.getView().byId("expression").getValue().replace("+","%2B");
-			console.log(expression);
-			var oModel = new sap.ui.model.json.JSONModel();
-			oModel.loadData("/calculator/api/calculate?expression=" + expression);
+			var expression = this.getView().byId("expression").getValue();
+			var urlReadableExpression = expression.replace("+","%2B");
+			var oModel = new JSONModel();
+
+			oModel.loadData("/calculator/api/calculate?expression=" + urlReadableExpression);
 			this.getView().setModel(oModel);
+			
 		}
 
 	});
