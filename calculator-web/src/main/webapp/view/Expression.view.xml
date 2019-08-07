@@ -7,19 +7,23 @@
 		class="sapUiResponsiveMargin"
 		width="auto" >
 		<content>
-
 			<Input
-				value="{/recipient/name}"
+				id="expression"
 				valueLiveUpdate="true"
 				width="60%"/>
 			<Button
 					text="calculate"
 					class="myCustomButton"
 					press =".onCalculate"/>
+		</content>
+
+		<content>
 			<Input
-				value="{result}"
-				valueLiveUpdate="true"
-				width="60%"/>
+			id="result"
+			value="{/result}"
+			valueLiveUpdate="true"
+			width="60%"/>
 		</content>
 	</Panel>
+	
 </mvc:View>

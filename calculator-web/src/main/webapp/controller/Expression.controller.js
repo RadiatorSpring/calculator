@@ -1,29 +1,19 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/m/MessageToast"
-], function (Controller, MessageToast) {
+	"sap/m/MessageToast",
+	"sap/m/Text"
+], function (Controller, Text) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Expression", {
 
-		onCalculate: function () {
-			var sExpression = "1-1";
+		onCalculate: function (Text) {
+			var expression = this.getView().byId("expression").getValue().replace("+","%2B");
+			console.log(expression);
 			var oModel = new sap.ui.model.json.JSONModel();
-			oModel.loadData("http://localhost:8080/calculator/calculate?expression=" + sExpression);
+			oModel.loadData("/calculator/api/calculate?expression=" + expression);
 			this.getView().setModel(oModel);
 		}
-
-
-		//  onCalculate : function () {
-
-		//  	// read msg from i18n model
-		//  	var oBundle = this.getView().getModel("i18n").getResourceBundle();
-		//  	var sRecipient = this.getView().getModel().getProperty("/recipient/name");
-		//  	var sMsg = oBundle.getText("helloMsg", [sRecipient]);
-		//  	// show message
-		//  	MessageToast.show(sMsg);
-		//  }
-
 
 	});
 
