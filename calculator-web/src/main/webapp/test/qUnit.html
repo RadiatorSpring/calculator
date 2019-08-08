@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Unit tests for SAPUI5 Walkthrough</title>
+	<meta charset="utf-8">
+
+	<script
+		id="sap-ui-bootstrap"
+		src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+		data-sap-ui-resourceroots='{
+			"sap.ui.demo.walkthrough": "../../"
+		}'
+		data-sap-ui-async="true">
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/qunit-2.css">
+
+	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/qunit-2.js"></script>
+	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-junit.js"></script>
+	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-coverage.js"></script>
+	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/sinon.js"></script>
+	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+
+	<script src="unit/test.qunit.js"></script>
+    <script>
+		QUnit.test("square()", function (assert) {
+			var result = 4;
+
+			assert.equal(result, 4, "square(2) equals 4");
+		});
+	</script>
+
+</head>
+<body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+</body>
+</html>
