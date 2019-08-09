@@ -1,6 +1,6 @@
 
 sap.ui.define([
-  "sap/ui/demo/walkthrough/controller/Expression.controller"
+   "sap/ui/demo/walkthrough/controller/Expression.controller"
 ], function (exController) {
 
   QUnit.module("Number unit");
@@ -15,8 +15,9 @@ sap.ui.define([
     assert.equal(result, 4, "square(2) equals 4");
   });
   QUnit.test("attempt calling onCalculate", function (assert) {
-    jQuery.sap.require("controller/Expression.controller");
-    assert.equal(exController.onCalculate(), "hello");
+    var e = new exController();
+    var s = exController.onCalculate();
+    assert.equal(s, "hello");
   })
 })
 
