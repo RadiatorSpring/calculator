@@ -2,6 +2,7 @@
 	controllerName="sap.ui.demo.walkthrough.controller.Expression"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
+	
 	<Panel
 		headerText="{i18n>ExpressionTitle}"
 		class="sapUiResponsiveMargin"
@@ -11,12 +12,13 @@
 				id="expression"
 				valueLiveUpdate="true"
 				width="60%"/>
+				
 			<Button
 					text="calculate"
 					class="myCustomButton"
 					press =".onCalculate"/>
 		</content>
-
+		
 		<content>
 			<Input
 			id="result"
@@ -25,5 +27,11 @@
 			width="60%"/>
 		</content>
 	</Panel>
-	
+	<Panel 
+		class="sapUiResponsiveMargin"
+		width="auto">
+		<content>
+			<Text id="errorText" text="{/message}" style="color:red"/>
+		</content>
+	</Panel>
 </mvc:View>

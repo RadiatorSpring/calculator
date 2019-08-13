@@ -1,24 +1,15 @@
 
 sap.ui.define([
-   "sap/ui/demo/walkthrough/controller/Expression.controller"
-], function (exController) {
+  "sap/ui/demo/walkthrough/models/ExpressionModel",
+
+], function (ExpressionModel) {
 
   QUnit.module("Number unit");
 
-  QUnit.test("Should return the translated texts", function (assert) {
-
-    assert.equal(true, true);
+  QUnit.test("test formatting 1+1 to 1%2B1", function (assert) {
+    assert.equal(ExpressionModel.getExpression("1+1"), "1%2B1");  
   })
-  QUnit.test("square()", function (assert) {
-    var result = 4;
 
-    assert.equal(result, 4, "square(2) equals 4");
-  });
-  QUnit.test("attempt calling onCalculate", function (assert) {
-    var e = new exController();
-    var s = exController.onCalculate();
-    assert.equal(s, "hello");
-  })
 })
 
 
