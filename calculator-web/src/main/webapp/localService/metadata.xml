@@ -1,4 +1,4 @@
-<!-- <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
 	<edmx:DataServices m:DataServiceVersion="1.0" m:MaxDataServiceVersion="3.0"
 			xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
 		<Schema Namespace="NorthwindModel" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -25,4 +25,4 @@
 			</EntityContainer>
 		</Schema>
 	</edmx:DataServices>
-</edmx:Edmx> -->
+</edmx:Edmx>

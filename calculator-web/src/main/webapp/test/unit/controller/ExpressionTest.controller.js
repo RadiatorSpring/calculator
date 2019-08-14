@@ -1,6 +1,6 @@
 
 sap.ui.define([
-  "sap/ui/demo/walkthrough/models/ExpressionModel",
+  "sap/ui/demo/walkthrough/models/Formatter",
 
 ], function (ExpressionModel) {
 
