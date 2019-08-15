@@ -14,9 +14,15 @@
 				width="60%"/>
 				
 			<Button
+					id= "calculateBtn"
 					text="calculate"
 					class="myCustomButton"
 					press =".onCalculate"/>
+			<Button
+					id= "changeBtn"
+					text="calculate"
+					class="myCustomButton"
+					press =".onTextChange"/>
 		</content>
 		
 		<content>

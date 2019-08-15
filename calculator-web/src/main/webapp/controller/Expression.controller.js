@@ -21,6 +21,13 @@ sap.ui.define([
 			})
 		},
 
+		onTextChange: function () {
+			var btn = this.getView().byId("changeBtn");
+			btn.setText("changed");
+		}
+
 	});
+
+
 
 });
