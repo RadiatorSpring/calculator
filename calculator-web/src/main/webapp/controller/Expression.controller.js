@@ -19,13 +19,7 @@ sap.ui.define([
 				var sError = JSON.parse(error.responseText);
 				this.getView().byId("errorText").setText(sError.message);
 			})
-		},
-
-		onTextChange: function () {
-			var btn = this.getView().byId("changeBtn");
-			btn.setText("changed");
 		}
-
 	});
 
 
