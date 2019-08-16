@@ -1,6 +1,6 @@
 
 sap.ui.define([
-  "sap/ui/demo/walkthrough/models/Formatter",
+  "sap/ui/demo/walkthrough/models/Formatter"
 
 ], function (ExpressionModel) {
 
@@ -8,8 +8,8 @@ sap.ui.define([
 
   QUnit.test("test formatting 1+1 to 1%2B1", function (assert) {
     assert.equal(ExpressionModel.getExpression("1+1"), "1%2B1");  
-  })
+  });
 
-})
+});
 
 
