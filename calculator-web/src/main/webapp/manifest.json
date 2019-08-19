@@ -46,9 +46,6 @@
 				"settings": {
 					"bundleName": "sap.ui.demo.walkthrough.i18n.i18n"
 				}
-			},
-			"invoice": {
-				"dataSource": "invoiceRemote"
 			}
 		},
 		"resources": {

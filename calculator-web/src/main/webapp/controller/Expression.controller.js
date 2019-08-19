@@ -1,9 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/demo/walkthrough/models/Formatter"
+	"sap/ui/demo/walkthrough/models/Formatter",
+	"sap/ui/thirdparty/jquery"
 
-], function (Controller, JSONModel, Formatter) {
+], function (Controller, JSONModel, Formatter, jQuery) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Expression", {
@@ -12,16 +13,33 @@ sap.ui.define([
 			var expression = this.getView().byId("expression").getValue();
 			var sUrlReadableExpression = Formatter.getExpression(expression);
 			var oModel = new JSONModel();
-			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression).then(() => {
-				this.getView().setModel(oModel)
-			}).catch((error) => {
-				console.log(error.responseText);
+			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression).then(function () {
+				this.getView().setModel(oModel);
+			}.bind(this))
+			.catch(function (error) {
 				var sError = JSON.parse(error.responseText);
 				this.getView().byId("errorText").setText(sError.message);
+<<<<<<< HEAD
+			}.bind(this));
+=======
 			})
+>>>>>>> refs/heads/master
 		}
+<<<<<<< HEAD
+
+		// onButtonPress: function () {
+
+		// 	jQuery.ajax({
+		// 		url: "/some?hello"
+		// 	}).done(
+		// 		function (sResult) {
+		// 			console.log(sResult);
+		// 			this.byId("myPage").setTitle(sResult);
+		// 		}.bind(this)
+		// 	);
+		// }
+=======
+>>>>>>> refs/heads/master
 	});
-
-
 
 });
