@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/test/Opa5",
-	"sap/ui/test/actions/Press"
-], function (Opa5, Press) {
+	"sap/ui/test/actions/Press",
+	"sap/ui/test/actions/EnterText"
+], function (Opa5, Press, EnterText) {
 	"use strict";
 
 	Opa5.extendConfig({
@@ -19,58 +20,49 @@ sap.ui.define([
 						actions: new Press(),
 						errorMessage: "Did not find calculate button"
 					});
-				}
-			},
-
-			assertions: {
-<<<<<<< HEAD
-				iShouldSeeErrorMessageForEmptyParamater: function () {
-					return this.waitFor({
-						id: "errorText",
-						viewName: "Expression",
-						matchers: new sap.ui.test.matchers.Properties({
-							text: "The expression parameter cannot be empty"
-						}),
-						success: function () {
-							// we set the view busy, so we need to query the parent of the app
-							Opa5.assert.ok(true, "The error text is placed properly");
-						},
-						errorMessage: "Did not change the error text"
-					});
 				},
-				iShouldSeeErrorMessageForInvalidArgument : function(){
-				return this.waitFor({
-						id: "errorText",
-						viewName: "Expression",
-						matchers: new sap.ui.test.matchers.Properties({
-							text: "The expression parameter cannot be empty"
-						}),
-						success: function () {
-							// we set the view busy, so we need to query the parent of the app
-							Opa5.assert.ok(true, "The error text is placed properly");
-						},
-						errorMessage: "Did not change the error text"
-					});
-			}
-			}
-			
-=======
-				iShouldSeeTheChangedText: function () {
+				iFillInputFieldWithWrongArguments: function () {
 					return this.waitFor({
-						id: "result",
+						id: "expression",
 						viewName: "Expression",
-						matchers: new sap.ui.test.matchers.Properties({
-							value: "Parameter cannot be empty"
+						actions: new EnterText({
+							text: "1-1aaaa"
 						}),
-						success: function () {
-							// we set the view busy, so we need to query the parent of the app
-							Opa5.assert.ok(true, "The error text is placed properly");
-						},
-						errorMessage: "Did not find the change control"
+						errorMessage: "Did not find input field for expression"
 					});
 				}
 			}
->>>>>>> refs/heads/master
+		},
+
+		assertions: {
+			iShouldSeeErrorMessageForEmptyParamater: function () {
+				return this.waitFor({
+					id: "errorText",
+					viewName: "Expression",
+					matchers: new sap.ui.test.matchers.Properties({
+						text: "The expression parameter cannot be empty"
+					}),
+					success: function () {
+						// we set the view busy, so we need to query the parent of the app
+						Opa5.assert.ok(true, "The error text is placed properly");
+					},
+					errorMessage: "Did not change the error text"
+				});
+			},
+			iShouldSeeErrorMessageForInvalidArgument: function () {
+				return this.waitFor({
+					id: "errorText",
+					viewName: "Expression",
+					matchers: new sap.ui.test.matchers.Properties({
+						text: "The expression parameter cannot be empty"
+					}),
+					success: function () {
+						// we set the view busy, so we need to query the parent of the app
+						Opa5.assert.ok(true, "The error text is placed properly");
+					},
+					errorMessage: "Did not change the error text"
+				});
+			}
 		}
-	});
+	})
 });

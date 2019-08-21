@@ -9,17 +9,29 @@ sap.ui.require([
 
 	QUnit.module("Simple action");
 
-	opaTest("Should change button text", function (Given, When, Then) {
+	opaTest("Should change error text", function (Given, When, Then) {
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "sap.ui.demo.walkthrough",
-				async: true
+				name: "sap.ui.demo.walkthrough"
 			}
 		});
 
 		When.onTheAppPage.iPressChangeTextButton();
 
-		Then.onTheAppPage.iShouldSeeTheChangedText();
+		Then.onTheAppPage.iShouldSeeErrorMessageForEmptyParamater();
+
+		Then.iTeardownMyAppFrame();
 	});
 
+	opaTest("Should change error text to InvalidArgumentException message", function (Given, When, Then) {
+		Given.iStartMyUIComponent({
+			componentConfig: {
+				name: "sap.ui.demo.walkthrough"
+			}
+		});
+
+		When.onTheAppPage.iFillInputFieldWithWrongArguments();
+
+		Then.iShouldSeeErrorMessageForInvalidArgument();
+	})
 });

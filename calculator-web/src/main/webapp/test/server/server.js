@@ -1,5 +1,6 @@
-sap.ui.define(
-	["sap/ui/thirdparty/sinon"],
+sap.ui.define([
+		"sap/ui/thirdparty/sinon"
+	],
 	function (sinon) {
 		"use strict";
 
@@ -9,25 +10,25 @@ sap.ui.define(
 			 * @public
 			 */
 			init: function () {
+				var expression = /\/calculator\/api\/calculate\?expression=/;
 				// create a Sinon.JS fake server that responds automatically after 1s
-				this.oServer = sinon.createFakeServer();
+				this.oServer = sinon.fakeServer.create();
 				this.oServer.autoRespond = true;
 				this.oServer.autoRespondAfter = 500;
 
 				// that responds only to a specific request
-				
+				sinon.fakeServer.xhr.useFilters = true;
 				this.oServer.xhr.addFilter(function (method, url) {
 					// whenever this returns true the request will not faked
-					return !url.match(".*/calculator/api/calculate?expression=.*");
+					return !url.match(expression);
 				});
 
 				// and sends back a title string for the page
-				this.oServer.respondWith("GET", ".*", [400, {
+				this.oServer.respondWith("GET", expression, [400, {
 					"Content-Type": "application/json"
-				}, '[{"message":"hello","code":400}]']);
+				}, '{"message":"The expression parameter cannot be empty","code":400}']);
 			}
 		};
 
 	}
 );
-//'[{"message":"The expression parameter cannot be empty","code":400}]'

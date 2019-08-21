@@ -14,32 +14,13 @@ sap.ui.define([
 			var sUrlReadableExpression = Formatter.getExpression(expression);
 			var oModel = new JSONModel();
 			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression).then(function () {
-				this.getView().setModel(oModel);
-			}.bind(this))
-			.catch(function (error) {
-				var sError = JSON.parse(error.responseText);
-				this.getView().byId("errorText").setText(sError.message);
-<<<<<<< HEAD
-			}.bind(this));
-=======
-			})
->>>>>>> refs/heads/master
+					this.getView().setModel(oModel);
+				}.bind(this))
+				.catch(function (error) {
+					var sError = JSON.parse(error.responseText);
+					this.getView().byId("errorText").setText(sError.message);
+				}.bind(this))
 		}
-<<<<<<< HEAD
-
-		// onButtonPress: function () {
-
-		// 	jQuery.ajax({
-		// 		url: "/some?hello"
-		// 	}).done(
-		// 		function (sResult) {
-		// 			console.log(sResult);
-		// 			this.byId("myPage").setTitle(sResult);
-		// 		}.bind(this)
-		// 	);
-		// }
-=======
->>>>>>> refs/heads/master
 	});
 
 });

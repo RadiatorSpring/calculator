@@ -5,7 +5,8 @@
 	<title>Integration tests for SAPUI5 Walkthrough</title>
 	<meta charset="utf-8">
 
-	<script id="sap-ui-bootstrap" src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+	<script id="sap-ui-bootstrap" 
+	src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
 		data-sap-ui-theme="sap_belize" data-sap-ui-resourceroots='{
 			"sap.ui.demo.walkthrough": "../../"
 		}' data-sap-ui-animation="false" data-sap-ui-compatVersion="edge" data-sap-ui-async="true">
@@ -13,42 +14,24 @@
 
 	<link rel="stylesheet" type="text/css"
 		href="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/qunit-2.css">
-
-
-<<<<<<< HEAD
+		
 	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-2-css.js"></script>
-=======
->>>>>>> refs/heads/master
 	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/qunit-2.js"></script>
 	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-junit.js"></script>
-<<<<<<< HEAD
 	<script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-coverage.js"></script>
-
-	<script src="Journey.js"></script>
-	<script>
-		/* global QUnit */
-sap.ui.getCore().attachInit(function () {
-	"use strict";
-
-	sap.ui.require([
-		"sap/ui/demo/walkthrough/test/server/server"
-	], function (server) {
-		server.init();
-	});
-});
-=======
-
-	<script src="Journey.js"></script>
-	<script>
-		sap.ui.require([
 	
-		"sap/ui/demo/walkthrough/test/integration/server/server"
-	], function(server) {
-		server.init();
-	
-	});
->>>>>>> refs/heads/master
+
+	<script>
+			sap.ui.getCore().attachInit(function () {
+				sap.ui.require([
+					"sap/ui/demo/walkthrough/test/server/server"
+				], function (server) {
+					server.init();
+				});
+			});
 	</script>
+		<script src="Starter.js"></script>
+
 </head>
 
 <body>
