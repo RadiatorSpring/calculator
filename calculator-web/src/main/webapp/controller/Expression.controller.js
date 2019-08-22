@@ -13,13 +13,14 @@ sap.ui.define([
 			var expression = this.getView().byId("expression").getValue();
 			var sUrlReadableExpression = Formatter.getExpression(expression);
 			var oModel = new JSONModel();
-			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression).then(function () {
+			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression)
+				.then(function () {
 					this.getView().setModel(oModel);
 				}.bind(this))
 				.catch(function (error) {
 					var sError = JSON.parse(error.responseText);
 					this.getView().byId("errorText").setText(sError.message);
-				}.bind(this))
+				}.bind(this));
 		}
 	});
 
