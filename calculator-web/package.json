@@ -1,0 +1,17 @@
+{
+  "name": "calculator-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "karma": "^4.2.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-ui5": "^1.0.1"
+  }
+}
