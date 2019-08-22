@@ -4,7 +4,7 @@ sap.ui.define([
 	"sap/ui/demo/walkthrough/models/Formatter",
 	"sap/ui/thirdparty/jquery"
 
-], function (Controller, JSONModel, Formatter, jQuery) {
+], function (Controller, JSONModel, Formatter) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.walkthrough.controller.Expression", {

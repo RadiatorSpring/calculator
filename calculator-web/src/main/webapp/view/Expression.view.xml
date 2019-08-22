@@ -10,7 +10,7 @@
 	</Panel>
 	<Panel class="sapUiResponsiveMargin" width="auto">
 		<content>
-			<Text id="errorText" text="{/message}"/>
+			<Text id="errorText" text="{/message}" class="red"/>
 		</content>
 	</Panel>
 </mvc:View>

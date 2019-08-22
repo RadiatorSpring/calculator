@@ -23,6 +23,7 @@ sap.ui.define([
 				var messageForTooManyOperators =
 					'{"message": "The number of operators cannot be greater than the number of operands, using negative numbers requires brackets","code": 400}';
 				var messageForCorrectInput = '{"result": 0.0}';
+
 				this.oServer = sinon.fakeServer.create();
 				this.oServer.autoRespond = true;
 				this.oServer.autoRespondAfter = 500;
