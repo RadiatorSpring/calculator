@@ -3,7 +3,7 @@ sap.ui.define([
 
 ], function (UIComponent) {
 	"use strict";
-	return UIComponent.extend("sap.ui.demo.walkthrough.Component", {
+	return UIComponent.extend("calculator.ui.Component", {
 		metadata: {
 			manifest: "json"
 		}

@@ -1,13 +1,13 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/demo/walkthrough/models/Formatter",
+	"calculator/ui/models/Formatter",
 	"sap/ui/thirdparty/jquery"
 
 ], function (Controller, JSONModel, Formatter) {
 	"use strict";
 
-	return Controller.extend("sap.ui.demo.walkthrough.controller.Expression", {
+	return Controller.extend("calculator.ui.controller.Expression", {
 
 		onCalculate: function () {
 			var expression = this.getView().byId("expression").getValue();

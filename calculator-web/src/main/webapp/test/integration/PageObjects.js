@@ -5,7 +5,7 @@ sap.ui.define([
 ], function (Opa5, Press, EnterText) {
 
 	Opa5.extendConfig({
-		viewNamespace: "sap.ui.demo.walkthrough.view"
+		viewNamespace: "calculator.ui.view"
 	});
 
 	function iFillInputField(page, text) {

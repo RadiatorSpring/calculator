@@ -3,7 +3,7 @@ sap.ui.require([
 	"sap/ui/test/opaQunit",
 	"sap/ui/test/actions/Press",
 	"sap/ui/test/matchers/Properties",
-	"sap/ui/demo/walkthrough/test/integration/PageObjects",
+	"calculator/ui/test/integration/PageObjects",
 
 ], function (Opa5, opaTest, Press, Properties) {
 	"use strict";
@@ -13,7 +13,7 @@ sap.ui.require([
 	opaTest("Should change error text", function (Given, When, Then) {
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "sap.ui.demo.walkthrough"
+				name: "calculator.ui"
 			}
 		});
 
@@ -29,7 +29,7 @@ sap.ui.require([
 	opaTest("Should change error text to InvalidArgumentException message", function (Given, When, Then) {
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "sap.ui.demo.walkthrough"
+				name: "calculator.ui"
 			}
 		});
 
@@ -44,7 +44,7 @@ sap.ui.require([
 	opaTest("Should change error text to TooManyOperatorsException message", function (Given, When, Then) {
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "sap.ui.demo.walkthrough"
+				name: "calculator.ui"
 			}
 		});
 
@@ -59,7 +59,7 @@ sap.ui.require([
 	opaTest("Should change the result field to some number message", function (Given, When, Then) {
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "sap.ui.demo.walkthrough"
+				name: "calculator.ui"
 			}
 		});
 

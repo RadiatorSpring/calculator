@@ -1,7 +1,7 @@
 {
 	"_version": "1.12.0",
 	"sap.app": {
-		"id": "sap.ui.demo.walkthrough",
+		"id": "calculator.ui",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"title": "{{appTitle}}",
@@ -20,7 +20,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "sap.ui.demo.walkthrough.view.App",
+			"viewName": "calculator.ui.view.App",
 			"type": "XML",
 			"async": true,
 			"id": "app"
@@ -35,7 +35,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "sap.ui.demo.walkthrough.i18n.i18n"
+					"bundleName": "calculator.ui.i18n.i18n"
 				}
 			}
 		},

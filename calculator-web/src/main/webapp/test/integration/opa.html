@@ -8,7 +8,7 @@
 	<script id="sap-ui-bootstrap" 
 	src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
 		data-sap-ui-theme="sap_belize" data-sap-ui-resourceroots='{
-			"sap.ui.demo.walkthrough": "../../"
+			"calculator.ui": "../../"
 		}' data-sap-ui-animation="false" data-sap-ui-compatVersion="edge" data-sap-ui-async="true">
 		</script>
 
@@ -24,7 +24,7 @@
 	<script>
 			sap.ui.getCore().attachInit(function () {
 				sap.ui.require([
-					"sap/ui/demo/walkthrough/test/server/server"
+					"calculator/ui/test/server/server"
 				], function (server) {
 					server.init();
 				});
