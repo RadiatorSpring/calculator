@@ -10,8 +10,6 @@ module.exports = function (config) {
             },
             url: "https://localhost:8080",
             testpage: "src/main/webapp/test/integration/opa.html"
-        
-        
         },
         browsers: ["Chrome"]
 
