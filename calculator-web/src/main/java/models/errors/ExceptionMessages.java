@@ -1,4 +1,4 @@
-package errors;
+package models.errors;
 
 public class ExceptionMessages {
     public static final String EMPTY_STACK_EXCEPTION_MESSAGE = "The number of operators cannot be greater than the number of operands, using negative numbers requires brackets";
