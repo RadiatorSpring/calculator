@@ -15,3 +15,4 @@ module.exports = function (config) {
 
     });
 };
+//./node_modules/karma/bin/karma start

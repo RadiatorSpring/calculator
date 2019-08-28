@@ -7,6 +7,9 @@ public class CalculatorResult {
         this.result = result;
     }
 
+    public CalculatorResult() {
+    }
+
     public double getResult() {
         return result;
     }

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static errors.ExceptionMessages.*;
+import static models.errors.ExceptionMessages.*;
 
 @RunWith(Parameterized.class)
 public class CalculatorWebServiceErrorIT {

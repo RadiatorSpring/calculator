@@ -10,8 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "karma": "^4.2.0",
+    "karma": "^4.3.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-ui5": "^1.0.1"
+  },
+  "dependencies": {
+    "karma-cli": "^2.0.0"
   }
 }

@@ -23,6 +23,8 @@ public class ErrorCodeMessage {
     private String message;
     private int code;
 
+    public ErrorCodeMessage() {
+    }
 
     public ErrorCodeMessage(String message, int code) {
         this.message = message;

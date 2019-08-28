@@ -1,8 +1,9 @@
-package persistence;
+package persistence.dto;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Expression")
 public class ExpressionDTO {
 
     @Id
@@ -16,15 +17,32 @@ public class ExpressionDTO {
     @Column
     private double result;
 
-    public ExpressionDTO(long id, String expression, double result) {
-        this.id = id;
+    @Column
+    private String error;
+
+
+
+    public ExpressionDTO(String expression, double result) {
         this.expression = expression;
         this.result = result;
     }
 
+    public String getError() {
+        return error;
+    }
     public ExpressionDTO() {
         //for hibernate
     }
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public ExpressionDTO(String expression, String error) {
+        this.expression = expression;
+        this.error = error;
+    }
+
+
 
     public long getId() {
         return id;

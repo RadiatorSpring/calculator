@@ -12,7 +12,7 @@
 //import java.util.Arrays;
 //import java.util.Collection;
 //
-//import static errors.ExceptionMessages.*;
+//import static models.errors.ExceptionMessages.*;
 //import static org.junit.Assert.assertEquals;
 //import static org.junit.Assert.assertThat;
 //
