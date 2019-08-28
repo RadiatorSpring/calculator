@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.Scanner;
 
 @RunWith(Parameterized.class)
-public class CalculatorIntegrationTest {
+public class CalculatorIntegrationIT
+{
     private static final String emptyStackExceptionMessage = "The number of operators cannot be greater than the number of operands, using negative numbers requires brackets";
     private static final String illegalArgumentExceptionMessage = "There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator";
     private static final String tooShortExpressionMessage = "There should be at least 2 operands and 1 operator";
