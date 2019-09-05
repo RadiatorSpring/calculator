@@ -1,4 +1,4 @@
-package unit.services;
+package services;
 
 import calculator.Computable;
 import calculator.exceptions.CannotDivideByZeroException;

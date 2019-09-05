@@ -1,4 +1,4 @@
-package models.exceptions;
+package exceptions;
 
 public class WebException extends Exception {
     public WebException(String message) {

@@ -1,4 +1,4 @@
-package web;
+package config;
 
 import calculator.Calculator;
 import calculator.Computable;
@@ -7,6 +7,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import persistence.dao.ExpressionDAO;
 import services.CalculatorService;
+import web.CalculatorWebService;
 
 import javax.ws.rs.ApplicationPath;
 

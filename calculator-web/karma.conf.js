@@ -6,7 +6,7 @@ module.exports = function (config) {
         ui5: {
             type: "application",
             paths: {
-                webapp: "webapp"
+                webapp: "src/main/webapp"
             },
             url: "https://localhost:8080",
             testpage: "src/main/webapp/test/integration/opa.html"

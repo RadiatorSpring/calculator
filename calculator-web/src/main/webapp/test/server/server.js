@@ -26,7 +26,7 @@ sap.ui.define([
 
 				this.oServer = sinon.fakeServer.create();
 				this.oServer.autoRespond = true;
-				this.oServer.autoRespondAfter = 500;
+				this.oServer.autoRespondAfter = 100;
 
 				sinon.fakeServer.xhr.useFilters = true;
 				this.oServer.xhr.addFilter(function (method, url) {

@@ -1,15 +1,16 @@
 package web;
 
-import calculator.exceptions.CannotDivideByZeroException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.errors.ErrorCodeMessage;
+import exceptions.WebException;
 import models.CalculatorResult;
+import models.errors.ErrorCodeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import persistence.dao.ExpressionDAO;
 import persistence.dto.ExpressionDTO;
 import services.CalculatorService;
+
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,11 +20,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.EmptyStackException;
 
-import static models.errors.ExceptionMessages.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static models.errors.ExceptionMessages.GENERAL_EXCEPTION_MESSAGE;
 
 
 @Path("/calculate")
@@ -45,7 +45,6 @@ public class CalculatorWebService {
 
     @GET
     public Response calculate(@QueryParam("expression") String expression) throws IOException {
-
         setResponse(expression);
 
         saveResponseToDb(expression);
@@ -54,26 +53,23 @@ public class CalculatorWebService {
     }
 
     private void setResponse(String expression) throws JsonProcessingException {
-        if (!isEmptyExpression(expression)) {
-            try {
-                response = calculationResultAsJson(expression);
-            } catch (CannotDivideByZeroException e) {
-                response = errorResponseAsJSON(CANNOT_DIVIDE_BY_ZERO, SC_BAD_REQUEST);
-            } catch (IllegalArgumentException e) {
-                response = errorResponseAsJSON(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
-            } catch (EmptyStackException e) {
-                response = errorResponseAsJSON(EMPTY_STACK_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
-            } catch (Exception e) {
-                log.error("hibernate exceptions", e);
-                response = errorResponseAsJSON(GENERAL_EXCEPTION_MESSAGE, SC_INTERNAL_SERVER_ERROR);
+        try {
+            this.response = calculationResultAsJSON(expression);
+        } catch (WebException e) {
+            log.error(e.getMessage());
+            if (e.getMessage().equals(GENERAL_EXCEPTION_MESSAGE)) {
+                this.response = errorResponseAsJSON(e.getMessage(), SC_INTERNAL_SERVER_ERROR);
+            } else {
+                this.response = errorResponseAsJSON(e.getMessage(), SC_BAD_REQUEST);
             }
         }
-        response = errorResponseAsJSON(EMPTY_PARAMETER_EXCEPTION, SC_BAD_REQUEST);
-
     }
 
-    private boolean isEmptyExpression(String expression) {
-        return expression != null && expression.isEmpty();
+    private Response calculationResultAsJSON(String expression) throws WebException, JsonProcessingException {
+        double result = calculatorService.compute(expression);
+        CalculatorResult calculatorResult = new CalculatorResult(result);
+        String json = mapper.writeValueAsString(calculatorResult);
+        return  Response.status(200).entity(json).build();
     }
 
     private Response errorResponseAsJSON(String exceptionMessage, int statusCode) throws JsonProcessingException {
@@ -82,20 +78,9 @@ public class CalculatorWebService {
         return Response.status(statusCode).entity(json).build();
     }
 
-
-    private Response calculationResultAsJson(String expression) throws CannotDivideByZeroException, JsonProcessingException {
-        double result = calculatorService.compute(expression);
-        CalculatorResult calculatorResult = new CalculatorResult(result);
-        ExpressionDTO expressionDTO = new ExpressionDTO(expression, result);
-
-        String json = mapper.writeValueAsString(calculatorResult);
-        expressionDAO.save(expressionDTO);
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-    }
-
     private void saveResponseToDb(String expression) throws IOException {
         ExpressionDTO expressionDTO;
-        if (response.getStatus() == SC_BAD_REQUEST) {
+        if (isErrorCode(response.getStatus())) {
             String message = getErrorMessageFromResponse();
             expressionDTO = new ExpressionDTO(expression, message);
         } else {
@@ -103,6 +88,10 @@ public class CalculatorWebService {
             expressionDTO = new ExpressionDTO(expression, result);
         }
         expressionDAO.save(expressionDTO);
+    }
+
+    private boolean isErrorCode(int status) {
+        return status >= SC_BAD_REQUEST && status <= SC_INTERNAL_SERVER_ERROR;
     }
 
     private String getErrorMessageFromResponse() throws IOException {

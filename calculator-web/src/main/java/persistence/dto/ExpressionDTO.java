@@ -1,4 +1,4 @@
-package unit.persistence.dto;
+package persistence.dto;
 
 import javax.persistence.*;
 
