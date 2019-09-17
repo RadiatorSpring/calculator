@@ -3,12 +3,12 @@ package persistence.dto;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Expression")
+@Table(name = "expression_result")
 @NamedQuery(name = "ExpressionResultDTO_findAll", query = "select e from ExpressionResultDTO e")
 public class ExpressionResultDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
 
@@ -31,9 +31,11 @@ public class ExpressionResultDTO {
     public String getError() {
         return error;
     }
+
     public ExpressionResultDTO() {
         //for hibernate
     }
+
     public void setError(String error) {
         this.error = error;
     }

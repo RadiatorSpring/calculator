@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import persistence.dao.ExpressionDAO;
+import persistence.dao.ExpressionResultDAO;
 
 import java.io.IOException;
 import java.util.EmptyStackException;
@@ -24,7 +24,7 @@ public class CalculatorServiceTest {
     @Mock
     private Computable computable;
     @Mock
-    private ExpressionDAO expressionDAO;
+    private ExpressionResultDAO ExpressionResultDAO;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();

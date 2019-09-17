@@ -1,9 +1,11 @@
 package persistence.dao;
 
+import org.hibernate.query.Query;
 import persistence.dto.ExpressionResultDTO;
 
-import javax.persistence.*;
-import java.util.Collection;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class ExpressionResultDAO {
@@ -16,18 +18,24 @@ public class ExpressionResultDAO {
     }
 
     public ExpressionResultDAO() {
-        setEntityManager("expression");
+        setEntityManager("hana");
+    }
+
+    public ExpressionResultDAO(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public List<ExpressionResultDTO> getAll() {
+        Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager.createNamedQuery("ExpressionResultDTO_findAll", ExpressionResultDTO.class);
+        return query.getResultList();
     }
 
     public void save(ExpressionResultDTO ExpressionResultDTO) {
-
+        entityManager.getTransaction().begin();
         entityManager.persist(ExpressionResultDTO);
+        entityManager.getTransaction().commit();
     }
 
-    public void delete(ExpressionResultDTO ExpressionResultDTO) {
-
-        entityManager.remove(ExpressionResultDTO);
-    }
 
     public ExpressionResultDTO getExpression(Long id) {
         return entityManager.find(ExpressionResultDTO.class, id);
@@ -40,9 +48,5 @@ public class ExpressionResultDAO {
 
 
 
-    public List<ExpressionResultDTO> getAll() {
-        Query query = entityManager.createNamedQuery("ExpressionResultDTO_findAll", ExpressionResultDTO.class);
-        //noinspection unchecked
-        return (List<ExpressionResultDTO>) query.getResultList();
-    }
+
 }

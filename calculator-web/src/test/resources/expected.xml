@@ -1,0 +1,6 @@
+<?xml version = "1.0"?>
+<dataset>
+    <expression_result id="1" expression="1-2" error="null" result="-1"/>
+    <expression_result id="2" expression="2-2" error="null" result="0"/>
+    <expression_result id="3" expression="1001-1" error="null" result="1000"/>
+</dataset>

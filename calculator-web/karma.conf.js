@@ -8,12 +8,12 @@ module.exports = function (config) {
             paths: {
                 webapp: "src/main/webapp"
             },
-            url: "https://localhost:8080",
+            url: "http://localhost:8080",
             testpage: "src/main/webapp/test/integration/opa.html"
 
 
         },
-	singleRun:true,
+	    singleRun:true,
         browsers: ["Chrome"]
 
     });

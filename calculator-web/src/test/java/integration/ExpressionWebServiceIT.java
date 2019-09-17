@@ -8,7 +8,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import persistence.dto.ExpressionDTO;
+import persistence.dto.ExpressionResultDTO;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class ExpressionWebServiceIT {
         HttpUriRequest request = new HttpGet(LocalURL + "expression/" + "1");
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
         String entityString = EntityUtils.toString(httpResponse.getEntity());
-        ExpressionDTO expressionDTO = objectMapper.readValue(entityString,ExpressionDTO.class);
-        Assert.assertEquals(expressionDTO.getResult(),0.0,0.01);
+        ExpressionResultDTO ExpressionResultDTO = objectMapper.readValue(entityString,ExpressionResultDTO.class);
+        Assert.assertEquals(ExpressionResultDTO.getResult(),0.0,0.01);
     }
 }

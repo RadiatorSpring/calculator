@@ -7,10 +7,9 @@ import models.CalculatorResult;
 import models.errors.ErrorCodeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import persistence.dao.ExpressionDAO;
-import persistence.dto.ExpressionDTO;
+import persistence.dao.ExpressionResultDAO;
+import persistence.dto.ExpressionResultDTO;
 import services.CalculatorService;
-
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -33,14 +32,15 @@ public class CalculatorWebService {
     private CalculatorService calculatorService;
     private ObjectMapper mapper;
     private static final Logger log = LogManager.getLogger(CalculatorWebService.class);
-    private ExpressionDAO expressionDAO;
+    private ExpressionResultDAO expressionResultDAO;
     private Response response;
 
+
     @Inject
-    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionDAO expressionDAO) {
+    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionResultDAO ExpressionResultDAO) {
         this.calculatorService = calculatorService;
         this.mapper = mapper;
-        this.expressionDAO = expressionDAO;
+        this.expressionResultDAO = ExpressionResultDAO;
     }
 
     @GET
@@ -69,7 +69,7 @@ public class CalculatorWebService {
         double result = calculatorService.compute(expression);
         CalculatorResult calculatorResult = new CalculatorResult(result);
         String json = mapper.writeValueAsString(calculatorResult);
-        return  Response.status(200).entity(json).build();
+        return Response.status(200).entity(json).build();
     }
 
     private Response errorResponseAsJSON(String exceptionMessage, int statusCode) throws JsonProcessingException {
@@ -78,16 +78,19 @@ public class CalculatorWebService {
         return Response.status(statusCode).entity(json).build();
     }
 
-    private void saveResponseToDb(String expression) throws IOException {
-        ExpressionDTO expressionDTO;
+    void saveResponseToDb(String expression) throws IOException {
+        ExpressionResultDTO expressionResultDTO = createExpressionResultDTO(expression);
+        expressionResultDAO.save(expressionResultDTO);
+    }
+
+    private ExpressionResultDTO createExpressionResultDTO(String expression) throws IOException {
         if (isErrorCode(response.getStatus())) {
             String message = getErrorMessageFromResponse();
-            expressionDTO = new ExpressionDTO(expression, message);
+            return new ExpressionResultDTO(expression, message);
         } else {
             double result = getCalculationResultFromResponse();
-            expressionDTO = new ExpressionDTO(expression, result);
+            return new ExpressionResultDTO(expression, result);
         }
-        expressionDAO.save(expressionDTO);
     }
 
     private boolean isErrorCode(int status) {
@@ -105,5 +108,6 @@ public class CalculatorWebService {
         CalculatorResult calculatorResult = mapper.readValue(s, CalculatorResult.class);
         return calculatorResult.getResult();
     }
+
 
 }

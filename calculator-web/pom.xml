@@ -44,7 +44,6 @@
                 <version>1.7.6</version>
                 <executions>
                     <execution>
-                        <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
                         <id>install node and npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
@@ -53,8 +52,7 @@
                             <nodeVersion>v10.15.3</nodeVersion>
                             <npmVersion>6.9.0</npmVersion>
                         </configuration>
-                        <!-- optional: default phase is "generate-resources" -->
-<!--                        <phase>generate-resources</phase>-->
+
                     </execution>
                     <execution>
                         <id>npm install</id>
@@ -76,13 +74,64 @@
                         </configuration>
                     </execution>
                 </executions>
-
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.7.0</version>
+                <executions>
+                    <execution>
+                        <!--<phase>install</phase>-->
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.sap.cloud</groupId>
+                <artifactId>neo-java-web-maven-plugin</artifactId>
+                <version>3.83.3</version>
+                <executions>
+                    <execution>
+                        <!-- Choose a phase when to execute the goal -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>install-sdk</goal>
+                            <goal>stop</goal>
+                            <goal>deploy</goal>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
+                            <account>i516445trial</account>
+                            <host>hanatrial.ondemand.com</host>
+                            <application>sap-calculator</application>
+                            <source>${project.build.directory}/${project.artifactId}.war</source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>createDB</id>
+                        <goals>
+                            <goal>create-db-hana</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Location of the SAP Cloud Platform SDK for Neo environment -->
+                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
 
     <dependencies>
+
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>
             <groupId>org.dom4j</groupId>
@@ -182,13 +231,51 @@
             <artifactId>jpa-unit-bom</artifactId>
             <version>0.5.0</version>
             <type>pom</type>
-            <scope>provided</scope>
+            <scope>import</scope>
         </dependency>
         <dependency>
             <groupId>com.github.dadrus.jpa-unit</groupId>
             <artifactId>jpa-unit4</artifactId>
             <version>0.5.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.dadrus.jpa-unit/jpa-unit-rdbms -->
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit-rdbms</artifactId>
+            <version>0.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hibernate5 -->
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate5</artifactId>
+            <version>3.7</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc -->
+        <dependency>
+            <groupId>com.sap.cloud.db.jdbc</groupId>
+            <artifactId>ngdbc</artifactId>
+            <version>2.4.56</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
+        <dependency>
+            <groupId>com.github.lbitonti</groupId>
+            <artifactId>liquibase-hana</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+
     </dependencies>
 
 
