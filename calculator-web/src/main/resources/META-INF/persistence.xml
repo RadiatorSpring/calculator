@@ -40,11 +40,12 @@
 
         <class>persistence.dto.ExpressionResultDTO</class>
         <properties>
-            <property name="hibernate.connection.driver_class" value="com.sap.cloud.db.jdbc"/>
+<!--            <property name="hibernate.connection.driver_class" value="com.sap.cloud.db.jdbc"/>-->
+            <property name="hibernate.connection.driver_class" value="com.sap.db.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HANAColumnStoreDialect"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value="root"/>
             <property name="hibernate.connection.url" value="jdbc:sap://127.0.0.1:3306/calculator?createDatabaseIfNotExist=true"/>
-<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>-->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>

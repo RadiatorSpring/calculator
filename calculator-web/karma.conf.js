@@ -13,8 +13,19 @@ module.exports = function (config) {
 
 
         },
+        customLaunchers: {
+                    'FirefoxHeadless': {
+                        base: 'Firefox',
+                        flags: [
+                            '-headless',
+                        ],
+                        prefs: {
+                            'network.proxy.type': 0
+                        }
+                    }
+                },
 	    singleRun:true,
-        browsers: ["Chrome"]
-
+        browsers: ["FirefoxHeadless"],
+        failOnEmptyTestSuite: false
     });
 };

@@ -38,12 +38,14 @@
                     <attachClasses>true</attachClasses>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.7.6</version>
                 <executions>
                     <execution>
+                        <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
                         <id>install node and npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
@@ -52,7 +54,8 @@
                             <nodeVersion>v10.15.3</nodeVersion>
                             <npmVersion>6.9.0</npmVersion>
                         </configuration>
-
+                        <!-- optional: default phase is "generate-resources" -->
+                        <!--                        <phase>generate-resources</phase>-->
                     </execution>
                     <execution>
                         <id>npm install</id>
@@ -74,6 +77,7 @@
                         </configuration>
                     </execution>
                 </executions>
+
             </plugin>
 
             <plugin>
@@ -86,6 +90,9 @@
                         <goals>
                             <goal>update</goal>
                         </goals>
+                        <configuration>
+                            <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -104,25 +111,33 @@
                             <goal>deploy</goal>
                             <goal>start</goal>
                         </goals>
-                        <configuration>
-                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-                            <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
-                            <account>i516445trial</account>
-                            <host>hanatrial.ondemand.com</host>
-                            <application>sap-calculator</application>
-                            <source>${project.build.directory}/${project.artifactId}.war</source>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>createDB</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>create-db-hana</goal>
+                            <goal>start-db-hana</goal>
                         </goals>
+                        <configuration>
+                            <id>tutorial</id>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>bindDB</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <id>tutorial</id>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- Location of the SAP Cloud Platform SDK for Neo environment -->
                     <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                    <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
+                    <account>i516445trial</account>
+                    <host>hanatrial.ondemand.com</host>
+                    <application>mycalculator</application>
+                    <source>${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war</source>
                 </configuration>
             </plugin>
 
@@ -231,7 +246,7 @@
             <artifactId>jpa-unit-bom</artifactId>
             <version>0.5.0</version>
             <type>pom</type>
-            <scope>import</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.dadrus.jpa-unit</groupId>
