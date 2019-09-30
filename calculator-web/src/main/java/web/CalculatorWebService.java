@@ -7,11 +7,17 @@ import models.CalculatorResult;
 import models.errors.ErrorCodeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 import services.CalculatorService;
 
 import javax.inject.Inject;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,6 +25,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -29,6 +37,7 @@ import static models.errors.ExceptionMessages.GENERAL_EXCEPTION_MESSAGE;
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {
 
+
     private CalculatorService calculatorService;
     private ObjectMapper mapper;
     private static final Logger log = LogManager.getLogger(CalculatorWebService.class);
@@ -37,10 +46,10 @@ public class CalculatorWebService {
 
 
     @Inject
-    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionResultDAO ExpressionResultDAO) {
+    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
         this.calculatorService = calculatorService;
         this.mapper = mapper;
-        this.expressionResultDAO = ExpressionResultDAO;
+        this.expressionResultDAO = expressionResultDAO;
     }
 
     @GET

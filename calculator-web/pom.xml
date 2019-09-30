@@ -16,133 +16,217 @@
     </properties>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <url>http://localhost:8080/manager/text</url>
-                    <path>${servletPath}</path>
-                    <username>admin</username>
-                    <password>admin</password>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.7.6</version>
-                <executions>
-                    <execution>
-                        <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
+    <profiles>
+        <profile>
+            <id>no-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.2.3</version>
                         <configuration>
-                            <nodeVersion>v10.15.3</nodeVersion>
-                            <npmVersion>6.9.0</npmVersion>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <attachClasses>true</attachClasses>
                         </configuration>
-                        <!-- optional: default phase is "generate-resources" -->
-                        <!--                        <phase>generate-resources</phase>-->
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>javascript tests</id>
-                        <goals>
-                            <goal>karma</goal>
-                        </goals>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.sap.cloud</groupId>
+                        <artifactId>neo-java-web-maven-plugin</artifactId>
+                        <version>3.83.3</version>
+                        <executions>
+                            <execution>
+                                <id>deployApp</id>
+                                <!-- Choose a phase when to execute the goal -->
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>install-sdk</goal>
+                                    <goal>stop</goal>
+                                    <goal>deploy</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>unbindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>unbind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <failOnError>false</failOnError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>createDB</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>start-db-hana</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>bindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>bind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+                        </executions>
 
                         <configuration>
-                            <karmaConfPath>karma.conf.js</karmaConfPath>
+                            <dbUser>${dbUser}</dbUser>
+                            <dbPassword>${dbPassword}</dbPassword>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
+                            <account>i516445trial</account>
+                            <host>hanatrial.ondemand.com</host>
+                            <application>mycalculator</application>
+                            <source>${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war</source>
                         </configuration>
-                    </execution>
-                </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-            </plugin>
-
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.7.0</version>
-                <executions>
-                    <execution>
-                        <!--<phase>install</phase>-->
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
+        <profile>
+            <id>test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
                         <configuration>
-                            <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                            <url>http://localhost:8080/manager/text</url>
+                            <path>${servletPath}</path>
+                            <username>admin</username>
+                            <password>admin</password>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.sap.cloud</groupId>
-                <artifactId>neo-java-web-maven-plugin</artifactId>
-                <version>3.83.3</version>
-                <executions>
-                    <execution>
-                        <!-- Choose a phase when to execute the goal -->
-                        <phase>package</phase>
-                        <goals>
-                            <goal>install-sdk</goal>
-                            <goal>stop</goal>
-                            <goal>deploy</goal>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>createDB</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>start-db-hana</goal>
-                        </goals>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.2.3</version>
                         <configuration>
-                            <id>tutorial</id>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <attachClasses>true</attachClasses>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>bindDB</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <id>tutorial</id>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-                    <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
-                    <account>i516445trial</account>
-                    <host>hanatrial.ondemand.com</host>
-                    <application>mycalculator</application>
-                    <source>${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war</source>
-                </configuration>
-            </plugin>
+                    </plugin>
 
-        </plugins>
-    </build>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.7.6</version>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v10.15.3</nodeVersion>
+                                    <npmVersion>6.9.0</npmVersion>
+                                </configuration>
+
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>javascript tests</id>
+                                <goals>
+                                    <goal>karma</goal>
+                                </goals>
+
+                                <configuration>
+                                    <karmaConfPath>karma.conf.js</karmaConfPath>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.sap.cloud</groupId>
+                        <artifactId>neo-java-web-maven-plugin</artifactId>
+                        <version>3.83.3</version>
+                        <executions>
+                            <execution>
+                                <id>deployApp</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>install-sdk</goal>
+                                    <goal>stop</goal>
+                                    <goal>deploy</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>unbindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>unbind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <failOnError>false</failOnError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>createDB</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>start-db-hana</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>bindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>bind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <dbUser>${dbUser}</dbUser>
+                            <dbPassword>${dbPassword}</dbPassword>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <mavenSettingsServerId>sap-neo</mavenSettingsServerId>
+                            <account>i516445trial</account>
+                            <host>hanatrial.ondemand.com</host>
+                            <application>mycalculator</application>
+                            <source>${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war</source>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
     <dependencies>
@@ -184,18 +268,18 @@
             <artifactId>jersey-server</artifactId>
             <version>2.29</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
             <version>2.28</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sap.cloud/neo-java-web-sdk -->
+        <dependency>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-sdk</artifactId>
+            <version>3.90.12</version>
+            <type>pom</type>
         </dependency>
 
 
@@ -213,7 +297,7 @@
             <version>2.9.8</version>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -239,7 +323,14 @@
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
             <version>1.8.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 
         <dependency>
             <groupId>com.github.dadrus.jpa-unit</groupId>
@@ -248,6 +339,7 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.dadrus.jpa-unit</groupId>
             <artifactId>jpa-unit4</artifactId>
@@ -261,35 +353,31 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.sap.cloud.db.jdbc</groupId>
+            <artifactId>ngdbc</artifactId>
+            <version>2.3.48</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.7.0</version>
+            <version>3.8.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hibernate5 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate5</artifactId>
-            <version>3.7</version>
+            <artifactId>liquibase-hanadb</artifactId>
+            <version>2.0</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc -->
-        <dependency>
-            <groupId>com.sap.cloud.db.jdbc</groupId>
-            <artifactId>ngdbc</artifactId>
-            <version>2.4.56</version>
-            <type>pom</type>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
-        <dependency>
-            <groupId>com.github.lbitonti</groupId>
-            <artifactId>liquibase-hana</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-
 
     </dependencies>
 

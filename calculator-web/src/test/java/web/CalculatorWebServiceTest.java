@@ -1,5 +1,4 @@
 package web;
-
 import calculator.exceptions.CannotDivideByZeroException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -34,7 +33,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorWebServiceTest {
-
+//todo write unit tests for getAll
 
     @InjectMocks
     private CalculatorWebService calculatorWebService;

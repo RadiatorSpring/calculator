@@ -3,30 +3,14 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="expression">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-
-        <class>persistence.dto.ExpressionResultDTO</class>
-        <properties>
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="root"/>
-
-            <property name="hibernate.connection.url" value="jdbc:mysql://127.0.0.1:3306/calculator?createDatabaseIfNotExist=true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-<!--            <property name="hibernate.hbm2ddl.auto" value="update"/>-->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-        </properties>
-    </persistence-unit>
-
-    <persistence-unit name="test">
+    <persistence-unit name="test" >
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
         <class>persistence.dto.ExpressionResultDTO</class>
         <properties>
 
-            <property name="hibernate.connection.url" value="jdbc:derby:memory://127.0.0.1:1527/calculator;create=true"/>
+            <property name="hibernate.connection.url"
+                      value="jdbc:derby:memory://127.0.0.1:1527/calculator;create=true"/>
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -35,19 +19,23 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="hana">
+
+    <persistence-unit name="hana" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <non-jta-data-source>java:comp/env/jdbc/DefaultDB</non-jta-data-source>
 
         <class>persistence.dto.ExpressionResultDTO</class>
         <properties>
-<!--            <property name="hibernate.connection.driver_class" value="com.sap.cloud.db.jdbc"/>-->
-            <property name="hibernate.connection.driver_class" value="com.sap.db.jdbc.Driver"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.HANAColumnStoreDialect"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="root"/>
-            <property name="hibernate.connection.url" value="jdbc:sap://127.0.0.1:3306/calculator?createDatabaseIfNotExist=true"/>
+            <property name="driverClassName" value="com.sap.db.jdbc.Driver" />
+            <property name ="hibernate.connection.driver_class" value=""/>
+            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/DefaultDB"/>
+            <property name="hibernate.id.new_generator_mappings" value ="true"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HANARowStoreDialect"/>
+
         </properties>
     </persistence-unit>
+
 </persistence>

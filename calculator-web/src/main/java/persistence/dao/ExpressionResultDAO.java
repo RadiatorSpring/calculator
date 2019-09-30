@@ -42,11 +42,13 @@ public class ExpressionResultDAO {
     }
 
     private void setEntityManager(String unitName) {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(unitName);
-        entityManager = entityManagerFactory.createEntityManager();
+
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hana");
+            entityManager = entityManagerFactory.createEntityManager();
+
+
+
     }
-
-
 
 
 }
