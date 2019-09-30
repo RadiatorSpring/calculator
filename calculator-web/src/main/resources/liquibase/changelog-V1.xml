@@ -4,7 +4,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
     <changeSet id="1" author="alex">
+        <preConditions>
+            <dbms type="derby"/>
+        </preConditions>
         <createTable tableName="expression_result">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
@@ -15,6 +19,13 @@
             <column name="result" type="double" />
             <column name="error" type="varchar(100)"/>
         </createTable>
+    </changeSet>
+
+    <changeSet id="1" author="alex">
+        <preConditions>
+            <runningAs username="alex"/>
+        </preConditions>
+        <sqlFile path="liquibase/insert.sql"/>
     </changeSet>
 </databaseChangeLog>
 
