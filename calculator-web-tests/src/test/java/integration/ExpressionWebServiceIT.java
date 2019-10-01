@@ -13,8 +13,9 @@ import persistence.dto.ExpressionResultDTO;
 import java.io.IOException;
 
 public class ExpressionWebServiceIT {
-    private static final String LocalURL = "http://localhost:8080/calculator/api/";
+    private static final String LocalURL = "http://localhost:8080/calculator/api/v1";
     private ObjectMapper objectMapper;
+
     @Test
     public void findElementByIdTest() throws IOException {
         HttpUriRequest request = new HttpGet(LocalURL + "expression/" + "1");
