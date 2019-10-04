@@ -13,15 +13,15 @@ import persistence.dto.ExpressionResultDTO;
 import java.io.IOException;
 
 public class ExpressionWebServiceIT {
-    private static final String LocalURL = "http://localhost:8080/calculator/api/v1";
-    private ObjectMapper objectMapper;
+    private static final String LocalURL = "http://localhost:9090/calculator/api/v1";
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void findElementByIdTest() throws IOException {
-        HttpUriRequest request = new HttpGet(LocalURL + "expression/" + "1");
+        HttpUriRequest request = new HttpGet(LocalURL + "expressions");
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
         String entityString = EntityUtils.toString(httpResponse.getEntity());
         ExpressionResultDTO ExpressionResultDTO = objectMapper.readValue(entityString,ExpressionResultDTO.class);
-        Assert.assertEquals(ExpressionResultDTO.getResult(),0.0,0.01);
+        Assert.assertEquals(ExpressionResultDTO.getevaluation(),0.0,0.01);
     }
 }

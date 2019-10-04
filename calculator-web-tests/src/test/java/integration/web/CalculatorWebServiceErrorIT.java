@@ -17,7 +17,7 @@ import static models.errors.ExceptionMessages.*;
 @RunWith(Parameterized.class)
 public class CalculatorWebServiceErrorIT {
 
-    private static final String LocalURL = "http://localhost:9090/calculator-web/api/";
+    private static final String LocalURL = "http://localhost:9090/calculator-web/api/v1/";
 
     @Parameters
     public static Collection<Object> data() {
