@@ -16,16 +16,16 @@ public class ExpressionResultDTO {
     private String expression;
 
     @Column
-    private double result;
+    private double evaluation;
 
     @Column
     private String error;
 
 
 
-    public ExpressionResultDTO(String expression, double result) {
+    public ExpressionResultDTO(String expression, double evaluation) {
         this.expression = expression;
-        this.result = result;
+        this.evaluation = evaluation;
     }
 
     public String getError() {
@@ -63,11 +63,11 @@ public class ExpressionResultDTO {
         this.expression = expression;
     }
 
-    public double getResult() {
-        return result;
+    public double getEvaluation() {
+        return evaluation;
     }
 
-    public void setResult(double result) {
-        this.result = result;
+    public void setevaluation(double evaluation) {
+        this.evaluation = evaluation;
     }
 }

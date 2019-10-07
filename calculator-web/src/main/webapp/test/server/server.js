@@ -12,10 +12,10 @@ sap.ui.define([
 		return {
 
 			init: function () {
-				var urlForEmptyParameterException = /\/calculator\/api\/calculate\?expression=/;
-				var urlForIllegalArgumentException = /\/calculator\/api\/calculate\?expression=.*1-1a.*/;
-				var urlForTooManyOperators = /\/calculator\/api\/calculate\?expression=.*1--1.*/;
-				var urlForCorrectInput = /\/calculator\/api\/calculate\?expression=.*1-1\*\(1%2B1\)\/2.*/;
+				var urlForEmptyParameterException = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=/;
+				var urlForIllegalArgumentException = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1-1a.*/;
+				var urlForTooManyOperators = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1--1.*/;
+				var urlForCorrectInput = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1-1\*\(1%2B1\)\/2.*/;
 
 				var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
 				var messageForIllegalArgumentException =

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/expression")
+@Path("/expressions")
 @Produces(MediaType.APPLICATION_JSON)
 public class ExpressionWebService {
 

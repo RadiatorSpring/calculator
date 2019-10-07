@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class CalculatorServiceTest {
+
     @InjectMocks
     private CalculatorService calculatorService;
     @Mock

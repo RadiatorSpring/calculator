@@ -13,7 +13,7 @@ sap.ui.define([
 			var expression = this.getView().byId("expression").getValue();
 			var sUrlReadableExpression = Formatter.getExpression(expression);
 			var oModel = new JSONModel();
-			oModel.loadData("/calculator/api/calculate?expression=" + sUrlReadableExpression)
+			oModel.loadData("/calculator-web-1.0-SNAPSHOT/api/v1/calculate?expression=" + sUrlReadableExpression)
 				.then(function () {
 					this.getView().setModel(oModel);
 				}.bind(this))

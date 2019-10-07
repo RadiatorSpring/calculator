@@ -3,14 +3,20 @@ package services;
 import calculator.Computable;
 import calculator.exceptions.CannotDivideByZeroException;
 import exceptions.WebException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import web.CalculatorWebService;
 
 import javax.inject.Inject;
 import java.util.EmptyStackException;
+import java.util.logging.SimpleFormatter;
 
 import static models.errors.ExceptionMessages.*;
 
 public class CalculatorService {
     private Computable computable;
+    private final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
+
 
     @Inject
     public CalculatorService(Computable computable) {
@@ -18,7 +24,8 @@ public class CalculatorService {
     }
 
     public double compute(String expression) throws WebException {
-        if (!isEmptyExpression(expression)) {
+
+        if (!isEmptyExpression(expression))  {
             try {
                 return computable.compute(expression);
             } catch (CannotDivideByZeroException e) {
@@ -31,10 +38,13 @@ public class CalculatorService {
                 throw new WebException(GENERAL_EXCEPTION_MESSAGE);
             }
         }
+        logger.error("the expression passed was -> " + expression);
         throw new WebException(EMPTY_PARAMETER_EXCEPTION);
     }
 
     private boolean isEmptyExpression(String expression) {
-        return expression != null && expression.isEmpty();
+
+        if(expression == null) return true;
+        else return expression.isEmpty();
     }
 }

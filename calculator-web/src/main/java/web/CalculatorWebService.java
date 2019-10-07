@@ -5,45 +5,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.WebException;
 import models.CalculatorResult;
 import models.errors.ErrorCodeMessage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 import services.CalculatorService;
 
 import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static models.errors.ExceptionMessages.GENERAL_EXCEPTION_MESSAGE;
 
 
-@Path("/calculate")
+@Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {
 
-
     private CalculatorService calculatorService;
     private ObjectMapper mapper;
-    private static final Logger log = LogManager.getLogger(CalculatorWebService.class);
     private ExpressionResultDAO expressionResultDAO;
     private Response response;
-
+    private final Logger logger = LoggerFactory.getLogger(CalculatorWebService.class);
 
     @Inject
     public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
@@ -53,7 +42,8 @@ public class CalculatorWebService {
     }
 
     @GET
-    public Response calculate(@QueryParam("expression") String expression) throws IOException {
+    @Path("/calculate")
+    public Response calculate(@Valid @NotNull @QueryParam("expression") String expression) throws IOException {
         setResponse(expression);
 
         saveResponseToDb(expression);
@@ -65,10 +55,11 @@ public class CalculatorWebService {
         try {
             this.response = calculationResultAsJSON(expression);
         } catch (WebException e) {
-            log.error(e.getMessage());
             if (e.getMessage().equals(GENERAL_EXCEPTION_MESSAGE)) {
+                logger.error("{} {}", e.getCause(), e.getMessage());
                 this.response = errorResponseAsJSON(e.getMessage(), SC_INTERNAL_SERVER_ERROR);
             } else {
+                logger.error("{} {}", e.getCause(), e.getMessage());
                 this.response = errorResponseAsJSON(e.getMessage(), SC_BAD_REQUEST);
             }
         }
