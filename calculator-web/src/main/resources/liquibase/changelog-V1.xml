@@ -7,6 +7,7 @@
 
     <changeSet id="production" author="alex">
         <preConditions onFail="MARK_RAN">
+            <dbms type="hana"/>
             <not>
                 <tableExists tableName="expression_result"/>
             </not>
