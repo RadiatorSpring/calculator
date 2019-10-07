@@ -1,4 +1,4 @@
-package integration.page;
+package integration.web.page;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,12 +9,12 @@ import org.junit.Assert;
 import java.io.IOException;
 import java.util.Scanner;
 
-public abstract class BasePage {
+public class BasePage {
 
     private HttpResponse response;
 
     BasePage(String url) throws IOException {
-        setResponse(url);
+        this.response = createHttpResponse(url);
     }
 
     String getResponseBodyAsText() throws IOException {
@@ -22,11 +22,6 @@ public abstract class BasePage {
             return scanner.nextLine();
         }
     }
-
-    private void setResponse(String url) throws IOException {
-        this.response = getHttpResponse(url);
-    }
-
 
     public void verifyStatusCode(int expectedCode) {
         int actual = getResponseStatusCode();
@@ -37,7 +32,7 @@ public abstract class BasePage {
         return response.getStatusLine().getStatusCode();
     }
 
-    private static HttpResponse getHttpResponse(String url) throws IOException {
+    private static HttpResponse createHttpResponse(String url) throws IOException {
         HttpUriRequest request = new HttpGet(url);
         return HttpClientBuilder.create().build().execute(request);
     }

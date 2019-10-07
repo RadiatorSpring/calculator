@@ -1,12 +1,14 @@
-package integration;
+package integration.web;
 
-import integration.page.ErrorResponsePage;
+import integration.web.page.ErrorResponsePage;
 import org.apache.http.HttpStatus;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import persistence.dao.ExpressionResultDAO;
 
 import java.io.IOException;
 import java.util.Arrays;

@@ -38,13 +38,54 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+                <artifactId>inmemdb-maven-plugin</artifactId>
+                <version>1.4.3</version>
+                <configuration>
+                    <monitorKey>inmemdb</monitorKey>
+                    <monitorPort>11527</monitorPort>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <port>1527</port>
+                            <daemon>true</daemon>
+                            <type>derby</type>
+                            <database>calculator</database>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.derby</groupId>
+                        <artifactId>derbyclient</artifactId>
+                        <version>10.13.1.1</version>
+                    </dependency>
+                </dependencies>
+
                 <configuration>
                     <port>9090</port>
                     <path>${servletPath}</path>
                     <warFile>calculator-web-1.0-SNAPSHOT.war</warFile>
+                    <contextFile>..\calculator-web\src\main\resources\tomcat\context.xml</contextFile>
                     <webapps>
                         <webapp>
                             <groupId>SAP</groupId>
@@ -60,7 +101,7 @@
                         <id>tomcat-run-only</id>
                         <phase>pre-integration-test</phase>
                         <configuration>
-                            <warDirectory>C:\Users\i516445\IdeaProjects\calculator\calculator-web\target\</warDirectory>
+                            <warDirectory>..\calculator-web\target\</warDirectory>
                             <fork>true</fork>
                         </configuration>
                         <goals>
@@ -76,6 +117,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
 
@@ -99,7 +142,19 @@
             <artifactId>calculator-app</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit-bom</artifactId>
+            <version>0.5.0</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit4</artifactId>
+            <version>0.5.0</version>
+        </dependency>
     </dependencies>
 
 </project>

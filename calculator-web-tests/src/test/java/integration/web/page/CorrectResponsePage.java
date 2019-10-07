@@ -1,4 +1,4 @@
-package integration.page;
+package integration.web.page;
 
 import org.junit.Assert;
 
