@@ -1,33 +1,28 @@
 package integration.db;
 
 import integration.db.page.BaseDBTest;
-import integration.db.page.CalculationPage;
+import integration.security.page.SecurityPage;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
-public class ExpressionWebServiceIT extends BaseDBTest {
 
+public class ExpressionWebServiceIT extends BaseDBTest {
+    private static final String LOCAL_URL = "http://localhost:9090/calculator-web/api/v1/calculate?expression=";
     private ExpressionResultDAO expressionResultDAO;
-    private CalculationPage calculationPage;
+    private SecurityPage securityPage;
 
     @Before
-    public void setUp() {
+    public void createDBConfiguration() {
+        super.createDBConfiguration();
         expressionResultDAO = new ExpressionResultDAO(getEntityManager());
-        calculationPage = new CalculationPage();
+        securityPage = new SecurityPage();
 
         clearTable();
     }
@@ -37,8 +32,8 @@ public class ExpressionWebServiceIT extends BaseDBTest {
     public void testGetAll() throws IOException {
         String expression1 = "1-1";
         String expression2 = "1-2";
-        calculationPage.calculate(expression1);
-        calculationPage.calculate(expression2);
+        securityPage.executeURLWithCredentials(LOCAL_URL + expression1);
+        securityPage.executeURLWithCredentials(LOCAL_URL + expression2);
 
         List<ExpressionResultDTO> expressionResultDTOS = expressionResultDAO.getAll();
 

@@ -8,7 +8,7 @@ public class BaseDBTest {
 
     private EntityManager entityManager;
 
-    public void setUp() {
+    public void createDBConfiguration() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("integration-test");
         entityManager = entityManagerFactory.createEntityManager();
 

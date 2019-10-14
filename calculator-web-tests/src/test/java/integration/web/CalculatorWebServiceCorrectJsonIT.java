@@ -16,6 +16,9 @@ public class CalculatorWebServiceCorrectJsonIT {
         String expression = "1.1-1.1";
         String urlWithExpression = URL + expression;
         CorrectResponseWebPage responsePage = new CorrectResponseWebPage(urlWithExpression);
+
+
+
         responsePage.verifyResult(0.0);
     }
 }

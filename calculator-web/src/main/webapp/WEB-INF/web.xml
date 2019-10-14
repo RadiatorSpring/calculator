@@ -29,7 +29,6 @@
         <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
     </listener>
 
-
     <login-config>
         <auth-method>BASIC</auth-method>
         <form-login-config>

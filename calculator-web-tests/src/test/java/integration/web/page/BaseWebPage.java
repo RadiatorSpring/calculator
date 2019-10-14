@@ -2,9 +2,6 @@ package integration.web.page;
 
 import integration.security.page.SecurityPage;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -16,6 +13,7 @@ public class BaseWebPage {
     private HttpResponse response;
 
     BaseWebPage(String url) throws IOException {
+        securityPage = new SecurityPage();
         this.response = createHttpResponse(url);
     }
 

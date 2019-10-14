@@ -9,6 +9,8 @@
               maxWait="10000"
               url="jdbc:derby://127.0.0.1:1527/calculator;create=true"
               driverClassName="org.apache.derby.jdbc.ClientDriver"
+              dialect="org.hibernate.dialect.DerbyTenSevenDialect"
+
     />
     <Realm className="org.apache.catalina.realm.MemoryRealm" pathname="..\..\..\calculator-web\src\main\resources\tomcat\users.xml"/>
 </Context>
