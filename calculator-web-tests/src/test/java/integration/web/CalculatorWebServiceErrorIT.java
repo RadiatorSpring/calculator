@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static models.errors.ExceptionMessages.*;
-@Ignore
+
 @RunWith(Parameterized.class)
 public class CalculatorWebServiceErrorIT {
 

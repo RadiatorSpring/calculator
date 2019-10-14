@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-@Ignore
+
 public class CalculatorWebServiceCorrectJsonIT {
 
     private final static String URL = "http://localhost:9090/calculator-web/api/v1/calculate?expression=";
