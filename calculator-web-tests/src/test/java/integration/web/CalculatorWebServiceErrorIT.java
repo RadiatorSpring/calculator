@@ -1,21 +1,20 @@
 package integration.web;
 
-import integration.web.page.ErrorResponsePage;
+import integration.web.page.ErrorResponseWebPage;
 import org.apache.http.HttpStatus;
-import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-import persistence.dao.ExpressionResultDAO;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
 import static models.errors.ExceptionMessages.*;
-
+@Ignore
 @RunWith(Parameterized.class)
 public class CalculatorWebServiceErrorIT {
 
@@ -39,7 +38,7 @@ public class CalculatorWebServiceErrorIT {
 
     @Test
     public void testForStatusCode() throws IOException {
-        ErrorResponsePage errorResponsePage = new ErrorResponsePage(requestURL);
+        ErrorResponseWebPage errorResponsePage = new ErrorResponseWebPage(requestURL);
         errorResponsePage.verifyStatusCode(code);
         errorResponsePage.verifyMessage(message);
 

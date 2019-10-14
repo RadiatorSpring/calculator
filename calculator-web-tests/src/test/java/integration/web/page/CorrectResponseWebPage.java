@@ -4,9 +4,9 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
-public class CorrectResponsePage extends BasePage {
+public class CorrectResponseWebPage extends BaseWebPage {
 
-    public CorrectResponsePage(String url) throws IOException {
+    public CorrectResponseWebPage(String url) throws IOException {
         super(url);
     }
 

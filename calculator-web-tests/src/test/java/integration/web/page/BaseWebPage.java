@@ -1,5 +1,6 @@
 package integration.web.page;
 
+import integration.security.page.SecurityPage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -9,11 +10,12 @@ import org.junit.Assert;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class BasePage {
+public class BaseWebPage {
 
+    private SecurityPage securityPage;
     private HttpResponse response;
 
-    BasePage(String url) throws IOException {
+    BaseWebPage(String url) throws IOException {
         this.response = createHttpResponse(url);
     }
 
@@ -32,9 +34,7 @@ public class BasePage {
         return response.getStatusLine().getStatusCode();
     }
 
-    private static HttpResponse createHttpResponse(String url) throws IOException {
-        HttpUriRequest request = new HttpGet(url);
-
-        return HttpClientBuilder.create().build().execute(request);
+    private HttpResponse createHttpResponse(String url) throws IOException {
+        return securityPage.createHttpResponseWithCredentials(url);
     }
 }

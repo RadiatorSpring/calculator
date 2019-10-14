@@ -17,6 +17,7 @@ import persistence.dto.ExpressionResultDTO;
 
 import javax.persistence.EntityManager;
 
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import java.io.FileInputStream;
@@ -66,7 +67,6 @@ public class ExpressionResultDAOTest {
 
 
     @Test
-
     public void findAllTest() {
         List<ExpressionResultDTO> list = expressionResultDAO.getAll();
         assertEquals(list.size(), 2);

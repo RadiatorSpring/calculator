@@ -4,10 +4,10 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
-public class ErrorResponsePage extends BasePage {
+public class ErrorResponseWebPage extends BaseWebPage {
 
 
-    public ErrorResponsePage(String url) throws IOException {
+    public ErrorResponseWebPage(String url) throws IOException {
         super(url);
     }
 

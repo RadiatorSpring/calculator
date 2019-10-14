@@ -1,7 +1,7 @@
 package integration.db;
 
+import integration.db.page.BaseDBTest;
 import integration.db.page.CalculationPage;
-import integration.db.page.DBPage;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,8 @@ import static models.errors.ExceptionMessages.EMPTY_STACK_EXCEPTION_MESSAGE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class CalculatorDBServiceIT {
+@Ignore
+public class CalculatorDBServiceIT extends BaseDBTest {
 
     private Logger logger = LoggerFactory.getLogger(CalculatorDBServiceIT.class);
     private ExpressionResultDAO expressionResultDAO;
@@ -25,13 +26,10 @@ public class CalculatorDBServiceIT {
 
     @Before
     public void setUp() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("integration-test");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        expressionResultDAO = new ExpressionResultDAO(entityManager);
+        expressionResultDAO = new ExpressionResultDAO(getEntityManager());
         calculationPage = new CalculationPage();
-        DBPage dbPage = new DBPage(entityManager);
 
-        dbPage.clearTable();
+        clearTable();
     }
 
 
@@ -41,7 +39,6 @@ public class CalculatorDBServiceIT {
         calculationPage.calculate(expression);
 
         ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(1L);
-
 
         assertEquals(1, foundDTO.getId());
         assertNull(foundDTO.getError());
@@ -60,8 +57,6 @@ public class CalculatorDBServiceIT {
         assertEquals(expression, foundDTO.getExpression());
         assertEquals(EMPTY_STACK_EXCEPTION_MESSAGE, foundDTO.getError());
     }
-
-
 
 
 }
