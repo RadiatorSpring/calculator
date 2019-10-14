@@ -29,4 +29,35 @@
         <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
     </listener>
 
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <form-login-config>
+            <form-login-page>/login</form-login-page>
+            <form-error-page>/error</form-error-page>
+        </form-login-config>
+    </login-config>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Calculator Area</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Everyone</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-role>
+        <description>All SAP Cloud Platform users</description>
+        <role-name>Everyone</role-name>
+    </security-role>
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <session-config>
+        <session-timeout>15</session-timeout> <!-- in minutes -->
+    </session-config>
+
 </web-app>

@@ -34,6 +34,7 @@ public class BasePage {
 
     private static HttpResponse createHttpResponse(String url) throws IOException {
         HttpUriRequest request = new HttpGet(url);
+
         return HttpClientBuilder.create().build().execute(request);
     }
 }
