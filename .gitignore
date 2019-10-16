@@ -6,6 +6,7 @@
 *target
 *.iml
 *.log
-/node/
-/node_modules/
+*/node/*
+*/node_modules/*
 /classes
+

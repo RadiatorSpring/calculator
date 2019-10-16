@@ -36,7 +36,7 @@
             <form-error-page>/error</form-error-page>
         </form-login-config>
     </login-config>
-    
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Protected Calculator Area</web-resource-name>
@@ -54,9 +54,5 @@
     <security-role>
         <role-name>admin</role-name>
     </security-role>
-
-    <session-config>
-        <session-timeout>15</session-timeout> <!-- in minutes -->
-    </session-config>
 
 </web-app>

@@ -11,9 +11,11 @@
     <modules>
         <module>calculator-app</module>
         <module>calculator-console</module>
+        <module>calculator-ui</module>
         <module>calculator-web</module>
         <module>calculator-console-tests</module>
         <module>calculator-web-tests</module>
+
     </modules>
 
     <properties>

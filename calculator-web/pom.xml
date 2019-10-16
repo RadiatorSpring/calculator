@@ -26,6 +26,7 @@
                     <path>${servletPath}</path>
                     <username>admin</username>
                     <password>admin</password>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -151,7 +152,11 @@
                             <account>i516445trial</account>
                             <host>hanatrial.ondemand.com</host>
                             <application>mycalculator</application>
-                            <source>${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war</source>
+                            <source>
+                                ${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war,
+                                ${project.basedir}\..\calculator-ui\target\calculator-ui-1.0-SNAPSHOT.war
+                            </source>
+
                         </configuration>
                     </plugin>
                 </plugins>
