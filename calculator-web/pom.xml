@@ -140,6 +140,12 @@
                                     <id>calculator</id>
                                 </configuration>
                             </execution>
+
+                            <execution>
+                                <goals>
+                                    <goal>create-account</goal>
+                                </goals>
+                            </execution>
                         </executions>
 
                         <configuration>
@@ -156,7 +162,6 @@
                                 ${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war,
                                 ${project.basedir}\..\calculator-ui\target\calculator-ui-1.0-SNAPSHOT.war
                             </source>
-
                         </configuration>
                     </plugin>
                 </plugins>
@@ -333,6 +338,8 @@
             <version>3.90.12</version>
             <scope>provided</scope>
         </dependency>
+
+
     </dependencies>
 
 
