@@ -24,10 +24,7 @@ import java.io.FileInputStream;
 
 import java.util.List;
 
-
-import static org.junit.Assert.assertEquals;
-
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 @RunWith(JpaUnitRunner.class)
@@ -42,9 +39,7 @@ public class ExpressionResultDAOTest {
     private ExpressionResultDAO expressionResultDAO;
 
 
-
     @Before
-
     public void test() throws Exception {
         databaseTester = new JdbcDatabaseTester(
                 DERBY_DRIVER,
@@ -65,14 +60,26 @@ public class ExpressionResultDAOTest {
         assertNotNull(foundDTO);
     }
 
-
     @Test
     public void findAllTest() {
         List<ExpressionResultDTO> list = expressionResultDAO.getAll();
-        assertEquals(list.size(), 2);
-
+        assertEquals(list.size(), 3);
     }
 
+    @Test
+    public void findAllNotEvaluatedTest() {
+        List<ExpressionResultDTO> list=expressionResultDAO.getAllNotEvaluated();
+        assertEquals(list.size(),1);
+    }
+
+    @Test
+    public void testUpdate(){
+        expressionResultDAO.update(3L,1,null);
+        ExpressionResultDTO expressionResultDTO = expressionResultDAO.getExpression(3L);
+        
+        assertNull(expressionResultDTO.getError());
+        assertEquals(expressionResultDTO.getEvaluation(),1,0.01);
+    }
 
 
 }

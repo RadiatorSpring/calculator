@@ -5,18 +5,29 @@ import calculator.exceptions.CannotDivideByZeroException;
 import exceptions.WebException;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.impl.JobDetailImpl;
 import persistence.dao.ExpressionResultDAO;
+import persistence.dto.ExpressionResultDTO;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EmptyStackException;
 
 import static models.errors.ExceptionMessages.*;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class CalculatorServiceTest {
 
@@ -25,14 +36,37 @@ public class CalculatorServiceTest {
     @Mock
     private Computable computable;
     @Mock
-    private ExpressionResultDAO ExpressionResultDAO;
-
+    private ExpressionResultDAO expressionResultDAO;
+    @Mock
+    JobExecutionContext jobExecutionContext;
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    @Test
+    public void testQuartz() throws CannotDivideByZeroException {
+
+        ArgumentCaptor<Double> doubleArgumentCaptor = ArgumentCaptor.forClass(Double.class);
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Long> longCapture = ArgumentCaptor.forClass(Long.class);
+
+        when(expressionResultDAO.getAllNotEvaluated())
+                .thenReturn(Collections.singletonList(new ExpressionResultDTO("1-2", -1)
+                ));
+        when(computable.compute("1-2")).thenReturn(-1.0);
+
+        try {
+            calculatorService.execute(jobExecutionContext);
+        } catch (JobExecutionException e) {
+            assertEquals(e.getMessage(),EMPTY_STACK_EXCEPTION_MESSAGE);
+        }
+        verify(expressionResultDAO).update(longCapture.capture(),doubleArgumentCaptor.capture(),stringArgumentCaptor.capture());
+
+        assertEquals(doubleArgumentCaptor.getValue(),-1,0.01);
+        assertNull(stringArgumentCaptor.getValue());
+    }
 
     @Test
-    public void testExpressionAndResult() throws IOException, CannotDivideByZeroException, WebException {
+    public void testExpressionAndResult() throws CannotDivideByZeroException, WebException {
         String expression = "1-1";
         double result = 0.0;
         when(computable.compute(expression)).thenReturn(0.0);
@@ -54,8 +88,6 @@ public class CalculatorServiceTest {
     public void testCalculatorServletIllegalArgumentException() throws CannotDivideByZeroException, IOException, WebException {
         errorCasesRunner(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE, "aqefdgb", new IllegalArgumentException(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE));
     }
-
-
 
     private void errorCasesRunner(String message, String expression, Exception e) throws CannotDivideByZeroException, IOException, WebException {
 

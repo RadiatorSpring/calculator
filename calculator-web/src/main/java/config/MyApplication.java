@@ -10,7 +10,6 @@ import persistence.dao.ExpressionResultDAO;
 import services.CalculatorService;
 import web.CalculatorWebService;
 import web.ExpressionWebService;
-import web.HeadersService;
 
 import javax.ws.rs.ApplicationPath;
 
@@ -19,7 +18,7 @@ public class  MyApplication extends ResourceConfig {
     public MyApplication() {
         register(ExpressionWebService.class);
         register(CalculatorWebService.class);
-        register(HeadersService.class);
+
 
 
         register(new AbstractBinder() {

@@ -1,23 +1,12 @@
 package web;
 import calculator.exceptions.CannotDivideByZeroException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.WebException;
-import models.CalculatorResult;
-import models.errors.ErrorCodeMessage;
-import org.apache.poi.ss.formula.functions.T;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.MockitoRule;
-import org.mockito.stubbing.OngoingStubbing;
 import persistence.dao.ExpressionResultDAO;
 import services.CalculatorService;
 
@@ -33,7 +22,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorWebServiceTest {
-//todo write unit tests for getAll
 
     @InjectMocks
     private CalculatorWebService calculatorWebService;
@@ -41,12 +29,10 @@ public class CalculatorWebServiceTest {
     private CalculatorService calculatorService;
     @Mock
     private ObjectMapper objectMapper;
-    @Mock
-    private ExpressionResultDAO ExpressionResultDAO;
 
 
     @Test
-    public void testExpressionAndResult() throws IOException, WebException {
+    public void testExpressionAndResult() throws IOException {
         String expression = "1-1";
         String result = "{\"result\":0.0}";
 
@@ -97,7 +83,7 @@ public class CalculatorWebServiceTest {
         doNothing().when(spyService).saveResponseToDb(anyString());
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
-        return spyService.calculate(expression);
+        return spyService.saveExpression(expression);
     }
 
 }

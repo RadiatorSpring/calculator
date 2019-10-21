@@ -3,8 +3,6 @@ package persistence.dao;
 import org.hibernate.query.Query;
 import persistence.dto.ExpressionResultDTO;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,7 +13,7 @@ public class ExpressionResultDAO {
 
     private EntityManager entityManager;
 
-    public ExpressionResultDAO(String persistenceUnitName){
+    public ExpressionResultDAO(String persistenceUnitName) {
         setEntityManager(persistenceUnitName);
     }
 
@@ -28,7 +26,14 @@ public class ExpressionResultDAO {
     }
 
     public List<ExpressionResultDTO> getAll() {
-        Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager.createNamedQuery("ExpressionResultDTO_findAll", ExpressionResultDTO.class);
+        Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager
+                .createNamedQuery("ExpressionResultDTO_findAll", ExpressionResultDTO.class);
+        return query.getResultList();
+    }
+
+    public List<ExpressionResultDTO> getAllNotEvaluated() {
+        Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager
+                .createNamedQuery("ExpressionResultDTO_findAllNotEvaluated", ExpressionResultDTO.class);
         return query.getResultList();
     }
 
@@ -38,14 +43,25 @@ public class ExpressionResultDAO {
         entityManager.getTransaction().commit();
     }
 
-
     public ExpressionResultDTO getExpression(Long id) {
         return entityManager.find(ExpressionResultDTO.class, id);
     }
 
+
+
     private void setEntityManager(String unitName) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(unitName);
         entityManager = entityManagerFactory.createEntityManager();
+    }
+
+    public void update(long id, double evaluation, String error) {
+        entityManager.getTransaction().begin();
+        ExpressionResultDTO expressionResultDTO = getExpression(id);
+
+        expressionResultDTO.setEvaluation(evaluation);
+        expressionResultDTO.setError(error);
+
+        entityManager.getTransaction().commit();
     }
 
 

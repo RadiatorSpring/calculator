@@ -5,6 +5,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "expression_result")
 @NamedQuery(name = "ExpressionResultDTO_findAll", query = "select e from ExpressionResultDTO e")
+@NamedQuery(name = "ExpressionResultDTO_findAllNotEvaluated",
+        query = "select e from ExpressionResultDTO e where evaluation=0 and error=\'Is not evaluated\'")
 public class ExpressionResultDTO {
 
     @Id
@@ -20,8 +22,6 @@ public class ExpressionResultDTO {
 
     @Column
     private String error;
-
-
 
     public ExpressionResultDTO(String expression, double evaluation) {
         this.expression = expression;
@@ -46,7 +46,6 @@ public class ExpressionResultDTO {
     }
 
 
-
     public long getId() {
         return id;
     }
@@ -67,7 +66,7 @@ public class ExpressionResultDTO {
         return evaluation;
     }
 
-    public void setevaluation(double evaluation) {
+    public void setEvaluation(double evaluation) {
         this.evaluation = evaluation;
     }
 }
