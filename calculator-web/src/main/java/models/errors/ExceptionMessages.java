@@ -6,4 +6,6 @@ public class ExceptionMessages {
     public static final String EMPTY_PARAMETER_EXCEPTION = "The expression parameter cannot be empty";
     public static final String CANNOT_DIVIDE_BY_ZERO = "You cannot divide by zero";
     public static final String GENERAL_EXCEPTION_MESSAGE = "Something went wrong";
+    public static final String IS_NOT_EVALUATED = "Is not evaluated";
+    public static final String DOES_NOT_EXIST = "There is no entity with this id";
 }
