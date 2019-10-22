@@ -13,14 +13,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-
+@Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)
 public class ExpressionWebService {
 
@@ -48,7 +46,7 @@ public class ExpressionWebService {
     @Path("/expression/{id}")
     public Response getExpression(@PathParam(value = "id") long id) throws JsonProcessingException {
         ExpressionResultDTO expressionResultDTO = expressionResultDAO.getExpression(id);
-        String expressionJSON ;
+        String expressionJSON;
 
         if (expressionResultDTO == null) {
             String errorMessageJSON = createErrorMessageJSON();
@@ -69,7 +67,7 @@ public class ExpressionWebService {
     }
 
     private boolean isNotEvaluated(ExpressionResultDTO expressionResultDTO) {
-        if(expressionResultDTO.getError()==null) {
+        if (expressionResultDTO.getError() == null) {
             return false;
         }
         return expressionResultDTO

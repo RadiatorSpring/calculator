@@ -1,6 +1,7 @@
 package web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import models.Expression;
 import models.Id;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -11,12 +12,10 @@ import persistence.dto.ExpressionResultDTO;
 import services.CalculatorService;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -28,25 +27,26 @@ import static models.errors.ExceptionMessages.IS_NOT_EVALUATED;
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {
 
-    private CalculatorService calculatorService;
+
     private ObjectMapper mapper;
     private ExpressionResultDAO expressionResultDAO;
     private Response response;
     private final Logger logger = LoggerFactory.getLogger(CalculatorWebService.class);
 
     @Inject
-    public CalculatorWebService(CalculatorService calculatorService, ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
-        this.calculatorService = calculatorService;
+    public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
         this.mapper = mapper;
         this.expressionResultDAO = expressionResultDAO;
 
-        startScheduler();
     }
 
     @POST
     @Path("/calculate")
-    public Response saveExpression(@Valid @NotNull @QueryParam("expression") String expression) throws IOException {
-        long expressionId = saveResponseToDb(expression);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response saveExpression(Expression expression) throws IOException {
+        startScheduler();
+
+        long expressionId = saveResponseToDb(expression.getExpression());
         Id id = new Id(expressionId);
         String idAsJSON = mapper.writeValueAsString(id);
 
@@ -55,7 +55,7 @@ public class CalculatorWebService {
                 .build();
     }
 
-    long saveResponseToDb(String expression) throws IOException {
+    private long saveResponseToDb(String expression) {
         ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED);
         expressionResultDAO.save(expressionResultDTO);
         return expressionResultDTO.getId();
@@ -68,7 +68,7 @@ public class CalculatorWebService {
             Scheduler scheduler = schedulerFactory.getScheduler();
 
             JobDetail job = JobBuilder.newJob(CalculatorService.class)
-                    .withIdentity("distributor", "calculations")
+                    .withIdentity("evaluator", "calculations")
                     .build();
 
             Trigger trigger = TriggerBuilder.newTrigger()
