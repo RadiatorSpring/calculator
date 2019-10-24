@@ -62,6 +62,7 @@ public class ExpressionResultDAO {
         expressionResultDTO.setError(error);
 
         entityManager.getTransaction().commit();
+        entityManager.clear();
     }
 
 
