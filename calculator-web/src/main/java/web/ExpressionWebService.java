@@ -3,8 +3,9 @@ package web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import models.enums.Errors;
 import models.errors.ErrorCodeMessage;
-import models.errors.ExceptionMessages;
+import models.wrappers.CalculationResult;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 
@@ -17,6 +18,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
+
+import static java.util.Objects.isNull;
+import static models.errors.ExceptionMessages.DOES_NOT_EXIST;
+
 
 @Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,44 +48,48 @@ public class ExpressionWebService {
     }
 
     @GET
-    @Path("/expression/{id}")
+    @Path("/expressions/{id}")
     public Response getExpression(@PathParam(value = "id") long id) throws JsonProcessingException {
         ExpressionResultDTO expressionResultDTO = expressionResultDAO.getExpression(id);
-        String expressionJSON;
 
-        if (expressionResultDTO == null) {
-            String errorMessageJSON = createErrorMessageJSON();
-            return Response.status(400)
-                    .entity(errorMessageJSON)
-                    .build();
-        } else if (isNotEvaluated(expressionResultDTO)) {
-            expressionJSON = createExpressionJSON(expressionResultDTO);
-            return Response.accepted()
-                    .entity(expressionJSON)
-                    .build();
+        if (hasError(expressionResultDTO)) {
+            return createErrorResponse(expressionResultDTO);
         } else {
-            expressionJSON = createExpressionJSON(expressionResultDTO);
-            return Response.status(200)
-                    .entity(expressionJSON)
-                    .build();
+            return createEvaluationResponse(expressionResultDTO);
         }
     }
 
-    private boolean isNotEvaluated(ExpressionResultDTO expressionResultDTO) {
-        if (expressionResultDTO.getError() == null) {
-            return false;
+    private boolean hasError(ExpressionResultDTO expressionResultDTO) {
+        if (isNull(expressionResultDTO)) {
+            return true;
         }
-        return expressionResultDTO
-                .getError()
-                .equals(ExceptionMessages.IS_NOT_EVALUATED);
+        return expressionResultDTO.getError() != null;
     }
 
-    private String createErrorMessageJSON() throws JsonProcessingException {
-        ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(ExceptionMessages.DOES_NOT_EXIST, 400);
-        return mapper.writeValueAsString(errorCodeMessage);
+
+    private Response createErrorResponse(ExpressionResultDTO expressionResultDTO) throws JsonProcessingException {
+        if (isNull(expressionResultDTO)) {
+            int code = Errors.getCodeWithString(DOES_NOT_EXIST);
+            ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(DOES_NOT_EXIST, code);
+            String json = mapper.writeValueAsString(errorCodeMessage);
+
+            return Response.status(code).entity(json).build();
+        }
+
+        String errorMessage = expressionResultDTO.getError();
+        int errorCode = Errors.getCodeWithString(errorMessage);
+        ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(errorMessage, errorCode);
+        String json = mapper.writeValueAsString(errorCodeMessage);
+
+        return Response.status(errorCode).entity(json).build();
     }
 
-    private String createExpressionJSON(ExpressionResultDTO expressionResultDTO) throws JsonProcessingException {
-        return mapper.writeValueAsString(expressionResultDTO);
+    private Response createEvaluationResponse(ExpressionResultDTO expressionResultDTO) throws JsonProcessingException {
+        double result = expressionResultDTO.getEvaluation();
+        CalculationResult calculationResult = new CalculationResult(result);
+        String json = mapper.writeValueAsString(calculationResult);
+
+        return Response.status(200).entity(json).build();
     }
+
 }

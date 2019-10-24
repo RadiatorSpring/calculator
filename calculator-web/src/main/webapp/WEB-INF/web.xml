@@ -54,5 +54,10 @@
     <security-role>
         <role-name>admin</role-name>
     </security-role>
+    <listener>
+        <listener-class>
+            config.listener.CalculatorListener
+        </listener-class>
+    </listener>
 
 </web-app>
