@@ -1,15 +1,13 @@
 package web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.Expression;
-import models.Id;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
+import models.wrappers.CalculationId;
+
+import models.wrappers.CalculatorExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
-import services.CalculatorService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -27,7 +25,6 @@ import static models.errors.ExceptionMessages.IS_NOT_EVALUATED;
 @Produces(MediaType.APPLICATION_JSON)
 public class CalculatorWebService {
 
-
     private ObjectMapper mapper;
     private ExpressionResultDAO expressionResultDAO;
     private Response response;
@@ -37,17 +34,18 @@ public class CalculatorWebService {
     public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
         this.mapper = mapper;
         this.expressionResultDAO = expressionResultDAO;
-
     }
 
     @POST
     @Path("/calculate")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response saveExpression(Expression expression) throws IOException {
-        startScheduler();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response saveExpression(String expression) throws IOException {
 
-        long expressionId = saveResponseToDb(expression.getExpression());
-        Id id = new Id(expressionId);
+        CalculatorExpression calculatorExpression = mapper.readValue(expression, CalculatorExpression.class);
+
+        long expressionId = saveResponseToDb(calculatorExpression.getExpression());
+        CalculationId id = new CalculationId(expressionId);
         String idAsJSON = mapper.writeValueAsString(id);
 
         return Response.status(202)
@@ -55,37 +53,15 @@ public class CalculatorWebService {
                 .build();
     }
 
-    private long saveResponseToDb(String expression) {
+     private long saveResponseToDb(String expression) {
         ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED);
         expressionResultDAO.save(expressionResultDTO);
+        logger.error(expressionResultDTO.getError());
         return expressionResultDTO.getId();
-    }
-
-    private void startScheduler() {
-
-        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-
-            JobDetail job = JobBuilder.newJob(CalculatorService.class)
-                    .withIdentity("evaluator", "calculations")
-                    .build();
-
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity("myTrigger", "group1")
-                    .startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                            .withIntervalInSeconds(4)
-                            .repeatForever())
-                    .build();
-
-            scheduler.scheduleJob(job, trigger);
-
-            scheduler.start();
-
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
     }
 
 
 }
+
+
+

@@ -22,7 +22,8 @@ public class CalculatorService implements Job {
     private ExpressionResultDAO expressionResultDAO;
 
     public CalculatorService() {
-        computable = new Calculator();
+        this.computable = new Calculator();
+        this.expressionResultDAO = new ExpressionResultDAO();
     }
 
     public CalculatorService(Computable computable, ExpressionResultDAO expressionResultDAO) {
@@ -30,12 +31,7 @@ public class CalculatorService implements Job {
         this.expressionResultDAO = expressionResultDAO;
     }
 
-    @Inject
-    public CalculatorService(Computable computable) {
-        this.computable = computable;
-    }
-
-    public double compute(String expression) throws WebException {
+    double compute(String expression) throws WebException {
         if (!isEmptyExpression(expression)) {
             try {
                 return computable.compute(expression);
@@ -78,5 +74,6 @@ public class CalculatorService implements Job {
         }
 
         expressionResultDAO.update(expressionDTO.getId(), result, error);
+
     }
 }

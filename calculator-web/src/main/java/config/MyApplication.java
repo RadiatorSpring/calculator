@@ -3,8 +3,10 @@ package config;
 import calculator.Calculator;
 import calculator.Computable;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import factories.ResponseFactory;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import persistence.dao.ExpressionResultDAO;
 import services.CalculatorService;
@@ -18,8 +20,6 @@ public class  MyApplication extends ResourceConfig {
     public MyApplication() {
         register(ExpressionWebService.class);
         register(CalculatorWebService.class);
-
-
 
         register(new AbstractBinder() {
             @Override
