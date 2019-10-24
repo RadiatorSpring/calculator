@@ -1,38 +1,31 @@
-package integration.security.page;
+package integration.page;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class SecurityPage {
+public class WebPage {
     private String URL = "http://localhost:9090/calculator-web/api/v1/calculate";
-    private String URL_FOR_VERIFICATION = "http://localhost:9090/calculator-web/api/v1/expressions/";
 
-    public HttpResponse createHttpResponseWithCredentials(String expression) throws IOException {
-        return createHttpResponseWithCredentials(URL, expression, "admin", "admin");
+    public HttpResponse createHttpResponse(String expression) throws IOException {
+        return createHttpResponse(URL, expression, "admin", "admin");
     }
 
     public int executeURLWithCredentials(String url, String expression, String username, String password) throws IOException {
-        HttpResponse response = createHttpResponseWithCredentials(url, expression, username, password);
+        HttpResponse response = createHttpResponse(url, expression, username, password);
 
         return response.getStatusLine().getStatusCode();
     }
 
-    private HttpResponse createHttpResponseWithCredentials(String url, String expression, String username, String password) throws IOException {
+    private HttpResponse createHttpResponse(String url, String expression, String username, String password) throws IOException {
         String json = "{\"expression\":" + "\"" + expression + "\"" + "}";
         StringEntity entity = new StringEntity(json);
 
@@ -45,8 +38,8 @@ public class SecurityPage {
         return client.execute(httpPost);
     }
 
-    public HttpResponse createHttpResponseWithCredentials(String url, String expression) throws IOException {
-        return createHttpResponseWithCredentials(url, expression, "admin", "admin");
+    public HttpResponse createHttpResponse(String url, String expression) throws IOException {
+        return createHttpResponse(url, expression, "admin", "admin");
     }
 
     public HttpResponse executeGetRequest(String url, String username, String password) throws IOException {
@@ -76,7 +69,7 @@ public class SecurityPage {
         return "Basic " + new String(encodedAuth);
     }
 
-    public HttpResponse executeGetRequest(String url) throws IOException {
+    HttpResponse executeGetRequest(String url) throws IOException {
         return executeGetRequest(url, "admin", "admin");
     }
 }

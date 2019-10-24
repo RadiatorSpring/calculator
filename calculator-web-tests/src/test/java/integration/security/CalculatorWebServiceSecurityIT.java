@@ -1,18 +1,10 @@
 package integration.security;
 
-import integration.security.page.SecurityPage;
+import integration.page.WebPage;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
@@ -20,14 +12,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CalculatorWebServiceSecurityIT {
-    private SecurityPage security;
+    private WebPage security;
     private static final String REST_URL = "http://localhost:9090/calculator-web/api/v1/calculate";
 
     @Before
     public void setup() {
-        security = new SecurityPage();
+        security = new WebPage();
     }
-
 
     @Test
     public void testSuccessfulLoginToRestApi() throws IOException {
@@ -39,9 +30,15 @@ public class CalculatorWebServiceSecurityIT {
 
     @Test
     public void testWrongUsernameToRestApi() throws IOException {
-
         int statusCode = security.executeURLWithCredentials(REST_URL,"1-1", "root", "admin");
 
         assertThat(statusCode, equalTo(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
+    public void testWrongCredentialsOnGetRequest() throws IOException {
+        HttpResponse response = security.executeGetRequest(REST_URL, "root", "admin");
+
+        assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpStatus.SC_UNAUTHORIZED));
     }
 }

@@ -1,4 +1,4 @@
-package integration.db.page;
+package integration.db;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,16 +11,15 @@ public class BaseDBTest {
     public void createDBConfiguration() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("integration-test");
         entityManager = entityManagerFactory.createEntityManager();
-
     }
 
-    protected void clearTable() {
+    void clearTable() {
         entityManager.getTransaction().begin();
         entityManager.createNativeQuery("delete from expression_result").executeUpdate();
         entityManager.getTransaction().commit();
     }
 
-    protected EntityManager getEntityManager() {
+    EntityManager getEntityManager() {
         return entityManager;
     }
 

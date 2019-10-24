@@ -1,7 +1,6 @@
 package integration.db;
 
-import integration.db.page.BaseDBTest;
-import integration.security.page.SecurityPage;
+import integration.page.WebPage;
 import org.junit.Before;
 import org.junit.Test;
 import persistence.dao.ExpressionResultDAO;
@@ -16,13 +15,13 @@ import static org.junit.Assert.assertEquals;
 public class ExpressionWebServiceIT extends BaseDBTest {
     private static final String LOCAL_URL = "http://localhost:9090/calculator-web/api/v1/calculate";
     private ExpressionResultDAO expressionResultDAO;
-    private SecurityPage securityPage;
+    private WebPage webPage;
 
     @Before
     public void createDBConfiguration() {
         super.createDBConfiguration();
         expressionResultDAO = new ExpressionResultDAO(getEntityManager());
-        securityPage = new SecurityPage();
+        webPage = new WebPage();
 
         clearTable();
     }
@@ -32,8 +31,8 @@ public class ExpressionWebServiceIT extends BaseDBTest {
     public void testGetAll() throws IOException {
         String expression1 = "1-1";
         String expression2 = "1-2";
-        securityPage.createHttpResponseWithCredentials(LOCAL_URL ,expression1);
-        securityPage.createHttpResponseWithCredentials(LOCAL_URL ,expression2);
+        webPage.createHttpResponse(LOCAL_URL ,expression1);
+        webPage.createHttpResponse(LOCAL_URL ,expression2);
 
         List<ExpressionResultDTO> expressionResultDTOS = expressionResultDAO.getAll();
 
