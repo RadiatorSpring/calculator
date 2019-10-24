@@ -14,6 +14,7 @@ import persistence.dto.ExpressionResultDTO;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
+import static models.errors.ExceptionMessages.EMPTY_STACK_EXCEPTION_MESSAGE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +54,7 @@ public class ExpressionWebServiceTest {
     }
 
     @Test
-    public void testExistingId() throws IOException {
+    public void testExistingResultId() throws IOException {
 
         String result = "{\"result\":0.0}";
 
@@ -63,6 +64,19 @@ public class ExpressionWebServiceTest {
         Response response = expressionWebService.getExpression(1);
         Assert.assertEquals(response.getEntity().toString(), result);
     }
+    @Test
+    public void testExistingErrorId() throws IOException {
+
+
+        String result = "{\"message\":\"" + EMPTY_STACK_EXCEPTION_MESSAGE + "\"," + "\"code\":" + 400 + "}";
+
+        when(expressionResultDAO.getExpression(1L)).thenReturn(new ExpressionResultDTO("1--1", EMPTY_STACK_EXCEPTION_MESSAGE));
+        when(objectMapper.writeValueAsString(any())).thenReturn(result);
+
+        Response response = expressionWebService.getExpression(1);
+        Assert.assertEquals(response.getEntity().toString(), result);
+    }
+
 
     private String messageAsJSON(String message, int code) {
         return "{\"message\":\"" + message + "\"," + "\"code\":" + code + "}";

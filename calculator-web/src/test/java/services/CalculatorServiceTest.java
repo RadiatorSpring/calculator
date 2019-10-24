@@ -8,26 +8,23 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.impl.JobDetailImpl;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EmptyStackException;
 
 import static models.errors.ExceptionMessages.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CalculatorServiceTest {
 
@@ -59,6 +56,7 @@ public class CalculatorServiceTest {
         } catch (JobExecutionException e) {
             assertEquals(e.getMessage(),EMPTY_STACK_EXCEPTION_MESSAGE);
         }
+
         verify(expressionResultDAO).update(longCapture.capture(),doubleArgumentCaptor.capture(),stringArgumentCaptor.capture());
 
         assertEquals(doubleArgumentCaptor.getValue(),-1,0.01);
