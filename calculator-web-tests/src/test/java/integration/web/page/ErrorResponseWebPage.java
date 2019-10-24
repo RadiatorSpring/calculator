@@ -7,8 +7,8 @@ import java.io.IOException;
 public class ErrorResponseWebPage extends BaseWebPage {
 
 
-    public ErrorResponseWebPage(String url) throws IOException {
-        super(url);
+    public ErrorResponseWebPage(String url,String expression) throws IOException {
+        super(url,expression);
     }
 
     public void verifyMessage(String expectedMessage) {

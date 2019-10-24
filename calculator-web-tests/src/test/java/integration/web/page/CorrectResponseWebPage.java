@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class CorrectResponseWebPage extends BaseWebPage {
 
-    public CorrectResponseWebPage(String url) throws IOException {
-        super(url);
+    public CorrectResponseWebPage(String url,String expression) throws IOException {
+        super(url,expression);
     }
 
     public void verifyResult(double expectedResult) {

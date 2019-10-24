@@ -1,6 +1,6 @@
-package models;
+package models.wrappers;
 
-public class Expression {
+public class CalculatorExpression {
     private String expression;
 
     public String getExpression() {
@@ -11,7 +11,10 @@ public class Expression {
         this.expression = expression;
     }
 
-    public Expression(String expression) {
+    public CalculatorExpression() {
+    }
+
+    public CalculatorExpression(String expression) {
         this.expression = expression;
     }
 }

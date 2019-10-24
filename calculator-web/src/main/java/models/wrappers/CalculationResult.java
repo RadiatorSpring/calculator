@@ -1,13 +1,13 @@
-package models;
+package models.wrappers;
 
-public class CalculatorResult {
+public class CalculationResult {
     private double result ;
 
-    public CalculatorResult(double result) {
+    public CalculationResult(double result) {
         this.result = result;
     }
 
-    public CalculatorResult() {
+    public CalculationResult() {
     }
 
     public double getResult() {

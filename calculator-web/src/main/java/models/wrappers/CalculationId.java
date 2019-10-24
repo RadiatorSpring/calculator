@@ -1,6 +1,6 @@
-package models;
+package models.wrappers;
 
-public class Id {
+public class CalculationId {
     private long id;
 
     public long getId() {
@@ -11,8 +11,10 @@ public class Id {
         this.id = id;
     }
 
-    public Id(long id) {
+    public CalculationId() {
+    }
 
+    public CalculationId(long id) {
         this.id = id;
     }
 }

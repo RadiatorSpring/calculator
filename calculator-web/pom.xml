@@ -13,6 +13,7 @@
     <packaging>war</packaging>
     <properties>
         <servletPath>/calculator</servletPath>
+        <jackson.version>2.9.1</jackson.version>
     </properties>
 
     <build>
@@ -172,6 +173,12 @@
             <artifactId>jersey-hk2</artifactId>
             <version>2.28</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.29</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.sap.cloud/neo-java-web-sdk -->
         <dependency>
             <groupId>com.sap.cloud</groupId>
@@ -189,11 +196,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
         <dependency>
@@ -303,6 +305,28 @@
             <artifactId>quartz</artifactId>
             <version>2.3.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.deltaspike.cdictrl/deltaspike-cdictrl-owb -->
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-owb</artifactId>
+            <version>1.9.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+
 
 
     </dependencies>
