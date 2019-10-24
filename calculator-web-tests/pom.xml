@@ -158,13 +158,8 @@
             <version>0.5.0</version>
         </dependency>
 
-        <!--        to do remove-->
-        <dependency>
-            <groupId>httpunit</groupId>
-            <artifactId>httpunit</artifactId>
-            <version>1.6.2</version> <!-- Do NOT use 1.7 as it submits form twice -->
-            <scope>test</scope>
-        </dependency>
+
+
     </dependencies>
 
 </project>

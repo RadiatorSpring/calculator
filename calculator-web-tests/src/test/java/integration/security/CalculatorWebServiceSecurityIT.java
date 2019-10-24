@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CalculatorWebServiceSecurityIT {
     private SecurityPage security;
-    private static final String REST_URL = "http://localhost:9090/calculator-web/api/v1/calculate?expression=1-1";
+    private static final String REST_URL = "http://localhost:9090/calculator-web/api/v1/calculate";
 
     @Before
     public void setup() {
@@ -32,15 +32,15 @@ public class CalculatorWebServiceSecurityIT {
     @Test
     public void testSuccessfulLoginToRestApi() throws IOException {
 
-        int statusCode = security.executeURLWithCredentials(REST_URL, "admin", "admin");
+        int statusCode = security.executeURLWithCredentials(REST_URL,"1-1", "admin", "admin");
 
-        assertThat(statusCode, equalTo(HttpStatus.SC_OK));
+        assertThat(statusCode, equalTo(HttpStatus.SC_ACCEPTED));
     }
 
     @Test
     public void testWrongUsernameToRestApi() throws IOException {
 
-        int statusCode = security.executeURLWithCredentials(REST_URL, "root", "admin");
+        int statusCode = security.executeURLWithCredentials(REST_URL,"1-1", "root", "admin");
 
         assertThat(statusCode, equalTo(HttpStatus.SC_UNAUTHORIZED));
     }

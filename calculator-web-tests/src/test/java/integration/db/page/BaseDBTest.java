@@ -12,7 +12,6 @@ public class BaseDBTest {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("integration-test");
         entityManager = entityManagerFactory.createEntityManager();
 
-        clearTable();
     }
 
     protected void clearTable() {
