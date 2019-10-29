@@ -24,7 +24,6 @@ sap.ui.define([
 				"method": "POST",
 				"headers": {
 					"Content-Type": "application/json",
-					"Authorization": "Basic aTUxNjQ0NTpBbGV4NHkxOTk4",
 					"Accept": "*/*",
 					"Cache-Control": "no-cache",
 					"cache-control": "no-cache"
@@ -32,23 +31,19 @@ sap.ui.define([
 				"data": "{\n    \"expression\": \"" + expression + "\"\n}"
 
 			}
-			var thisComponent = this;
 			$.ajax(settings)
 				.done(function (response) {
-					console.log(response);
 					var id = response.id;
 					var isEvaluated = false;
-					console.log(id);
 
 					var getCall = setInterval(() => {
-						isEvaluated = thisComponent.onGet(id);
-						console.log(isEvaluated);
+						isEvaluated = this.onGet(id);
 						if (isEvaluated) {
 							clearInterval(getCall);
 						}
 					}, 1600)
 
-				}.bind(thisComponent))
+				}.bind(this))
 				.fail(function (response) {
 					console.log(response);
 				})
@@ -57,13 +52,11 @@ sap.ui.define([
 		onGet: async function (id) {
 
 			var statusCodeOk = 200;
-			var statusCodeAccepted = 202;
 
 			var settings = {
 				"async": true,
 				"crossDomain": true,
 				"url": "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/" + id,
-				"Authorization": "Basic aTUxNjQ0NTpBbGV4NHkxOTk4",
 				"method": "GET",
 				"headers": {
 					"Content-Type": "application/json",
@@ -82,7 +75,6 @@ sap.ui.define([
 					isEvaluated = true;
 				}
 			}.bind(thisComponent)).fail(function (response) {
-				console.log(response);
 				var sError = response.responseJSON.message;
 				this.getView().byId("errorText").setText(sError)
 				isEvaluated = true;
