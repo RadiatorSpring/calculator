@@ -2,7 +2,7 @@
 	<Panel headerText="{i18n>ExpressionTitle}" class="sapUiResponsiveMargin" width="auto">
 		<content>
 			<Input id="expression" valueLiveUpdate="true" width="60%"/>
-			<Button id="calculateBtn" text="calculate" class="myCustomButton" press=".onCalculate"/>
+			<Button id="calculateBtn" text="calculate" class="myCustomButton" press=".onPost"/>
 		</content>
 		<content>
 			<Input id="result" value="{/result}" valueLiveUpdate="true" width="60%"/>

@@ -1,6 +1,6 @@
 sap.ui.define([
-		"sap/ui/thirdparty/sinon"
-	],
+	"sap/ui/thirdparty/sinon"
+],
 	function (sinon) {
 
 		function fakeResponse(server, url, message, code) {
@@ -9,13 +9,28 @@ sap.ui.define([
 			}, message]);
 		}
 
+		function fakePostResponse(server, url, id, expression, code) {
+			server.respondWith("POST", url, function (xhr) {
+				console.log(xhr.requestBody);
+
+				var jsonExpression = "{\n    \"expression\": \"" + expression + "\"\n}";
+				console.log(xhr.requestBody)
+				if (xhr.requestBody.localeCompare(jsonExpression) == 0) {
+					console.log("the id here is " + id)
+					xhr.respond(code, { "Content-Type": "application/json" }, '{ "id": ' + id + '}');
+				}
+			});
+		}
+
 		return {
 
 			init: function () {
-				var urlForEmptyParameterException = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=/;
-				var urlForIllegalArgumentException = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1-1a.*/;
-				var urlForTooManyOperators = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1--1.*/;
-				var urlForCorrectInput = /\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate\?expression=.*1-1\*\(1%2B1\)\/2.*/;
+				var postURL = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate/;
+				var urlForMock = /.*\/calculator-web-1.0-SNAPSHOT\/.*/;
+				var urlForEmptyParameterException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/1/;
+				var urlForIllegalArgumentException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/2/;
+				var urlForTooManyOperators = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/3/;
+				var urlForCorrectInput = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/4/;
 
 				var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
 				var messageForIllegalArgumentException =
@@ -30,13 +45,19 @@ sap.ui.define([
 
 				sinon.fakeServer.xhr.useFilters = true;
 				this.oServer.xhr.addFilter(function (method, url) {
-					return !url.match(urlForEmptyParameterException);
+					return !url.match(urlForMock);
 				});
 
 				fakeResponse(this.oServer, urlForEmptyParameterException, messageForEmptyParameterException, 400);
 				fakeResponse(this.oServer, urlForIllegalArgumentException, messageForIllegalArgumentException, 400);
 				fakeResponse(this.oServer, urlForTooManyOperators, messageForTooManyOperators, 400);
 				fakeResponse(this.oServer, urlForCorrectInput, messageForCorrectInput, 200);
+
+				fakePostResponse(this.oServer, postURL, 1, "", 200);
+				fakePostResponse(this.oServer, postURL, 2, "1-1a", 200);
+				fakePostResponse(this.oServer, postURL, 3, "1--1", 200);
+				fakePostResponse(this.oServer, postURL, 4, "1-1*(1+1)/2", 200);
+
 			}
 		};
 
