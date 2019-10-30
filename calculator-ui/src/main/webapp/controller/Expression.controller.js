@@ -7,13 +7,9 @@ sap.ui.define([
 ], function (Controller, JSONModel, Formatter) {
 	"use strict";
 
-	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
 
 
 	return Controller.extend("calculator.ui.controller.Expression", {
-
 
 		onPost: function () {
 			var expression = this.getView().byId("expression").getValue();
@@ -34,7 +30,7 @@ sap.ui.define([
 			$.ajax(settings)
 				.done(function (response) {
 					var id = response.id;
-					var isEvaluated = false;
+					let isEvaluated = false;
 
 					var getCall = setInterval(() => {
 						isEvaluated = this.onGet(id);
@@ -64,7 +60,7 @@ sap.ui.define([
 				},
 				"processData": false,
 			}
-			var isEvaluated = false;
+			let isEvaluated = false;
 			var thisComponent = this;
 
 			await $.ajax(settings).done(function (response, _status, jqXHR) {
