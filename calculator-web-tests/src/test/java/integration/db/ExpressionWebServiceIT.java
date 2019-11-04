@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 
 public class ExpressionWebServiceIT extends BaseDBTest {
-    private static final String LOCAL_URL = "http://localhost:9090/calculator-web/api/v1/calculate";
     private ExpressionResultDAO expressionResultDAO;
     private WebPage webPage;
 
@@ -31,8 +30,8 @@ public class ExpressionWebServiceIT extends BaseDBTest {
     public void testGetAll() throws IOException {
         String expression1 = "1-1";
         String expression2 = "1-2";
-        webPage.createHttpResponse(LOCAL_URL ,expression1);
-        webPage.createHttpResponse(LOCAL_URL ,expression2);
+        webPage.executePostRequest(expression1);
+        webPage.executePostRequest(expression2);
 
         List<ExpressionResultDTO> expressionResultDTOS = expressionResultDAO.getAll();
 

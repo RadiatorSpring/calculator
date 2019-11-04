@@ -7,15 +7,17 @@ import javax.persistence.Persistence;
 public class BaseDBTest {
 
     private EntityManager entityManager;
+    private static final String PERSISTENCE_UNIT_NAME = "integration-test";
+    private static final String QUERY_FOR_DELETION = "delete from expression_result";
 
     public void createDBConfiguration() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("integration-test");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         entityManager = entityManagerFactory.createEntityManager();
     }
 
     void clearTable() {
         entityManager.getTransaction().begin();
-        entityManager.createNativeQuery("delete from expression_result").executeUpdate();
+        entityManager.createNativeQuery(QUERY_FOR_DELETION).executeUpdate();
         entityManager.getTransaction().commit();
     }
 

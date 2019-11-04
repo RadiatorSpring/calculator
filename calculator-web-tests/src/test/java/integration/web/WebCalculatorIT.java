@@ -5,42 +5,56 @@ import integration.page.exceptions.CalculatorException;
 import models.errors.ExceptionMessages;
 import org.junit.Before;
 import org.junit.Test;
+import org.quartz.SchedulerException;
 
 import java.io.IOException;
 
 import static models.errors.ExceptionMessages.*;
 
 public class WebCalculatorIT {
+    private static final int SC_BAD_REQUEST = 400;
     private CalculatorPage calculatorPage;
+
     @Before
-    public void setup(){
+    public void setup() {
         calculatorPage = new CalculatorPage();
     }
 
     @Test
-    public void calculationTest() throws IOException, InterruptedException {
-        calculatorPage.calculate("(1-1)+1/2*5");
+    public void calculationTest() throws Exception {
+        String correctExpression = "(1-1)+1/2*5";
+        double expectedEvaluation = 2.5;
 
-        calculatorPage.verify(2.5);
+        calculatorPage.calculate(correctExpression);
+
+        calculatorPage.verify(expectedEvaluation);
     }
 
     @Test
-    public void tooManyArgumentsTest() throws IOException, InterruptedException {
-        calculatorPage.calculate("1--1");
+    public void tooManyArgumentsTest() throws Exception {
+        String tooManyArgumentsExpression = "1--1";
 
-        calculatorPage.verifyError(EMPTY_STACK_EXCEPTION_MESSAGE,400);
+        calculatorPage.calculate(tooManyArgumentsExpression);
+
+        calculatorPage.verifyError(EMPTY_STACK_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
     }
-    @Test
-    public void illegalCharactersTest() throws IOException, InterruptedException {
-        calculatorPage.calculate("1-asfd1");
 
-        calculatorPage.verifyError(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE,400);
+    @Test
+    public void illegalCharactersTest() throws Exception {
+        String expressionWithIllegalCharacters = "1-asfd1";
+
+        calculatorPage.calculate(expressionWithIllegalCharacters);
+
+        calculatorPage.verifyError(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
     }
-    @Test
-    public void divisionByZeroTest() throws IOException, InterruptedException {
-        calculatorPage.calculate("100/(0)");
 
-        calculatorPage.verifyError(CANNOT_DIVIDE_BY_ZERO,400);
+    @Test
+    public void divisionByZeroTest() throws Exception {
+        String expressionWithDivisionByZero = "100/(0)";
+
+        calculatorPage.calculate(expressionWithDivisionByZero);
+
+        calculatorPage.verifyError(CANNOT_DIVIDE_BY_ZERO, SC_BAD_REQUEST);
     }
 
 }

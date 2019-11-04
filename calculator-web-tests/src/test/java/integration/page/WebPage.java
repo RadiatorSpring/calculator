@@ -13,34 +13,38 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class WebPage {
-    private String URL = "http://localhost:9090/calculator-web/api/v1/calculate";
+    private final static String URL = "http://localhost:9090/calculator-web/api/v1/calculate";
+    private static final String URL_FOR_EXPRESSIONS = "http://localhost:9090/calculator-web/api/v1/expressions/";
+    private static final String VALID_USERNAME = "admin";
+    private static final String VALID_PASSWORD = "admin";
 
-    public HttpResponse createHttpResponse(String expression) throws IOException {
-        return createHttpResponse(URL, expression, "admin", "admin");
+
+    public HttpResponse executePostRequest(String expression) throws IOException {
+        return executePostRequest(URL, expression, VALID_USERNAME, VALID_PASSWORD);
     }
 
     public int executeURLWithCredentials(String url, String expression, String username, String password) throws IOException {
-        HttpResponse response = createHttpResponse(url, expression, username, password);
+        HttpResponse response = executePostRequest(url, expression, username, password);
 
         return response.getStatusLine().getStatusCode();
     }
 
-    private HttpResponse createHttpResponse(String url, String expression, String username, String password) throws IOException {
+    private HttpResponse executePostRequest(String url, String expression, String username, String password) throws IOException {
         String json = "{\"expression\":" + "\"" + expression + "\"" + "}";
+        String contentType = "Content-Type";
+        String accept = "Accept";
+        String mediaTypeApplicationJSON = "application/json";
         StringEntity entity = new StringEntity(json);
 
         HttpPost httpPost = createHttpPostWithCredentials(url, username, password);
-        httpPost.addHeader("Content-Type", "application/json");
-        httpPost.setHeader("Accept", "application/json");
+        httpPost.addHeader(contentType, mediaTypeApplicationJSON);
+        httpPost.setHeader(accept, mediaTypeApplicationJSON);
         httpPost.setEntity(entity);
 
         HttpClient client = HttpClientBuilder.create().build();
         return client.execute(httpPost);
     }
 
-    public HttpResponse createHttpResponse(String url, String expression) throws IOException {
-        return createHttpResponse(url, expression, "admin", "admin");
-    }
 
     public HttpResponse executeGetRequest(String url, String username, String password) throws IOException {
         HttpGet httpGet = createHttpGetWithCredentials(url, username, password);
@@ -69,7 +73,7 @@ public class WebPage {
         return "Basic " + new String(encodedAuth);
     }
 
-    HttpResponse executeGetRequest(String url) throws IOException {
-        return executeGetRequest(url, "admin", "admin");
+    HttpResponse executeGetRequest(String id ) throws IOException {
+        return executeGetRequest(URL_FOR_EXPRESSIONS + id, VALID_USERNAME, VALID_PASSWORD);
     }
 }
