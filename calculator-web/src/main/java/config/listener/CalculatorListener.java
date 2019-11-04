@@ -6,18 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import services.CalculatorService;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 
 public class CalculatorListener implements ServletContextListener {
 
-    private Logger logger = LoggerFactory.getLogger(CalculatorListener.class);
+    private Scheduler scheduler;
+    private static final Logger logger = LoggerFactory.getLogger(CalculatorListener.class);
+    private static final String TRIGGER_FOR_CALCULATION = "CalculationTrigger";
+    private static final String CALCULATION_GROUP = "calculations";
+    private static final String CALCULATOR_EVALUATOR = "evaluator";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        logger.info("Starting Scheduler...\n");
         startScheduler();
-        logger.info("Scheduler started\n");
+
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
@@ -27,25 +31,30 @@ public class CalculatorListener implements ServletContextListener {
 
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
+            scheduler = schedulerFactory.getScheduler();
 
             JobDetail job = JobBuilder.newJob(CalculatorService.class)
-                    .withIdentity("evaluator", "calculations")
+                    .withIdentity(CALCULATOR_EVALUATOR, CALCULATION_GROUP)
                     .build();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity("myTrigger", "group1")
-                    .startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                    .withIdentity(TRIGGER_FOR_CALCULATION, CALCULATION_GROUP)
+                    .startNow()
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                             .withIntervalInSeconds(2)
                             .repeatForever())
                     .build();
 
             scheduler.scheduleJob(job, trigger);
-
+            logger.error(String.valueOf(scheduler));
             scheduler.start();
-
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
+    }
+
+
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 }
