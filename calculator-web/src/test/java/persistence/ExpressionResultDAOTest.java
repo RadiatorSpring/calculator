@@ -37,48 +37,62 @@ public class ExpressionResultDAOTest {
     private static final String CONNECTION_URL = "jdbc:derby:memory://127.0.0.1:1527/calculator;create=true";
     private static JdbcDatabaseTester databaseTester;
     private ExpressionResultDAO expressionResultDAO;
-
+    private static final String PERSISTENCE_UNIT_NAME = "test";
 
     @Before
-    public void test() throws Exception {
-        databaseTester = new JdbcDatabaseTester(
-                DERBY_DRIVER,
-                CONNECTION_URL);
-        expressionResultDAO = new ExpressionResultDAO("test");
+    public void setup() throws Exception {
+        createTestDBClasses();
         populateDB();
-    }
-
-    private void populateDB() throws Exception {
-        IDatabaseConnection databaseConnection = databaseTester.getConnection();
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(new FileInputStream(INITIAL_STATE));
-        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, dataSet);
     }
 
     @Test
     public void findTest() {
-        ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(1L);
+        long testId = 1;
+        ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(testId);
         assertNotNull(foundDTO);
     }
 
     @Test
     public void findAllTest() {
+        int expectedSize = 3;
+
         List<ExpressionResultDTO> list = expressionResultDAO.getAll();
-        assertEquals(list.size(), 3);
+        assertEquals(list.size(), expectedSize);
     }
 
     @Test
     public void findAllNotEvaluatedTest() {
-        List<ExpressionResultDTO> list=expressionResultDAO.getAllNotEvaluated();
-        assertEquals(list.size(),1);
+        int expectedSize = 1;
+
+        List<ExpressionResultDTO> list = expressionResultDAO.getAllNotEvaluated();
+        assertEquals(list.size(), expectedSize);
     }
 
     @Test
-    public void testUpdate(){
-        expressionResultDAO.update(3L,1,null);
-        ExpressionResultDTO expressionResultDTO = expressionResultDAO.getExpression(3L);
-        
+    public void testUpdate() {
+        long notEvaluatedExpressionID = 3;
+        double evaluation = 1;
+        double delta = 0.01;
+
+        expressionResultDAO.update(notEvaluatedExpressionID, evaluation, null);
+        ExpressionResultDTO expressionResultDTO = expressionResultDAO.getExpression(notEvaluatedExpressionID);
+
         assertNull(expressionResultDTO.getError());
-        assertEquals(expressionResultDTO.getEvaluation(),1,0.01);
+        assertEquals(expressionResultDTO.getEvaluation(), evaluation, delta);
+    }
+
+    private void populateDB() throws Exception {
+        IDatabaseConnection databaseConnection = databaseTester.getConnection();
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(new FileInputStream(INITIAL_STATE));
+
+        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, dataSet);
+    }
+
+    private void createTestDBClasses() throws ClassNotFoundException {
+        databaseTester = new JdbcDatabaseTester(
+                DERBY_DRIVER,
+                CONNECTION_URL);
+        expressionResultDAO = new ExpressionResultDAO(PERSISTENCE_UNIT_NAME);
     }
 
 
