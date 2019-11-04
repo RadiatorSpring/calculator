@@ -36,16 +36,19 @@ public class CalculatorService implements Job {
             try {
                 return computable.compute(expression);
             } catch (CannotDivideByZeroException e) {
+                logger.error(e.getMessage());
                 throw new WebException(CANNOT_DIVIDE_BY_ZERO);
             } catch (IllegalArgumentException e) {
+                logger.error(e.getMessage());
                 throw new WebException(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE);
             } catch (EmptyStackException e) {
+                logger.error(e.getMessage());
                 throw new WebException(EMPTY_STACK_EXCEPTION_MESSAGE);
             } catch (Exception e) {
+                logger.error(e.getMessage());
                 throw new WebException(GENERAL_EXCEPTION_MESSAGE);
             }
         }
-        logger.info("the expression passed was -> " + expression);
         throw new WebException(EMPTY_PARAMETER_EXCEPTION);
     }
 
