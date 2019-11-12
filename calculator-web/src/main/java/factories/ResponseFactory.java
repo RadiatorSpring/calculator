@@ -1,7 +1,6 @@
 package factories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import models.errors.ErrorCodeMessage;
+import models.wrappers.ErrorCodeMessage;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.inject.Inject;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static models.errors.ExceptionMessages.GENERAL_EXCEPTION_MESSAGE;
-import static models.errors.ExceptionMessages.ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE;
 
 public class ResponseFactory {
     @Inject

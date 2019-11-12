@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import models.enums.Errors;
-import models.errors.ErrorCodeMessage;
+import models.wrappers.ErrorCodeMessage;
 import models.wrappers.CalculationResult;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
@@ -38,7 +38,7 @@ public class ExpressionWebService {
 
     @GET
     @Path("/expressions")
-    public Response getAllExpressions() throws IOException {
+    public Response getHistory() throws IOException {
         List<ExpressionResultDTO> listOfResults = expressionResultDAO.getAll();
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -46,6 +46,7 @@ public class ExpressionWebService {
 
         return Response.ok().entity(jsonList).build();
     }
+
 
     @GET
     @Path("/expressions/{id}")
@@ -69,27 +70,32 @@ public class ExpressionWebService {
 
     private Response createErrorResponse(ExpressionResultDTO expressionResultDTO) throws JsonProcessingException {
         if (isNull(expressionResultDTO)) {
-            int code = Errors.getCodeWithString(DOES_NOT_EXIST);
-            ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(DOES_NOT_EXIST, code);
-            String json = mapper.writeValueAsString(errorCodeMessage);
-
-            return Response.status(code).entity(json).build();
+            return createFailResponseWithErrorMessage(DOES_NOT_EXIST);
         }
-
         String errorMessage = expressionResultDTO.getError();
-        int errorCode = Errors.getCodeWithString(errorMessage);
-        ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(errorMessage, errorCode);
-        String json = mapper.writeValueAsString(errorCodeMessage);
+        return createFailResponseWithErrorMessage(errorMessage);
+    }
 
-        return Response.status(errorCode).entity(json).build();
+    private Response createFailResponseWithErrorMessage(String errorMessage) throws JsonProcessingException {
+        ErrorCodeMessage errorCodeMessage = createErrorCodeMessage(errorMessage);
+        String json = mapper.writeValueAsString(errorCodeMessage);
+        return Response.status(errorCodeMessage.getCode()).entity(json).build();
     }
 
     private Response createEvaluationResponse(ExpressionResultDTO expressionResultDTO) throws JsonProcessingException {
+        int statusCodeOK = 200;
         double result = expressionResultDTO.getEvaluation();
         CalculationResult calculationResult = new CalculationResult(result);
         String json = mapper.writeValueAsString(calculationResult);
 
-        return Response.status(200).entity(json).build();
+        return Response.status(statusCodeOK)
+                .entity(json).build();
     }
+
+    private ErrorCodeMessage createErrorCodeMessage(String message) {
+        int errorCode = Errors.getCodeWithString(message);
+        return new ErrorCodeMessage(message, errorCode);
+    }
+
 
 }

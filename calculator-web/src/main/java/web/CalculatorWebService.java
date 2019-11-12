@@ -2,7 +2,6 @@ package web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.wrappers.CalculationId;
-
 import models.wrappers.CalculatorExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,6 @@ public class CalculatorWebService {
 
     private ObjectMapper mapper;
     private ExpressionResultDAO expressionResultDAO;
-    private Response response;
-    private final Logger logger = LoggerFactory.getLogger(CalculatorWebService.class);
 
     @Inject
     public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
@@ -41,7 +38,6 @@ public class CalculatorWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveExpression(String expression) throws IOException {
-
         CalculatorExpression calculatorExpression = mapper.readValue(expression, CalculatorExpression.class);
 
         long expressionId = saveResponseToDb(calculatorExpression.getExpression());
@@ -56,7 +52,7 @@ public class CalculatorWebService {
      private long saveResponseToDb(String expression) {
         ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED);
         expressionResultDAO.save(expressionResultDTO);
-        logger.error(expressionResultDTO.getError());
+
         return expressionResultDTO.getId();
     }
 

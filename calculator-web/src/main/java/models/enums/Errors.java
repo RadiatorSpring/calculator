@@ -1,7 +1,5 @@
 package models.enums;
 
-import models.errors.ErrorCodeMessage;
-
 public enum Errors {
     EMPTY_STACK_EXCEPTION_MESSAGE("The number of operators cannot be greater than the number of operands, using negative numbers requires brackets", 400),
     ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE("There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator", 400),

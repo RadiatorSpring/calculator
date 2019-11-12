@@ -1,8 +1,11 @@
-package models.errors;
+package models.wrappers;
 
 
 
 public class ErrorCodeMessage {
+
+    private String message;
+    private int code;
 
     public String getMessage() {
         return message;
@@ -20,8 +23,6 @@ public class ErrorCodeMessage {
         this.code = code;
     }
 
-    private String message;
-    private int code;
 
     public ErrorCodeMessage() {
     }

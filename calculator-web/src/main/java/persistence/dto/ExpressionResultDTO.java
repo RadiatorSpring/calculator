@@ -23,6 +23,8 @@ public class ExpressionResultDTO {
     @Column
     private String error;
 
+
+
     public ExpressionResultDTO(String expression, double evaluation) {
         this.expression = expression;
         this.evaluation = evaluation;
@@ -69,4 +71,6 @@ public class ExpressionResultDTO {
     public void setEvaluation(double evaluation) {
         this.evaluation = evaluation;
     }
+
+
 }

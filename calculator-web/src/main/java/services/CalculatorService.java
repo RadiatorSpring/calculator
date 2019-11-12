@@ -4,6 +4,7 @@ import calculator.Calculator;
 import calculator.Computable;
 import calculator.exceptions.CannotDivideByZeroException;
 import exceptions.WebException;
+import models.errors.ExceptionMessages;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,10 +74,19 @@ public class CalculatorService implements Job {
         try {
             result = this.compute(expressionDTO.getExpression());
         } catch (WebException e) {
+
             error = e.getMessage();
         }
 
-        expressionResultDAO.update(expressionDTO.getId(), result, error);
+        if (!isInternalServerError(error)) {
+            expressionResultDAO.update(expressionDTO.getId(), result, error);
+        }
+    }
 
+    private boolean isInternalServerError(String error) {
+        if (error != null) {
+            return error.equals(GENERAL_EXCEPTION_MESSAGE);
+        }
+        return false;
     }
 }

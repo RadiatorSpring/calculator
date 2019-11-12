@@ -6,32 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import services.CalculatorService;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 
 public class CalculatorListener implements ServletContextListener {
 
-    private Scheduler scheduler;
     private static final Logger logger = LoggerFactory.getLogger(CalculatorListener.class);
     private static final String TRIGGER_FOR_CALCULATION = "CalculationTrigger";
     private static final String CALCULATION_GROUP = "calculations";
     private static final String CALCULATOR_EVALUATOR = "evaluator";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        startScheduler();
-
-    }
-
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-    }
-
-    private void startScheduler() {
-
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
-            scheduler = schedulerFactory.getScheduler();
+            Scheduler scheduler = schedulerFactory.getScheduler();
 
             JobDetail job = JobBuilder.newJob(CalculatorService.class)
                     .withIdentity(CALCULATOR_EVALUATOR, CALCULATION_GROUP)
@@ -53,8 +42,8 @@ public class CalculatorListener implements ServletContextListener {
         }
     }
 
-
-    public Scheduler getScheduler() {
-        return scheduler;
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
     }
+
+
 }

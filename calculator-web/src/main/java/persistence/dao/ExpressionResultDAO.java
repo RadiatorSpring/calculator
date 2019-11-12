@@ -10,7 +10,9 @@ import java.util.List;
 
 public class ExpressionResultDAO {
 
-
+    private static final String FIND_ALL = "ExpressionResultDTO_findAll";
+    private static final String FIND_ALL_NOT_EVALUATED="ExpressionResultDTO_findAllNotEvaluated";
+    private static final String FIND_HISTORY_WITH_SESSION_ID = "ExpressionDTO_findHistoryWithSessionId";
     private EntityManager entityManager;
 
     public ExpressionResultDAO(String persistenceUnitName) {
@@ -27,13 +29,13 @@ public class ExpressionResultDAO {
 
     public List<ExpressionResultDTO> getAll() {
         Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager
-                .createNamedQuery("ExpressionResultDTO_findAll", ExpressionResultDTO.class);
+                .createNamedQuery(FIND_ALL, ExpressionResultDTO.class);
         return query.getResultList();
     }
 
     public List<ExpressionResultDTO> getAllNotEvaluated() {
         Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager
-                .createNamedQuery("ExpressionResultDTO_findAllNotEvaluated", ExpressionResultDTO.class);
+                .createNamedQuery(FIND_ALL_NOT_EVALUATED, ExpressionResultDTO.class);
         return query.getResultList();
     }
 
@@ -46,8 +48,6 @@ public class ExpressionResultDAO {
     public ExpressionResultDTO getExpression(Long id) {
         return entityManager.find(ExpressionResultDTO.class, id);
     }
-
-
 
     private void setEntityManager(String unitName) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(unitName);
@@ -64,6 +64,7 @@ public class ExpressionResultDAO {
         entityManager.getTransaction().commit();
         entityManager.clear();
     }
+
 
 
 }

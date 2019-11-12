@@ -1,7 +1,7 @@
 package integration.page;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.errors.ErrorCodeMessage;
+import models.wrappers.ErrorCodeMessage;
 import models.wrappers.CalculationId;
 import models.wrappers.CalculationResult;
 import org.apache.http.HttpResponse;
