@@ -70,4 +70,19 @@ sap.ui.require([
 
 		Then.iTeardownMyApp();
 	});
+
+	opaTest("Should added rows to the table",function(Given,When,Then){
+		Given.iStartMyUIComponent({
+			componentConfig: {
+				name: "calculator.ui"
+			}
+		});
+
+		When.onTheAppPage.iClearSessionStorage();
+		When.onTheAppPage.iFillInputWithAnExpression();
+		When.onTheAppPage.iPressCalculateButton();
+
+		Then.onTheAppPage.theTableShouldHaveOneEntry();
+		Then.iTeardownMyApp();
+	})
 });

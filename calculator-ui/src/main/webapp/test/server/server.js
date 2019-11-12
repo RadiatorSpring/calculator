@@ -1,4 +1,4 @@
-    sap.ui.define([
+sap.ui.define([
 	"sap/ui/thirdparty/sinon"
 ],
 	function (sinon) {
@@ -11,12 +11,10 @@
 
 		function fakePostResponse(server, url, id, expression, code) {
 			server.respondWith("POST", url, function (xhr) {
-				console.log(xhr.requestBody);
+				let oResponse = JSON.parse(xhr.requestBody);
+				let oExpected = {expression:expression};
 
-				var jsonExpression = "{\n    \"expression\": \"" + expression + "\"\n}";
-				console.log(xhr.requestBody)
-				if (xhr.requestBody.localeCompare(jsonExpression) == 0) {
-					console.log("the id here is " + id)
+				if (oResponse.expression === oExpected.expression) {
 					xhr.respond(code, { "Content-Type": "application/json" }, '{ "id": ' + id + '}');
 				}
 			});
@@ -53,12 +51,28 @@
 				fakeResponse(this.oServer, urlForTooManyOperators, messageForTooManyOperators, 400);
 				fakeResponse(this.oServer, urlForCorrectInput, messageForCorrectInput, 200);
 
-				fakePostResponse(this.oServer, postURL, 1, "", 200);
-				fakePostResponse(this.oServer, postURL, 2, "1-1a", 200);
-				fakePostResponse(this.oServer, postURL, 3, "1--1", 200);
-				fakePostResponse(this.oServer, postURL, 4, "1-1*(1+1)/2", 200);
+				fakePostResponse(this.oServer, postURL, 1, "", 202);
+				fakePostResponse(this.oServer, postURL, 2, "1-1a", 202);
+				fakePostResponse(this.oServer, postURL, 3, "1--1", 202);
+				fakePostResponse(this.oServer, postURL, 4, "1-1*(1+1)/2", 202);
 
 			}
+
 		};
+		function fakeRequestsForEmtpyParamater(server) {
+			var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
+			var urlForEmptyParameterException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/1/;
+
+			fakeResponse(server, urlForEmptyParameterException, messageForEmptyParameterException, 400);
+			fakePostResponse(server, postURL, 1, "", 202);
+		}
+		function fakeRequestsForIllegalArgument(server) {
+			var urlForIllegalArgumentException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/2/;
+			var messageForIllegalArgumentException =
+				'{"message":"There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator","code":400}';
+			fakeResponse(this.oServer, urlForIllegalArgumentException, messageForIllegalArgumentException, 400);
+			fakePostResponse(this.oServer, postURL, 1, "", 202);
+
+		}
 
 	});

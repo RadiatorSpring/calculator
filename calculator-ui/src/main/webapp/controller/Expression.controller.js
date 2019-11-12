@@ -7,24 +7,21 @@ sap.ui.define([
 
     return Controller.extend("calculator.ui.controller.Expression", {
         mapName: "map",
-        mapCalculations: sessionStorage.getItem(this.mapName),
 
         onInit: function () {
             let map = this.getMapCalculations();
             if (Object.entries(map).length !== 0) {
                 this.updateModel(this.getMapCalculations());
-
             }
         },
         onPost: function () {
             var expression = this.getView().byId("expression").getValue();
-
             var оBody = {
                 expression: expression
             }
             var sBody = JSON.stringify(оBody);
             this.doPostXHR(sBody, function (xhr) {
-                var oResponse = JSON.parse(xhr.response);
+                var oResponse = JSON.parse(xhr.responseText);
                 var responseId = oResponse.id;
                 this.addAsPendingToHistory(responseId, expression);
 
@@ -55,7 +52,7 @@ sap.ui.define([
                 message: sIsNotEvaluated
             };
             this.updateSessionStorage(id, historyTableItem);
-            this.updateModel(this.getMapCalculations);
+            this.updateModel();
         },
         updateSessionStorage: function (id, historyTableItem) {
             let updatedSessionStorage = this.getMapCalculations();
@@ -65,22 +62,22 @@ sap.ui.define([
         },
         onGet: async function (id, intervalCallback) {
             let statusCodeOk = 200;
-
             this.doGetXHR(id, function (xhr) {
-                var evaluation = xhr.response;
+                var evaluation = xhr.responseText;
                 var oModel = new JSONModel();
                 oModel.setData(JSON.parse(evaluation));
-                if (xhr.status == statusCodeOk) {
+                if (xhr.status === statusCodeOk) {
                     this.getView().setModel(oModel);
                     this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
-                } else if (xhr.status != 202) {
-                    this.setError(xhr)
+                } else if (xhr.status !== 202) {
+                    this.setError(xhr);
                     this.updateHistory(evaluation, id);
                     clearInterval(intervalCallback);
                 }
             }.bind(this))
         },
+
         doGetXHR: function (id, done) {
             let xhr = new XMLHttpRequest();
             xhr.open("GET", "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/" + id);
@@ -95,6 +92,12 @@ sap.ui.define([
         },
 
         updateHistory: function (evaluation, id) {
+            let historyTableItem = this.createHistoryTableItem(evaluation,id)
+
+            this.updateSessionStorage(id, historyTableItem);
+            this.updateModel();
+        },
+        createHistoryTableItem: function (evaluation,id) {
             let map = this.getMapCalculations();
             let expression = map[id].expression;
             let parsedEvaluation = JSON.parse(evaluation);
@@ -110,27 +113,28 @@ sap.ui.define([
                     message: parsedEvaluation.message
                 };
             }
-            this.updateSessionStorage(id, historyTableItem);
-            this.updateModel(this.getMapCalculations());
+            return historyTableItem;
         },
-        updateModel: function (mapValues) {
+        updateModel: function () {
+            let historyMap = this.getMapCalculations();
             let modelBindingName = "history";
-            let oModel = new JSONModel(mapValues);
-            this.getView().setModel(oModel, modelBindingName);
+            let oModel = new JSONModel(historyMap);
+            let view = this.getView();
+
+            view.setModel(oModel, modelBindingName);
         },
         getMapCalculations: function () {
-            let map = sessionStorage.getItem(this.mapName)
+            let map = sessionStorage.getItem(this.mapName);
             if (map !== null) {
                 return JSON.parse(map);
             } else {
                 sessionStorage.setItem(this.mapName, "{}");
                 return JSON.parse(sessionStorage.getItem(this.mapName));
             }
-
         },
         setError: function (xhr) {
             let sErrorTextID = "errorText";
-            var oResponse = JSON.parse(xhr.response);
+            var oResponse = JSON.parse(xhr.responseText);
             let sError = oResponse.message;
             this.getView().byId(sErrorTextID).setText(sError)
         }
