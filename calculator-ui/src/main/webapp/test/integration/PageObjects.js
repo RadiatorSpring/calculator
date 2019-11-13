@@ -3,16 +3,16 @@ sap.ui.define([
     "sap/ui/test/actions/Press",
     "sap/ui/test/actions/EnterText",
     'sap/ui/test/matchers/AggregationLengthEquals'
-], function (Opa5, Press, EnterText,AggregationLengthEquals) {
+], function (Opa5, Press, EnterText, AggregationLengthEquals) {
 
-    var viewName = "Expression";
+    const viewName = "Expression";
     Opa5.extendConfig({
         viewNamespace: "calculator.ui.view"
     });
 
     function iFillInputField(page, text) {
         return page.waitFor({
-            id: viewName,
+            id: "expression",
             viewName: viewName,
             actions: new EnterText({
                 text: text
@@ -29,7 +29,6 @@ sap.ui.define([
                 text: text
             }),
             success: function () {
-                // we set the view busy, so we need to query the parent of the app
                 Opa5.assert.ok(true, "The error text is placed properly");
             },
             errorMessage: "Did not change the error text"
@@ -38,14 +37,11 @@ sap.ui.define([
 
     Opa5.createPageObjects({
         onTheAppPage: {
-			arrangements:{
-
-			},
 
             actions: {
-				iClearSessionStorage:function() {
-					sessionStorage.clear();
-				},
+                iClearSessionStorage: function () {
+                    sessionStorage.clear();
+                },
                 iPressCalculateButton: function () {
                     return this.waitFor({
                         id: "calculateBtn",
@@ -70,7 +66,27 @@ sap.ui.define([
             },
 
             assertions: {
-                theTableShouldHaveOneEntry: function () {
+                iShouldSeeResolvedExpression: function () {
+                    return this.waitFor({
+                        id: "table",
+                        viewName: viewName,
+                        check: function (oTable) {
+                            let items = oTable.getModel("history").getJSON();
+                            let oItems  = JSON.parse(items);
+                            console.log(oItems);
+
+                            if (oItems[4].expression ==="1-1*(1+1)/2" && oItems[4].result == 0) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        },
+                        success: function (isEvaluated) {
+                            Opa5.assert.ok(isEvaluated, "The entity is set correctly");
+                        }
+                    });
+                },
+                iShouldSeeTableWithOneEntry: function () {
                     return this.waitFor({
                         id: "table",
                         viewName: viewName,

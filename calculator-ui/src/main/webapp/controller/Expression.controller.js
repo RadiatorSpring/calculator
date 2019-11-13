@@ -61,23 +61,29 @@ sap.ui.define([
             sessionStorage.setItem(this.mapName, sUpdatedSessionStorage);
         },
         onGet: async function (id, intervalCallback) {
-            let statusCodeOk = 200;
             this.doGetXHR(id, function (xhr) {
                 var evaluation = xhr.responseText;
                 var oModel = new JSONModel();
                 oModel.setData(JSON.parse(evaluation));
-                if (xhr.status === statusCodeOk) {
+
+                if (this.isStatusOK(xhr)) {
                     this.getView().setModel(oModel);
                     this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
-                } else if (xhr.status !== 202) {
+                } else if (this.isNotAccepted(xhr)) {
                     this.setError(xhr);
                     this.updateHistory(evaluation, id);
                     clearInterval(intervalCallback);
                 }
+
             }.bind(this))
         },
-
+        isStatusOK: function (xhr) {
+            return xhr.status === 200;
+        },
+        isNotAccepted: function (xhr) {
+            return xhr.status !== 202;
+        },
         doGetXHR: function (id, done) {
             let xhr = new XMLHttpRequest();
             xhr.open("GET", "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/" + id);
@@ -92,12 +98,12 @@ sap.ui.define([
         },
 
         updateHistory: function (evaluation, id) {
-            let historyTableItem = this.createHistoryTableItem(evaluation,id)
+            let historyTableItem = this.createHistoryTableItem(evaluation, id)
 
             this.updateSessionStorage(id, historyTableItem);
             this.updateModel();
         },
-        createHistoryTableItem: function (evaluation,id) {
+        createHistoryTableItem: function (evaluation, id) {
             let map = this.getMapCalculations();
             let expression = map[id].expression;
             let parsedEvaluation = JSON.parse(evaluation);

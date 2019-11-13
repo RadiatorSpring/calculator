@@ -1,88 +1,92 @@
 sap.ui.require([
-	"sap/ui/test/Opa5",
-	"sap/ui/test/opaQunit",
-	"sap/ui/test/actions/Press",
-	"sap/ui/test/matchers/Properties",
-	"calculator/ui/test/integration/PageObjects",
+    "sap/ui/test/Opa5",
+    "sap/ui/test/opaQunit",
+    "sap/ui/test/actions/Press",
+    "sap/ui/test/matchers/Properties",
+    "calculator/ui/test/integration/PageObjects",
 
 ], function (Opa5, opaTest, Press, Properties) {
-	"use strict";
+    "use strict";
 
-	QUnit.module("Simple action");
+    QUnit.module("Simple action");
 
-	opaTest("Should change error text", function (Given, When, Then) {
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "calculator.ui"
-			}
-		});
+    opaTest("Should added rows to the table", function (Given, When, Then) {
+        Given.iStartMyUIComponent({
+            componentConfig: {
+                name: "calculator.ui"
+            }
+        });
 
-		When.onTheAppPage.iFillInputFieldWithNoArguments();
-		When.onTheAppPage.iPressCalculateButton();
+        When.onTheAppPage.iClearSessionStorage();
+        When.onTheAppPage.iFillInputWithAnExpression();
+        When.onTheAppPage.iPressCalculateButton();
 
-		Then.onTheAppPage.iShouldSeeErrorMessageForEmptyParamater();
+        Then.onTheAppPage.iShouldSeeTableWithOneEntry();
+        Then.onTheAppPage.iShouldSeeResolvedExpression();
+        Then.iTeardownMyApp();
+    });
 
-		Then.iTeardownMyApp();
+    opaTest("Should change error text", function (Given, When, Then) {
+        Given.iStartMyUIComponent({
+            componentConfig: {
+                name: "calculator.ui"
+            }
+        });
 
-	});
+        When.onTheAppPage.iFillInputFieldWithNoArguments();
+        When.onTheAppPage.iPressCalculateButton();
 
-	opaTest("Should change error text to InvalidArgumentException message", function (Given, When, Then) {
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "calculator.ui"
-			}
-		});
+        Then.onTheAppPage.iShouldSeeErrorMessageForEmptyParamater();
 
-		When.onTheAppPage.iFillInputFieldWithWrongArguments();
-		When.onTheAppPage.iPressCalculateButton();
+        Then.iTeardownMyApp();
 
-		Then.onTheAppPage.iShouldSeeErrorMessageForInvalidArgument();
+    });
 
-		Then.iTeardownMyApp();
-	});
+    opaTest("Should change error text to InvalidArgumentException message", function (Given, When, Then) {
+        Given.iStartMyUIComponent({
+            componentConfig: {
+                name: "calculator.ui"
+            }
+        });
 
-	opaTest("Should change error text to TooManyOperatorsException message", function (Given, When, Then) {
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "calculator.ui"
-			}
-		});
+        When.onTheAppPage.iFillInputFieldWithWrongArguments();
+        When.onTheAppPage.iPressCalculateButton();
 
-		When.onTheAppPage.iFillInputFieldWithTooManyOperators();
-		When.onTheAppPage.iPressCalculateButton();
+        Then.onTheAppPage.iShouldSeeErrorMessageForInvalidArgument();
 
-		Then.onTheAppPage.iShouldSeeErrorMessageForTooMayOperators();
+        Then.iTeardownMyApp();
+    });
 
-		Then.iTeardownMyApp();
-	});
+    opaTest("Should change error text to TooManyOperatorsException message", function (Given, When, Then) {
+        Given.iStartMyUIComponent({
+            componentConfig: {
+                name: "calculator.ui"
+            }
+        });
 
-	opaTest("Should change the result field to some number message", function (Given, When, Then) {
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "calculator.ui"
-			}
-		});
+        When.onTheAppPage.iFillInputFieldWithTooManyOperators();
+        When.onTheAppPage.iPressCalculateButton();
 
-		When.onTheAppPage.iFillInputWithAnExpression();
-		When.onTheAppPage.iPressCalculateButton();
+        Then.onTheAppPage.iShouldSeeErrorMessageForTooMayOperators();
 
-		Then.onTheAppPage.iShouldSeeTheResult();
+        Then.iTeardownMyApp();
+    });
 
-		Then.iTeardownMyApp();
-	});
+    opaTest("Should change the result field to some number message", function (Given, When, Then) {
+        Given.iStartMyUIComponent({
+            componentConfig: {
+                name: "calculator.ui"
+            }
+        });
 
-	opaTest("Should added rows to the table",function(Given,When,Then){
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "calculator.ui"
-			}
-		});
+        When.onTheAppPage.iFillInputWithAnExpression();
+        When.onTheAppPage.iPressCalculateButton();
 
-		When.onTheAppPage.iClearSessionStorage();
-		When.onTheAppPage.iFillInputWithAnExpression();
-		When.onTheAppPage.iPressCalculateButton();
+        Then.onTheAppPage.iShouldSeeTheResult();
 
-		Then.onTheAppPage.theTableShouldHaveOneEntry();
-		Then.iTeardownMyApp();
-	})
+        Then.iTeardownMyApp();
+    });
+
+
+
 });
