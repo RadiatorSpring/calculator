@@ -10,10 +10,14 @@ sap.ui.define([
 
         onInit: function () {
             let map = this.getMapCalculations();
-            if (Object.entries(map).length !== 0) {
-                this.updateModel(this.getMapCalculations());
+            if (this.isEmpty(map)) {
+                this.updateHistoryModel();
             }
         },
+        isEmpty:function(map){
+           return  Object.entries(map).length !== 0;
+        },
+
         onPost: function () {
             var expression = this.getView().byId("expression").getValue();
             var оBody = {
@@ -34,7 +38,9 @@ sap.ui.define([
         },
         doPostXHR: function (body, done) {
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "../calculator-web-1.0-SNAPSHOT/api/v1/calculate/");
+            let manifest =  this.getOwnerComponent().getMetadata().getManifestEntry("sap.app");
+            let url = manifest.dataSources.calculator.restApiPost;
+            xhr.open("POST", url);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
@@ -52,7 +58,7 @@ sap.ui.define([
                 message: sIsNotEvaluated
             };
             this.updateSessionStorage(id, historyTableItem);
-            this.updateModel();
+            this.updateHistoryModel();
         },
         updateSessionStorage: function (id, historyTableItem) {
             let updatedSessionStorage = this.getMapCalculations();
@@ -70,8 +76,8 @@ sap.ui.define([
                     this.getView().setModel(oModel);
                     this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
-                } else if (this.isNotAccepted(xhr)) {
-                    this.setError(xhr);
+                } else if (this.isNotStatusAccepted(xhr)) {
+                    this.setErrorModel(xhr);
                     this.updateHistory(evaluation, id);
                     clearInterval(intervalCallback);
                 }
@@ -81,12 +87,15 @@ sap.ui.define([
         isStatusOK: function (xhr) {
             return xhr.status === 200;
         },
-        isNotAccepted: function (xhr) {
+        isNotStatusAccepted: function (xhr) {
             return xhr.status !== 202;
         },
         doGetXHR: function (id, done) {
             let xhr = new XMLHttpRequest();
-            xhr.open("GET", "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/" + id);
+            let manifest =  this.getOwnerComponent().getMetadata().getManifestEntry("sap.app");
+            let url = manifest.dataSources.calculator.restApiGet;
+
+            xhr.open("GET", url + id);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
                 done(xhr);
@@ -98,17 +107,16 @@ sap.ui.define([
         },
 
         updateHistory: function (evaluation, id) {
-            let historyTableItem = this.createHistoryTableItem(evaluation, id)
-
+            let historyTableItem = this.createHistoryTableItem(evaluation, id);
             this.updateSessionStorage(id, historyTableItem);
-            this.updateModel();
+            this.updateHistoryModel();
         },
         createHistoryTableItem: function (evaluation, id) {
             let map = this.getMapCalculations();
             let expression = map[id].expression;
             let parsedEvaluation = JSON.parse(evaluation);
 
-            if (parsedEvaluation.result !== undefined) {
+            if (this.isCorrectResult(parsedEvaluation)) {
                 var historyTableItem = {
                     expression: expression,
                     result: parsedEvaluation.result
@@ -121,7 +129,11 @@ sap.ui.define([
             }
             return historyTableItem;
         },
-        updateModel: function () {
+        isCorrectResult:function(parsedEvaluation){
+            return parsedEvaluation.result !== undefined;
+        },
+
+        updateHistoryModel: function () {
             let historyMap = this.getMapCalculations();
             let modelBindingName = "history";
             let oModel = new JSONModel(historyMap);
@@ -138,7 +150,7 @@ sap.ui.define([
                 return JSON.parse(sessionStorage.getItem(this.mapName));
             }
         },
-        setError: function (xhr) {
+        setErrorModel: function (xhr) {
             let sErrorTextID = "errorText";
             var oResponse = JSON.parse(xhr.responseText);
             let sError = oResponse.message;
