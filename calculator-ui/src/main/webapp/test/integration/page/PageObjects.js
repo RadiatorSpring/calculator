@@ -71,15 +71,20 @@ sap.ui.define([
                         id: "table",
                         viewName: viewName,
                         check: function (oTable) {
-                            let items = oTable.getModel("history").getJSON();
-                            let oItems  = JSON.parse(items);
-                            console.log(oItems);
-
-                            if (oItems[4].expression ==="1-1*(1+1)/2" && oItems[4].result == 0) {
-                                return true;
-                            } else {
+                            let oModel= oTable.getModel("history");
+                            if(!oModel){
                                 return false;
+                            }else{
+                                let items = oTable.getModel("history").getJSON();
+                                let oItems  = JSON.parse(items);
+
+                                if (oItems[4].expression ==="1-1*(1+1)/2" && oItems[4].result == 0) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
                             }
+
                         },
                         success: function (isEvaluated) {
                             Opa5.assert.ok(isEvaluated, "The entity is set correctly");

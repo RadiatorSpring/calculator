@@ -2,11 +2,13 @@
 QUnit.config.autostart = false;
 
 sap.ui.getCore().attachInit(function () {
-	"use strict";
+    "use strict";
 
-	sap.ui.require([
-		"calculator/ui/test/integration/journey",
-	], function () {
-		QUnit.start();
-	});
+    sap.ui.require([
+    	"calculator/ui/test/integration/HistoryJourney",
+        "calculator/ui/test/integration/Journey"
+
+    ], function () {
+        QUnit.start();
+    });
 });

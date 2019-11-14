@@ -1,78 +1,81 @@
 sap.ui.define([
-	"sap/ui/thirdparty/sinon"
-],
-	function (sinon) {
+        "sap/ui/thirdparty/sinon"
+    ],
+    function (sinon) {
+        return {
 
-		function fakeResponse(server, url, message, code) {
-			server.respondWith("GET", url, [code, {
-				"Content-Type": "application/json"
-			}, message]);
-		}
+            init: function () {
+                var postURL = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate/;
+                var urlForMock = /.*\/calculator-web-1.0-SNAPSHOT\/.*/;
 
-		function fakePostResponse(server, url, id, expression, code) {
-			server.respondWith("POST", url, function (xhr) {
-				let oResponse = JSON.parse(xhr.requestBody);
-				let oExpected = {expression:expression};
 
-				if (oResponse.expression === oExpected.expression) {
-					xhr.respond(code, { "Content-Type": "application/json" }, '{ "id": ' + id + '}');
-				}
-			});
-		}
+                this.oServer = sinon.fakeServer.create();
+                this.oServer.autoRespond = true;
+                this.oServer.autoRespondAfter = 100;
 
-		return {
+                sinon.fakeServer.xhr.useFilters = true;
+                this.oServer.xhr.addFilter(function (method, url) {
+                    return !url.match(urlForMock);
+                });
 
-			init: function () {
-				var postURL = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate/;
-				var urlForMock = /.*\/calculator-web-1.0-SNAPSHOT\/.*/;
-				var urlForEmptyParameterException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/1/;
-				var urlForIllegalArgumentException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/2/;
-				var urlForTooManyOperators = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/3/;
-				var urlForCorrectInput = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/4/;
+                fakeRequestsForEmtpyParamater(this.oServer, postURL);
+                fakeRequestsForIllegalArgument(this.oServer, postURL);
+                fakeRequestsForTooManyOperators(this.oServer, postURL);
+                fakeRequestsForCorrectInput(this.oServer, postURL);
 
-				var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
-				var messageForIllegalArgumentException =
-					'{"message":"There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator","code":400}';
-				var messageForTooManyOperators =
-					'{"message": "The number of operators cannot be greater than the number of operands, using negative numbers requires brackets","code": 400}';
-				var messageForCorrectInput = '{"result": 0.0}';
+            }
 
-				this.oServer = sinon.fakeServer.create();
-				this.oServer.autoRespond = true;
-				this.oServer.autoRespondAfter = 100;
+        };
 
-				sinon.fakeServer.xhr.useFilters = true;
-				this.oServer.xhr.addFilter(function (method, url) {
-					return !url.match(urlForMock);
-				});
+        function fakeResponse(server, url, message, code) {
+            server.respondWith("GET", url, [code, {
+                "Content-Type": "application/json"
+            }, message]);
+        }
 
-				fakeResponse(this.oServer, urlForEmptyParameterException, messageForEmptyParameterException, 400);
-				fakeResponse(this.oServer, urlForIllegalArgumentException, messageForIllegalArgumentException, 400);
-				fakeResponse(this.oServer, urlForTooManyOperators, messageForTooManyOperators, 400);
-				fakeResponse(this.oServer, urlForCorrectInput, messageForCorrectInput, 200);
+        function fakePostResponse(server, url, id, expression, code) {
+            server.respondWith("POST", url, function (xhr) {
+                let oResponse = JSON.parse(xhr.requestBody);
+                let oExpected = {expression: expression};
 
-				fakePostResponse(this.oServer, postURL, 1, "", 202);
-				fakePostResponse(this.oServer, postURL, 2, "1-1a", 202);
-				fakePostResponse(this.oServer, postURL, 3, "1--1", 202);
-				fakePostResponse(this.oServer, postURL, 4, "1-1*(1+1)/2", 202);
+                if (oResponse.expression === oExpected.expression) {
+                    let oId = {id: id}
+                    xhr.respond(code, {"Content-Type": "application/json"}, JSON.stringify(oId));
+                }
+            });
+        }
 
-			}
+        function fakeRequestsForEmtpyParamater(server, postURL) {
+            var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
+            var urlForEmptyParameterException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/1/;
 
-		};
-		function fakeRequestsForEmtpyParamater(server) {
-			var messageForEmptyParameterException = '{"message":"The expression parameter cannot be empty","code":400}';
-			var urlForEmptyParameterException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/1/;
+            fakeResponse(server, urlForEmptyParameterException, messageForEmptyParameterException, 400);
+            fakePostResponse(server, postURL, 1, "", 202);
+        }
 
-			fakeResponse(server, urlForEmptyParameterException, messageForEmptyParameterException, 400);
-			fakePostResponse(server, postURL, 1, "", 202);
-		}
-		function fakeRequestsForIllegalArgument(server) {
-			var urlForIllegalArgumentException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/2/;
-			var messageForIllegalArgumentException =
-				'{"message":"There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator","code":400}';
-			fakeResponse(this.oServer, urlForIllegalArgumentException, messageForIllegalArgumentException, 400);
-			fakePostResponse(this.oServer, postURL, 1, "", 202);
+        function fakeRequestsForIllegalArgument(server, postURL) {
+            var urlForIllegalArgumentException = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/2/;
+            var messageForIllegalArgumentException =
+                '{"message":"There cannot be letters nor spaces between digits and there should be at least 2 operands and 1 operator","code":400}';
+            fakeResponse(server, urlForIllegalArgumentException, messageForIllegalArgumentException, 400);
+            fakePostResponse(server, postURL, 2, "1-1a", 202);
+        }
 
-		}
+        function fakeRequestsForTooManyOperators(server, postURL) {
+            var urlForTooManyOperators = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/3/;
+            var messageForTooManyOperators =
+                '{"message": "The number of operators cannot be greater than the number of operands, using negative numbers requires brackets","code": 400}';
+            fakeResponse(server, urlForTooManyOperators, messageForTooManyOperators, 400);
+            fakePostResponse(server, postURL, 3, "1--1", 202);
+        }
 
-	});
+        function fakeRequestsForCorrectInput(server, postURL) {
+            var urlForCorrectInput = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/expressions\/4/;
+            let oResult = {result: 0};
+            var messageForCorrectInput = JSON.stringify(oResult);
+            fakeResponse(server, urlForCorrectInput, messageForCorrectInput, 200);
+            fakePostResponse(server, postURL, 4, "1-1*(1+1)/2", 202);
+        }
+
+
+    });

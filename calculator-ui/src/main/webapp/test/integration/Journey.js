@@ -1,37 +1,23 @@
 sap.ui.require([
     "sap/ui/test/Opa5",
     "sap/ui/test/opaQunit",
-    "sap/ui/test/actions/Press",
-    "sap/ui/test/matchers/Properties",
-    "calculator/ui/test/integration/PageObjects",
+    "calculator/ui/test/integration/page/PageObjects",
 
-], function (Opa5, opaTest, Press, Properties) {
+], function (Opa5, opaTest ) {
     "use strict";
 
     QUnit.module("Simple action");
 
-    opaTest("Should added rows to the table", function (Given, When, Then) {
+    function iStartMyUIComponent(Given){
         Given.iStartMyUIComponent({
             componentConfig: {
                 name: "calculator.ui"
             }
         });
-
-        When.onTheAppPage.iClearSessionStorage();
-        When.onTheAppPage.iFillInputWithAnExpression();
-        When.onTheAppPage.iPressCalculateButton();
-
-        Then.onTheAppPage.iShouldSeeTableWithOneEntry();
-        Then.onTheAppPage.iShouldSeeResolvedExpression();
-        Then.iTeardownMyApp();
-    });
+    }
 
     opaTest("Should change error text", function (Given, When, Then) {
-        Given.iStartMyUIComponent({
-            componentConfig: {
-                name: "calculator.ui"
-            }
-        });
+        iStartMyUIComponent(Given);
 
         When.onTheAppPage.iFillInputFieldWithNoArguments();
         When.onTheAppPage.iPressCalculateButton();
@@ -43,11 +29,7 @@ sap.ui.require([
     });
 
     opaTest("Should change error text to InvalidArgumentException message", function (Given, When, Then) {
-        Given.iStartMyUIComponent({
-            componentConfig: {
-                name: "calculator.ui"
-            }
-        });
+        iStartMyUIComponent(Given);
 
         When.onTheAppPage.iFillInputFieldWithWrongArguments();
         When.onTheAppPage.iPressCalculateButton();
@@ -58,11 +40,7 @@ sap.ui.require([
     });
 
     opaTest("Should change error text to TooManyOperatorsException message", function (Given, When, Then) {
-        Given.iStartMyUIComponent({
-            componentConfig: {
-                name: "calculator.ui"
-            }
-        });
+        iStartMyUIComponent(Given);
 
         When.onTheAppPage.iFillInputFieldWithTooManyOperators();
         When.onTheAppPage.iPressCalculateButton();
@@ -73,11 +51,7 @@ sap.ui.require([
     });
 
     opaTest("Should change the result field to some number message", function (Given, When, Then) {
-        Given.iStartMyUIComponent({
-            componentConfig: {
-                name: "calculator.ui"
-            }
-        });
+        iStartMyUIComponent(Given);
 
         When.onTheAppPage.iFillInputWithAnExpression();
         When.onTheAppPage.iPressCalculateButton();
