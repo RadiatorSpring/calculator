@@ -8,6 +8,12 @@
 		"description": "{{appDescription}}",
 		"applicationVersion": {
 			"version": "1.0.0"
+		},
+		"dataSources": {
+			"calculator": {
+				"restApiPost": "../calculator-web-1.0-SNAPSHOT/api/v1/calculate/",
+				"restApiGet": "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/"
+			}
 		}
 	},
 	"sap.ui": {
