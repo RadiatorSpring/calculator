@@ -13,8 +13,8 @@
     <packaging>war</packaging>
     <properties>
         <servletPath>/calculator</servletPath>
+        <jackson.version>2.9.1</jackson.version>
     </properties>
-
 
     <build>
         <plugins>
@@ -27,6 +27,7 @@
                     <path>${servletPath}</path>
                     <username>admin</username>
                     <password>admin</password>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -40,9 +41,106 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>cloud-deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.sap.cloud</groupId>
+                        <artifactId>neo-java-web-maven-plugin</artifactId>
+                        <version>3.83.3</version>
+                        <executions>
+                            <execution>
+                                <id>deployApp</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>install-sdk</goal>
+                                    <goal>stop</goal>
+                                    <goal>deploy</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
 
+                            <execution>
+                                <id>unbindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>unbind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <failOnError>false</failOnError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>createDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>start-db-hana</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>bindDB</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>bind-db</goal>
+                                </goals>
+                                <configuration>
+                                    <id>calculator</id>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <goals>
+                                    <goal>create-account</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <dbUser>${env.HANA_USERNAME}</dbUser>
+                            <dbPassword>${env.HANA_PASSWORD}</dbPassword>
+                            <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+                            <user>${env.NEO_USERNAME}</user>
+                            <password>${env.NEO_PASSWORD}</password>
+                            <host>https://hanatrial.ondemand.com</host>
+                            <account>i516445trial</account>
+                            <host>hanatrial.ondemand.com</host>
+                            <application>mycalculator</application>
+                            <source>
+                                ${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war,
+                                ${project.basedir}\..\calculator-ui\target\calculator-ui-1.0-SNAPSHOT.war
+                            </source>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+
+
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
@@ -65,11 +163,23 @@
             <version>2.29</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
             <version>2.28</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.29</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sap.cloud/neo-java-web-sdk -->
+        <dependency>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-sdk</artifactId>
+            <version>3.90.12</version>
+            <type>pom</type>
         </dependency>
 
 
@@ -81,13 +191,8 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
-        </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -99,6 +204,129 @@
             <groupId>SAP</groupId>
             <artifactId>calculator-app</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+
+
+        <!-- https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin -->
+        <dependency>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>1.8.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit-bom</artifactId>
+            <version>0.5.0</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit4</artifactId>
+            <version>0.5.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.dadrus.jpa-unit/jpa-unit-rdbms -->
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit-rdbms</artifactId>
+            <version>0.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.sap.cloud.db.jdbc</groupId>
+            <artifactId>ngdbc</artifactId>
+            <version>2.3.48</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hanadb</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.26</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.13.1.1</version>
+
+        </dependency><!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.13.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-api</artifactId>
+            <version>3.90.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.deltaspike.cdictrl/deltaspike-cdictrl-owb -->
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-owb</artifactId>
+            <version>1.9.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>SAP</groupId>
+            <artifactId>calculator-ui</artifactId>
+            <type>war</type>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,47 @@
+<mvc:View controllerName="calculator.ui.controller.Expression"
+          xmlns="sap.m"
+          xmlns:mvc="sap.ui.core.mvc"
+>
+    <Panel headerText="{i18n>ExpressionTitle}" class="" width="auto">
+        <content>
+            <Input id="expression" valueLiveUpdate="true" width="60%"/>
+            <Button id="calculateBtn" text="calculate" class="sapUiTinyMarginBeginEnd" press=".onPost"/>    
+        </content>
+        <content>
+            <Input id="result" value="{/result}" valueLiveUpdate="true" width="60%"/>
+        </content>
+    </Panel>
+    <Panel class="sapUiResponsiveMargin" width="auto">
+        <content>
+            <Text id="errorText" text="{/message}" class="red"/>
+        </content>
+    </Panel>
+    <Panel >
+            <content>
+               
+                 <Table id="table" width="100%" items="{
+            path:'history>/'
+          }" growing="true"> 
+                     <columns>
+                        <Column width="12em" hAlign="Center" class="marginBoxContent">
+                            <Text text="Expression"/>
+                        </Column>
+                        <Column hAlign="Center"
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                            <Text text="Evaluation"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectIdentifier title="{history>expression}" class="sapMTableContentMargin"/>
+                                <Text text="{history>result} {history>message}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </content>
+        
+       </Panel>
+</mvc:View>

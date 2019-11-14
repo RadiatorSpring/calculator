@@ -1,0 +1,14 @@
+<mvc:View controllerName="calculator.ui.controller.App" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" displayBlock="true">
+	<Shell>
+		<App class="myAppDemoWT">
+			<pages>
+				<Page title="{i18n>homePageTitle}" id="myPage">
+					<headerContent/>
+					<content>
+						<mvc:XMLView viewName="calculator.ui.view.Expression"/>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

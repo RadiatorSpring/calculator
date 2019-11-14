@@ -8,77 +8,122 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <servletPath>/calculator</servletPath>
-    </properties>
-
     <artifactId>calculator-web-tests</artifactId>
 
+    <properties>
+        <servletPath>/calculator</servletPath>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*IT.java</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-tests</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <port>9090</port>
-                    <path>${servletPath}</path>
-                    <warFile>calculator-web-1.0-SNAPSHOT.war</warFile>
-                    <webapps>
-                        <webapp>
-                            <groupId>SAP</groupId>
-                            <artifactId>calculator-web</artifactId>
-                            <version>1.0-SNAPSHOT</version>
-                            <type>war</type>
-                            <asWebapp>true</asWebapp>
-                        </webapp>
-                    </webapps>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>tomcat-run-only</id>
-                        <phase>pre-integration-test</phase>
+    <profiles>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.19.1</version>
                         <configuration>
-                            <warDirectory>C:\Users\i516445\IdeaProjects\calculator\calculator-web\target\</warDirectory>
-                            <fork>true</fork>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
                         </configuration>
-                        <goals>
-                            <goal>run-war</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>tomcat-shutdown</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+                        <executions>
+                            <execution>
+                                <id>integration-tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+                        <artifactId>inmemdb-maven-plugin</artifactId>
+                        <version>1.4.3</version>
+                        <configuration>
+                            <monitorKey>inmemdb</monitorKey>
+                            <monitorPort>11527</monitorPort>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>run</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <port>1527</port>
+                                    <daemon>true</daemon>
+                                    <type>derby</type>
+                                    <database>calculator</database>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                                <phase>post-integration-test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
 
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.derby</groupId>
+                                <artifactId>derbyclient</artifactId>
+                                <version>10.13.1.1</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <port>9090</port>
+                            <path>${servletPath}</path>
+                            <warFile>calculator-web-1.0-SNAPSHOT.war</warFile>
+                            <contextFile>..\calculator-web\src\main\resources\tomcat\context.xml</contextFile>
+                            <webapps>
+                                <webapp>
+                                    <groupId>SAP</groupId>
+                                    <artifactId>calculator-web</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                    <type>war</type>
+                                    <asWebapp>true</asWebapp>
+                                </webapp>
+                            </webapps>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>tomcat-run-only</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <warDirectory>..\calculator-web\target\</warDirectory>
+                                    <fork>true</fork>
+                                </configuration>
+                                <goals>
+                                    <goal>run-war</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>tomcat-shutdown</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>shutdown</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -99,6 +144,35 @@
             <artifactId>calculator-app</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit-bom</artifactId>
+            <version>0.5.0</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.dadrus.jpa-unit</groupId>
+            <artifactId>jpa-unit4</artifactId>
+            <version>0.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy-agent</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>4.0.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.awaitility/awaitility-proxy -->
+
 
     </dependencies>
 
