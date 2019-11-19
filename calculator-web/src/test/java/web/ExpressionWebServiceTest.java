@@ -1,7 +1,9 @@
 package web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.errors.ExceptionMessages;
+import models.wrappers.ErrorCodeMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import persistence.dto.ExpressionResultDTO;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.UUID;
 
 import static models.errors.ExceptionMessages.EMPTY_STACK_EXCEPTION_MESSAGE;
 import static models.errors.ExceptionMessages.IS_NOT_EVALUATED;
@@ -50,8 +53,9 @@ public class ExpressionWebServiceTest {
     public void testNotEvaluatedExpression() throws IOException {
         String expression = "1-1";
         String result = messageAsJSON(IS_NOT_EVALUATED, SC_ACCEPTED);
+        String historyId = UUID.randomUUID().toString();
 
-        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, IS_NOT_EVALUATED));
+        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, IS_NOT_EVALUATED,historyId));
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
         Response response = expressionWebService.getExpression(testingId);
@@ -77,9 +81,9 @@ public class ExpressionWebServiceTest {
     public void testExistingErrorId() throws IOException {
         String expression = "1--1";
         String result = messageAsJSON(EMPTY_STACK_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
+        String historyId = UUID.randomUUID().toString();
 
-
-        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, EMPTY_STACK_EXCEPTION_MESSAGE));
+        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, EMPTY_STACK_EXCEPTION_MESSAGE,historyId));
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
         Response response = expressionWebService.getExpression(testingId);
@@ -87,8 +91,9 @@ public class ExpressionWebServiceTest {
     }
 
 
-    private String messageAsJSON(String message, int code) {
-        return "{\"message\":\"" + message + "\"," + "\"code\":" + code + "}";
+    private String messageAsJSON(String message, int code) throws JsonProcessingException {
+        ErrorCodeMessage errorCodeMessage = new ErrorCodeMessage(message,code);
+        return objectMapper.writeValueAsString(errorCodeMessage);
     }
 
 }

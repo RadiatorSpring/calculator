@@ -74,7 +74,6 @@ public class CalculatorService implements Job {
         try {
             result = this.compute(expressionDTO.getExpression());
         } catch (WebException e) {
-
             error = e.getMessage();
         }
 

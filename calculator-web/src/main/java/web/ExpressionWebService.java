@@ -3,6 +3,7 @@ package web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import models.enums.Errors;
 import models.wrappers.ErrorCodeMessage;
 import models.wrappers.CalculationResult;
@@ -73,12 +74,14 @@ public class ExpressionWebService {
             return createFailResponseWithErrorMessage(DOES_NOT_EXIST);
         }
         String errorMessage = expressionResultDTO.getError();
+
         return createFailResponseWithErrorMessage(errorMessage);
     }
 
     private Response createFailResponseWithErrorMessage(String errorMessage) throws JsonProcessingException {
         ErrorCodeMessage errorCodeMessage = createErrorCodeMessage(errorMessage);
         String json = mapper.writeValueAsString(errorCodeMessage);
+
         return Response.status(errorCodeMessage.getCode()).entity(json).build();
     }
 

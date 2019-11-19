@@ -11,7 +11,7 @@ import java.util.List;
 public class ExpressionResultDAO {
 
     private static final String FIND_ALL = "ExpressionResultDTO_findAll";
-    private static final String FIND_ALL_NOT_EVALUATED="ExpressionResultDTO_findAllNotEvaluated";
+    private static final String FIND_ALL_NOT_EVALUATED = "ExpressionResultDTO_findAllNotEvaluated";
     private static final String FIND_HISTORY_WITH_SESSION_ID = "ExpressionDTO_findHistoryWithSessionId";
     private EntityManager entityManager;
 
@@ -66,5 +66,12 @@ public class ExpressionResultDAO {
     }
 
 
+    public List<ExpressionResultDTO> getHistory(String historyId) {
+        Query<ExpressionResultDTO> query = (Query<ExpressionResultDTO>) entityManager
+                .createNamedQuery(FIND_HISTORY_WITH_SESSION_ID, ExpressionResultDTO.class)
+                .setParameter("historyId", historyId);
 
+        return query.getResultList();
+
+    }
 }

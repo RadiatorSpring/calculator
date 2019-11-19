@@ -1,5 +1,7 @@
 package persistence.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,11 +9,14 @@ import javax.persistence.*;
 @NamedQuery(name = "ExpressionResultDTO_findAll", query = "select e from ExpressionResultDTO e")
 @NamedQuery(name = "ExpressionResultDTO_findAllNotEvaluated",
         query = "select e from ExpressionResultDTO e where evaluation=0 and error=\'Is not evaluated\'")
+@NamedQuery(name = "ExpressionDTO_findHistoryWithSessionId",
+        query = "select e from ExpressionResultDTO e where e.historyId = :historyId")
 public class ExpressionResultDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonIgnore
     private long id;
 
     @Column
@@ -23,6 +28,10 @@ public class ExpressionResultDTO {
     @Column
     private String error;
 
+
+    @Column
+    @JsonIgnore
+    private String historyId;
 
 
     public ExpressionResultDTO(String expression, double evaluation) {
@@ -42,9 +51,10 @@ public class ExpressionResultDTO {
         this.error = error;
     }
 
-    public ExpressionResultDTO(String expression, String error) {
+    public ExpressionResultDTO(String expression, String error, String historyId) {
         this.expression = expression;
         this.error = error;
+        this.historyId = historyId;
     }
 
 
@@ -72,5 +82,12 @@ public class ExpressionResultDTO {
         this.evaluation = evaluation;
     }
 
+    public String getHistoryId() {
+        return historyId;
+    }
+
+    public void setHistoryId(String historyId) {
+        this.historyId = historyId;
+    }
 
 }

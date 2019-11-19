@@ -26,6 +26,7 @@ public class CalculatorWebService {
 
     private ObjectMapper mapper;
     private ExpressionResultDAO expressionResultDAO;
+    private static final Logger logger = LoggerFactory.getLogger(CalculatorWebService.class);
 
     @Inject
     public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
@@ -40,17 +41,19 @@ public class CalculatorWebService {
     public Response saveExpression(String expression) throws IOException {
         CalculatorExpression calculatorExpression = mapper.readValue(expression, CalculatorExpression.class);
 
-        long expressionId = saveResponseToDb(calculatorExpression.getExpression());
+        long expressionId = saveResponseToDb(calculatorExpression.getExpression(), calculatorExpression.getHistoryId());
         CalculationId id = new CalculationId(expressionId);
+        logger.error(String.valueOf(expressionId));
         String idAsJSON = mapper.writeValueAsString(id);
+        logger.error(String.valueOf(idAsJSON));
 
         return Response.status(202)
                 .entity(idAsJSON)
                 .build();
     }
 
-     private long saveResponseToDb(String expression) {
-        ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED);
+    private long saveResponseToDb(String expression, String historyId) {
+        ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED, historyId);
         expressionResultDAO.save(expressionResultDTO);
 
         return expressionResultDTO.getId();
