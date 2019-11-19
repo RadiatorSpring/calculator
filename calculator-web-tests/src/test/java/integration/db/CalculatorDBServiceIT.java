@@ -31,7 +31,6 @@ public class CalculatorDBServiceIT extends BaseDBTest {
         String expression = "11+1*(1-1)/2";
 
         webPage.executePostRequest(expression);
-
         ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(testId);
 
         assertEquals(testId, foundDTO.getId());

@@ -25,7 +25,6 @@ public class CalculatorPage {
     private ErrorCodeMessage errorCodeMessage;
     private CalculationResult calculationResult;
     private static final Logger logger = LoggerFactory.getLogger(CalculatorPage.class);
-    private static final long MAX_TIMEOUT = 10;
 
     public CalculatorPage() {
         objectMapper = new ObjectMapper();
