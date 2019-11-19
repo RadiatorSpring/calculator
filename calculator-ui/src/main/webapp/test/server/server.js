@@ -2,12 +2,15 @@ sap.ui.define([
         "sap/ui/thirdparty/sinon"
     ],
     function (sinon) {
+
+
         return {
 
             init: function () {
-                var postURL = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate/;
-                var urlForMock = /.*\/calculator-web-1.0-SNAPSHOT\/.*/;
-
+                let postURL = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/calculate/;
+                let urlForMock = /.*\/calculator-web-1.0-SNAPSHOT\/.*/;
+                let regexHistoryId = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/history\/id/;
+                let regexHistory = /.*\/calculator-web-1.0-SNAPSHOT\/api\/v1\/history\/uuid/;
 
                 this.oServer = sinon.fakeServer.create();
                 this.oServer.autoRespond = true;
@@ -18,11 +21,12 @@ sap.ui.define([
                     return !url.match(urlForMock);
                 });
 
+                fakeRequestForHistory(this.oServer, regexHistory)
+                fakeRequestsForHistoryId(this.oServer, regexHistoryId)
                 fakeRequestsForEmtpyParamater(this.oServer, postURL);
                 fakeRequestsForIllegalArgument(this.oServer, postURL);
                 fakeRequestsForTooManyOperators(this.oServer, postURL);
                 fakeRequestsForCorrectInput(this.oServer, postURL);
-
             }
 
         };
@@ -36,13 +40,31 @@ sap.ui.define([
         function fakePostResponse(server, url, id, expression, code) {
             server.respondWith("POST", url, function (xhr) {
                 let oResponse = JSON.parse(xhr.requestBody);
-                let oExpected = {expression: expression};
-
+                let oExpected = {expression: expression, historyId: "uuid"};
                 if (oResponse.expression === oExpected.expression) {
-                    let oId = {id: id}
+                    let oId = {id: id};
                     xhr.respond(code, {"Content-Type": "application/json"}, JSON.stringify(oId));
                 }
             });
+        }
+
+        function fakeRequestForHistory(server, regexHistory) {
+                let historyList = JSON.stringify([
+                {
+                    expression: "1-1*(1+1)/2",
+                    evaluation:"0",
+                    error:null
+                }
+            ])
+
+            fakeResponse(server, regexHistory, historyList, 200);
+        }
+
+        function fakeRequestsForHistoryId(server, regexHistoryId) {
+            let uuid = "uuid";
+            let historyId = JSON.stringify({historyId: uuid});
+
+            fakeResponse(server, regexHistoryId, historyId, 200);
         }
 
         function fakeRequestsForEmtpyParamater(server, postURL) {

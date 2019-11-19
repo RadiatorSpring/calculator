@@ -12,7 +12,9 @@
 		"dataSources": {
 			"calculator": {
 				"restApiPost": "../calculator-web-1.0-SNAPSHOT/api/v1/calculate/",
-				"restApiGet": "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/"
+				"restApiGet": "../calculator-web-1.0-SNAPSHOT/api/v1/expressions/",
+				"restApiHistoryId": "../calculator-web-1.0-SNAPSHOT/api/v1/history/id",
+				"restApiHistory": "../calculator-web-1.0-SNAPSHOT/api/v1/history/"
 			}
 		}
 	},

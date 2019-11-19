@@ -36,7 +36,7 @@
                         <ColumnListItem>
                             <cells>
                                 <ObjectIdentifier title="{history>expression}" class="sapMTableContentMargin"/>
-                                <Text text="{history>result} {history>message}"/>
+                                <Text text="{history>evaluation} {history>error}"/>
                             </cells>
                         </ColumnListItem>
                     </items>

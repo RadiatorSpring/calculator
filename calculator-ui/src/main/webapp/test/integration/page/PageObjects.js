@@ -71,14 +71,15 @@ sap.ui.define([
                         id: "table",
                         viewName: viewName,
                         check: function (oTable) {
-                            let oModel= oTable.getModel("history");
-                            if(!oModel){
+                            let oModel = oTable.getModel("history");
+                            if (!oModel) {
                                 return false;
-                            }else{
+                            } else {
                                 let items = oTable.getModel("history").getJSON();
-                                let oItems  = JSON.parse(items);
+                                let oItems = JSON.parse(items);
 
-                                if (oItems[4].expression ==="1-1*(1+1)/2" && oItems[4].result == 0) {
+                                console.log(oItems[0].evaluation);
+                                if (oItems[0].expression === "1-1*(1+1)/2" && oItems[0].evaluation == 0) {
                                     return true;
                                 } else {
                                     return false;

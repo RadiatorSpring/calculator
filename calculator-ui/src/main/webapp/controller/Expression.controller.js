@@ -7,27 +7,65 @@ sap.ui.define([
 
     return Controller.extend("calculator.ui.controller.Expression", {
         mapName: "map",
-
+        historyId: "historyId",
+        interval: {},
         onInit: function () {
-            let map = this.getMapCalculations();
-            if (this.isEmpty(map)) {
-                this.updateHistoryModel();
+            let historyId = sessionStorage.getItem(this.historyId)
+            if (historyId !== undefined) {
+                this.setHistoryId();
             }
+            this.interval = setInterval(() => {
+                this.updateHistory()
+            }, 1300);
         },
-        isEmpty:function(map){
-           return  Object.entries(map).length !== 0;
-        },
+        setHistoryId: function () {
+            let manifest = this.getManifest();
+            let url = manifest.dataSources.calculator.restApiHistoryId;
 
+            this.doGetXHR(url, "", function (xhr) {
+                let oHistoryId = JSON.parse(xhr.responseText);
+                sessionStorage.setItem(this.historyId, oHistoryId.historyId);
+            }.bind(this))
+        },
+        updateHistory: function () {
+            let manifest = this.getManifest();
+            let historyId = sessionStorage.getItem(this.historyId);
+            let url = manifest.dataSources.calculator.restApiHistory + historyId;
+
+            this.doGetXHR(url, "", function (xhr) {
+                let items = JSON.parse(xhr.responseText);
+                this.updateHistoryModel(items);
+            }.bind(this));
+        },
+        updateHistoryModel: function (items) {
+            let modelBindingName = "history";
+            let modifiedItems = this.parseExpressions(items);
+            let oModel = new JSONModel(modifiedItems);
+            let view = this.getView();
+
+            view.setModel(oModel, modelBindingName);
+        },
+        parseExpressions: function (historyItems) {
+            historyItems.forEach(element => {
+                if (element.error === null) {
+                    delete element.error;
+                } else {
+                    delete element.evaluation;
+                }
+            })
+            return historyItems;
+        },
         onPost: function () {
             var expression = this.getView().byId("expression").getValue();
+            let historyId = sessionStorage.getItem(this.historyId);
             var оBody = {
-                expression: expression
+                expression: expression,
+                historyId: historyId
             }
             var sBody = JSON.stringify(оBody);
             this.doPostXHR(sBody, function (xhr) {
                 var oResponse = JSON.parse(xhr.responseText);
                 var responseId = oResponse.id;
-                this.addAsPendingToHistory(responseId, expression);
 
                 var getCall = setInterval(() => {
                     this.onGet(responseId, getCall)
@@ -38,7 +76,7 @@ sap.ui.define([
         },
         doPostXHR: function (body, done) {
             let xhr = new XMLHttpRequest();
-            let manifest =  this.getOwnerComponent().getMetadata().getManifestEntry("sap.app");
+            let manifest = this.getManifest();
             let url = manifest.dataSources.calculator.restApiPost;
             xhr.open("POST", url);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -48,37 +86,23 @@ sap.ui.define([
             };
             xhr.onerror = function () {
                 done(xhr)
-            }
+            };
             xhr.send(body)
         },
-        addAsPendingToHistory: function (id, expression) {
-            let sIsNotEvaluated = "Is not evaluated";
-            var historyTableItem = {
-                expression: expression,
-                message: sIsNotEvaluated
-            };
-            this.updateSessionStorage(id, historyTableItem);
-            this.updateHistoryModel();
-        },
-        updateSessionStorage: function (id, historyTableItem) {
-            let updatedSessionStorage = this.getMapCalculations();
-            updatedSessionStorage[id] = historyTableItem;
-            var sUpdatedSessionStorage = JSON.stringify(updatedSessionStorage);
-            sessionStorage.setItem(this.mapName, sUpdatedSessionStorage);
-        },
+
         onGet: async function (id, intervalCallback) {
-            this.doGetXHR(id, function (xhr) {
+            let manifest = this.getManifest();
+            let url = manifest.dataSources.calculator.restApiGet;
+
+            this.doGetXHR(url, id, function (xhr) {
                 var evaluation = xhr.responseText;
                 var oModel = new JSONModel();
                 oModel.setData(JSON.parse(evaluation));
-
                 if (this.isStatusOK(xhr)) {
                     this.getView().setModel(oModel);
-                    this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
                 } else if (this.isNotStatusAccepted(xhr)) {
                     this.setErrorModel(xhr);
-                    this.updateHistory(evaluation, id);
                     clearInterval(intervalCallback);
                 }
 
@@ -90,10 +114,8 @@ sap.ui.define([
         isNotStatusAccepted: function (xhr) {
             return xhr.status !== 202;
         },
-        doGetXHR: function (id, done) {
+        doGetXHR: function (url, id, done) {
             let xhr = new XMLHttpRequest();
-            let manifest =  this.getOwnerComponent().getMetadata().getManifestEntry("sap.app");
-            let url = manifest.dataSources.calculator.restApiGet;
 
             xhr.open("GET", url + id);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -105,56 +127,18 @@ sap.ui.define([
             }
             xhr.send()
         },
-
-        updateHistory: function (evaluation, id) {
-            let historyTableItem = this.createHistoryTableItem(evaluation, id);
-            this.updateSessionStorage(id, historyTableItem);
-            this.updateHistoryModel();
-        },
-        createHistoryTableItem: function (evaluation, id) {
-            let map = this.getMapCalculations();
-            let expression = map[id].expression;
-            let parsedEvaluation = JSON.parse(evaluation);
-
-            if (this.isCorrectResult(parsedEvaluation)) {
-                var historyTableItem = {
-                    expression: expression,
-                    result: parsedEvaluation.result
-                };
-            } else {
-                var historyTableItem = {
-                    expression: expression,
-                    message: parsedEvaluation.message
-                };
-            }
-            return historyTableItem;
-        },
-        isCorrectResult:function(parsedEvaluation){
-            return parsedEvaluation.result !== undefined;
-        },
-
-        updateHistoryModel: function () {
-            let historyMap = this.getMapCalculations();
-            let modelBindingName = "history";
-            let oModel = new JSONModel(historyMap);
-            let view = this.getView();
-
-            view.setModel(oModel, modelBindingName);
-        },
-        getMapCalculations: function () {
-            let map = sessionStorage.getItem(this.mapName);
-            if (map !== null) {
-                return JSON.parse(map);
-            } else {
-                sessionStorage.setItem(this.mapName, "{}");
-                return JSON.parse(sessionStorage.getItem(this.mapName));
-            }
-        },
         setErrorModel: function (xhr) {
             let sErrorTextID = "errorText";
             var oResponse = JSON.parse(xhr.responseText);
             let sError = oResponse.message;
             this.getView().byId(sErrorTextID).setText(sError)
+        },
+        getManifest: function () {
+            return this.getOwnerComponent().getMetadata().getManifestEntry("sap.app");
+        },
+        onExit: function () {
+            clearInterval(this.interval);
         }
+
     })
 });
