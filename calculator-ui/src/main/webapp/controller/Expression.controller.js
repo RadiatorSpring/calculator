@@ -72,15 +72,14 @@ sap.ui.define([
                 var oModel = new JSONModel();
                 oModel.setData(JSON.parse(evaluation));
 
-                if (this.isStatusOK(xhr)) {
-                    this.getView().setModel(oModel);
+                if(this.isNotStatusAccepted(xhr)){
+                    if(!this.isStatusOK(xhr)){
+                        this.setErrorModel(xhr);
+                    }
                     this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
-                } else if (this.isNotStatusAccepted(xhr)) {
-                    this.setErrorModel(xhr);
-                    this.updateHistory(evaluation, id);
-                    clearInterval(intervalCallback);
                 }
+
 
             }.bind(this))
         },
@@ -135,8 +134,9 @@ sap.ui.define([
 
         updateHistoryModel: function () {
             let historyMap = this.getMapCalculations();
+            let reversedHistory = this.reverseHistory(historyMap);
             let modelBindingName = "history";
-            let oModel = new JSONModel(historyMap);
+            let oModel = new JSONModel(reversedHistory);
             let view = this.getView();
 
             view.setModel(oModel, modelBindingName);
@@ -150,11 +150,17 @@ sap.ui.define([
                 return JSON.parse(sessionStorage.getItem(this.mapName));
             }
         },
+        reverseHistory:function(history){
+               let historyAsArray =  Object.values(history);
+               return Array.prototype.reverse.call(historyAsArray);
+        },
+
         setErrorModel: function (xhr) {
             let sErrorTextID = "errorText";
             var oResponse = JSON.parse(xhr.responseText);
             let sError = oResponse.message;
             this.getView().byId(sErrorTextID).setText(sError)
-        }
+        },
+
     })
 });

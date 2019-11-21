@@ -3,9 +3,9 @@ package web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.wrappers.CalculationId;
 import models.wrappers.CalculatorExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
+import persistence.dto.CalculationsDTO;
 import persistence.dto.ExpressionResultDTO;
 
 import javax.inject.Inject;
@@ -17,8 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-import static models.errors.ExceptionMessages.IS_NOT_EVALUATED;
-
 
 @Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,11 +24,13 @@ public class CalculatorWebService {
 
     private ObjectMapper mapper;
     private ExpressionResultDAO expressionResultDAO;
+        private CalculationsDAO calculationsDAO;
 
     @Inject
-    public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO) {
+    public CalculatorWebService(ObjectMapper mapper, ExpressionResultDAO expressionResultDAO, CalculationsDAO calculationsDAO) {
         this.mapper = mapper;
         this.expressionResultDAO = expressionResultDAO;
+        this.calculationsDAO = calculationsDAO;
     }
 
     @POST
@@ -49,8 +49,11 @@ public class CalculatorWebService {
                 .build();
     }
 
-     private long saveResponseToDb(String expression) {
-        ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, IS_NOT_EVALUATED);
+    private long saveResponseToDb(String expression) {
+        CalculationsDTO calculationsDTO = new CalculationsDTO(expression);
+        calculationsDAO.save(calculationsDTO);
+
+        ExpressionResultDTO expressionResultDTO = new ExpressionResultDTO(expression, false);
         expressionResultDAO.save(expressionResultDTO);
 
         return expressionResultDTO.getId();

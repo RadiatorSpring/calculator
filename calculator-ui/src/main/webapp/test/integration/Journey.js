@@ -50,17 +50,5 @@ sap.ui.require([
         Then.iTeardownMyApp();
     });
 
-    opaTest("Should change the result field to some number message", function (Given, When, Then) {
-        iStartMyUIComponent(Given);
-
-        When.onTheAppPage.iFillInputWithAnExpression();
-        When.onTheAppPage.iPressCalculateButton();
-
-        Then.onTheAppPage.iShouldSeeTheResult();
-
-        Then.iTeardownMyApp();
-    });
-
-
 
 });

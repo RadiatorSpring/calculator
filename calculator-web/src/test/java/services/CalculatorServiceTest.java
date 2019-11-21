@@ -23,6 +23,7 @@ import java.util.EmptyStackException;
 import static models.errors.ExceptionMessages.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,38 +33,11 @@ public class CalculatorServiceTest {
     private CalculatorService calculatorService;
     @Mock
     private Computable computable;
-    @Mock
-    private ExpressionResultDAO expressionResultDAO;
-    @Mock
-    JobExecutionContext jobExecutionContext;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
     private static final double delta = 0.01;
 
-    @Test
-    public void testQuartz() throws CannotDivideByZeroException {
-        String expression = "1-2";
-        double evaluation = -1;
-        ArgumentCaptor<Double> doubleArgumentCaptor = ArgumentCaptor.forClass(Double.class);
-        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Long> longCapture = ArgumentCaptor.forClass(Long.class);
-
-        when(expressionResultDAO.getAllNotEvaluated())
-                .thenReturn(Collections.singletonList(new ExpressionResultDTO(expression, evaluation)
-                ));
-        when(computable.compute(expression)).thenReturn(evaluation);
-
-        try {
-            calculatorService.execute(jobExecutionContext);
-        } catch (JobExecutionException e) {
-            assertEquals(e.getMessage(), EMPTY_STACK_EXCEPTION_MESSAGE);
-        }
-
-        verify(expressionResultDAO).update(longCapture.capture(), doubleArgumentCaptor.capture(), stringArgumentCaptor.capture());
-
-        assertEquals(doubleArgumentCaptor.getValue(), evaluation, delta);
-        assertNull(stringArgumentCaptor.getValue());
-    }
 
     @Test
     public void testExpressionAndResult() throws CannotDivideByZeroException, WebException {

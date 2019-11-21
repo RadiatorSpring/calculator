@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.ExpressionResultDTO;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
 import static models.errors.ExceptionMessages.EMPTY_STACK_EXCEPTION_MESSAGE;
 import static models.errors.ExceptionMessages.IS_NOT_EVALUATED;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,6 +31,11 @@ public class ExpressionWebServiceTest {
 
     @Mock
     private ObjectMapper objectMapper;
+    @Mock
+    private ExpressionResultDTO expressionResultDTO;
+
+    @Mock
+    private CalculationsDAO calculationsDAO;
 
     private static long testingId = 1;
     private final static int SC_BAD_REQUEST = 400;
@@ -39,7 +46,8 @@ public class ExpressionWebServiceTest {
 
         String result = messageAsJSON(ExceptionMessages.DOES_NOT_EXIST, SC_BAD_REQUEST);
 
-        when(expressionResultDAO.getExpression(testingId)).thenReturn(null);
+        when(expressionResultDAO.getEntity(testingId)).thenReturn(null);
+
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
         Response response = expressionWebService.getExpression(testingId);
@@ -51,21 +59,21 @@ public class ExpressionWebServiceTest {
         String expression = "1-1";
         String result = messageAsJSON(IS_NOT_EVALUATED, SC_ACCEPTED);
 
-        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, IS_NOT_EVALUATED));
+        when(expressionResultDAO.getEntity(testingId)).thenReturn(new ExpressionResultDTO(expression, false));
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
         Response response = expressionWebService.getExpression(testingId);
         Assert.assertEquals(response.getEntity().toString(), result);
     }
 
-    @Test
+        @Test
     public void testExistingResultId() throws IOException {
         String result = "{\"result\":0.0}";
         String expression = "1-1";
         double evaluated = 0;
-        ExpressionResultDTO mockedDTO = new ExpressionResultDTO(expression, evaluated);
+        ExpressionResultDTO mockedDTO = new ExpressionResultDTO(expression, false);
 
-        when(expressionResultDAO.getExpression(testingId))
+        when(expressionResultDAO.getEntity(testingId))
                 .thenReturn(mockedDTO);
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
@@ -79,7 +87,7 @@ public class ExpressionWebServiceTest {
         String result = messageAsJSON(EMPTY_STACK_EXCEPTION_MESSAGE, SC_BAD_REQUEST);
 
 
-        when(expressionResultDAO.getExpression(testingId)).thenReturn(new ExpressionResultDTO(expression, EMPTY_STACK_EXCEPTION_MESSAGE));
+        when(expressionResultDAO.getEntity(testingId)).thenReturn(new ExpressionResultDTO(expression, false));
         when(objectMapper.writeValueAsString(any())).thenReturn(result);
 
         Response response = expressionWebService.getExpression(testingId);

@@ -78,7 +78,7 @@ sap.ui.define([
                                 let items = oTable.getModel("history").getJSON();
                                 let oItems  = JSON.parse(items);
 
-                                if (oItems[4].expression ==="1-1*(1+1)/2" && oItems[4].result == 0) {
+                                if (oItems[0].expression ==="1-1*(1+1)/2" && oItems[0].result == 0) {
                                     return true;
                                 } else {
                                     return false;

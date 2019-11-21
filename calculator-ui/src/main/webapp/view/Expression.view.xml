@@ -7,9 +7,7 @@
             <Input id="expression" valueLiveUpdate="true" width="60%"/>
             <Button id="calculateBtn" text="calculate" class="sapUiTinyMarginBeginEnd" press=".onPost"/>    
         </content>
-        <content>
-            <Input id="result" value="{/result}" valueLiveUpdate="true" width="60%"/>
-        </content>
+
     </Panel>
     <Panel class="sapUiResponsiveMargin" width="auto">
         <content>

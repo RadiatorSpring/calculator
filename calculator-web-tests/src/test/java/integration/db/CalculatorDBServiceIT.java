@@ -1,10 +1,11 @@
 package integration.db;
 
 import integration.page.WebPage;
-import org.apache.http.HttpResponse;
 import org.junit.Before;
 import org.junit.Test;
+import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
+import persistence.dto.CalculationsDTO;
 import persistence.dto.ExpressionResultDTO;
 
 import java.io.IOException;
@@ -16,11 +17,13 @@ public class CalculatorDBServiceIT extends BaseDBTest {
     private ExpressionResultDAO expressionResultDAO;
     private WebPage webPage;
     private static final long testId = 1;
+    private CalculationsDAO calculationsDAO;
 
     @Before
     public void createDBConfiguration() {
         super.createDBConfiguration();
         expressionResultDAO = new ExpressionResultDAO(getEntityManager());
+        calculationsDAO = new CalculationsDAO(getEntityManager());
         webPage = new WebPage();
         clearTable();
     }
@@ -32,24 +35,27 @@ public class CalculatorDBServiceIT extends BaseDBTest {
 
         webPage.executePostRequest(expression);
 
-        ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(testId);
+        ExpressionResultDTO foundDTO = expressionResultDAO.getEntity(testId);
+        CalculationsDTO calculationsDTO = calculationsDAO.getEntity(expression);
 
         assertEquals(testId, foundDTO.getId());
         assertEquals(expression, foundDTO.getExpression());
-        assertEquals(0d, foundDTO.getEvaluation(), 0.01);
-        assertEquals(IS_NOT_EVALUATED, foundDTO.getError());
+        assertEquals(0d, calculationsDTO.getEvaluation(), 0.01);
+        assertEquals("", calculationsDTO.getError());
     }
 
     @Test
     public void testWithWrongExpression() throws IOException {
         String expression = "1--1";
         webPage.executePostRequest(expression);
-        ExpressionResultDTO foundDTO = expressionResultDAO.getExpression(testId);
+
+        ExpressionResultDTO foundDTO = expressionResultDAO.getEntity(testId);
+        CalculationsDTO calculationsDTO = calculationsDAO.getEntity(expression);
 
         assertEquals(testId, foundDTO.getId());
         assertEquals(expression, foundDTO.getExpression());
-        assertEquals(0d, foundDTO.getEvaluation(), 0.01);
-        assertEquals(IS_NOT_EVALUATED, foundDTO.getError());
+        assertEquals(0d, calculationsDTO.getEvaluation(), 0.01);
+        assertEquals("", calculationsDTO.getError());
     }
 
 

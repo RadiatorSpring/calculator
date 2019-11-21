@@ -8,7 +8,9 @@ import models.errors.ExceptionMessages;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
+import persistence.dto.CalculationsDTO;
 import persistence.dto.ExpressionResultDTO;
 
 import javax.inject.Inject;
@@ -20,16 +22,17 @@ import static models.errors.ExceptionMessages.*;
 public class CalculatorService implements Job {
     private Computable computable;
     private final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
+    private CalculationsDAO calculationsDAO;
     private ExpressionResultDAO expressionResultDAO;
 
     public CalculatorService() {
         this.computable = new Calculator();
+        this.calculationsDAO = new CalculationsDAO();
         this.expressionResultDAO = new ExpressionResultDAO();
     }
 
-    public CalculatorService(Computable computable, ExpressionResultDAO expressionResultDAO) {
+    public CalculatorService(Computable computable, ExpressionResultDAO CalculationsDAO) {
         this.computable = computable;
-        this.expressionResultDAO = expressionResultDAO;
     }
 
     double compute(String expression) throws WebException {
@@ -63,23 +66,28 @@ public class CalculatorService implements Job {
         List<ExpressionResultDTO> list = expressionResultDAO.getAllNotEvaluated();
 
         for (ExpressionResultDTO expressionResultDTO : list) {
-            updateWithEvaluations(expressionResultDTO);
+            CalculationsDTO notEvaluatedCalculation = calculationsDAO.getEntity(expressionResultDTO.getExpression());
+            updateWithEvaluations(notEvaluatedCalculation);
+            updateIsEvaluated(expressionResultDTO);
         }
     }
 
-    private void updateWithEvaluations(ExpressionResultDTO expressionDTO) {
+    private void updateIsEvaluated(ExpressionResultDTO expressionResultDTO) {
+        expressionResultDAO.updateIsEvaluated(expressionResultDTO.getId());
+    }
+
+    private void updateWithEvaluations(CalculationsDTO calculationsDTO) {
         double result = 0;
         String error = null;
 
         try {
-            result = this.compute(expressionDTO.getExpression());
+            result = this.compute(calculationsDTO.getExpression());
         } catch (WebException e) {
-
             error = e.getMessage();
         }
 
         if (!isInternalServerError(error)) {
-            expressionResultDAO.update(expressionDTO.getId(), result, error);
+            calculationsDAO.update(calculationsDTO.getExpression(), result, error);
         }
     }
 

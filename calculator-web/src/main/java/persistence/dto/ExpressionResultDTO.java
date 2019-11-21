@@ -4,9 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "expression_result")
-@NamedQuery(name = "ExpressionResultDTO_findAll", query = "select e from ExpressionResultDTO e")
 @NamedQuery(name = "ExpressionResultDTO_findAllNotEvaluated",
-        query = "select e from ExpressionResultDTO e where evaluation=0 and error=\'Is not evaluated\'")
+        query = "select e from ExpressionResultDTO e where e.isEvaluated=false")
 public class ExpressionResultDTO {
 
     @Id
@@ -18,42 +17,14 @@ public class ExpressionResultDTO {
     private String expression;
 
     @Column
-    private double evaluation;
+    private boolean isEvaluated;
 
-    @Column
-    private String error;
-
-
-
-    public ExpressionResultDTO(String expression, double evaluation) {
+    public ExpressionResultDTO(String expression, boolean isEvaluated) {
         this.expression = expression;
-        this.evaluation = evaluation;
-    }
-
-    public String getError() {
-        return error;
+        this.isEvaluated = isEvaluated;
     }
 
     public ExpressionResultDTO() {
-        //for hibernate
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public ExpressionResultDTO(String expression, String error) {
-        this.expression = expression;
-        this.error = error;
-    }
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getExpression() {
@@ -64,12 +35,20 @@ public class ExpressionResultDTO {
         this.expression = expression;
     }
 
-    public double getEvaluation() {
-        return evaluation;
+    public boolean isEvaluated() {
+        return isEvaluated;
     }
 
-    public void setEvaluation(double evaluation) {
-        this.evaluation = evaluation;
+    public void setEvaluated(boolean evaluated) {
+        isEvaluated = evaluated;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 

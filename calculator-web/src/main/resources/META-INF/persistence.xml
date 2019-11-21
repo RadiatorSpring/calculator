@@ -7,8 +7,8 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
         <class>persistence.dto.ExpressionResultDTO</class>
+        <class>persistence.dto.CalculationsDTO</class>
         <properties>
-
             <property name="hibernate.connection.url"
                       value="jdbc:derby:memory://127.0.0.1:1527/calculator;create=true"/>
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
@@ -25,7 +25,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
         <non-jta-data-source>java:comp/env/jdbc/DefaultDB</non-jta-data-source>
-
+        <class>persistence.dto.CalculationsDTO</class>
         <class>persistence.dto.ExpressionResultDTO</class>
         <properties>
             <property name="hibernate.show_sql" value="true"/>
@@ -36,6 +36,7 @@
     <persistence-unit name="integration-test" >
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
+        <class>persistence.dto.CalculationsDTO</class>
         <class>persistence.dto.ExpressionResultDTO</class>
         <properties>
             <property name="hibernate.connection.url"
