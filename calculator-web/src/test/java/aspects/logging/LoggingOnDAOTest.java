@@ -1,4 +1,4 @@
-package aspects;
+package aspects.logging;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoggingAspectTest {
+public class LoggingOnDAOTest {
     private CalculationsDAO calculationsDAO;
     private PrintStream actualStream;
 
@@ -38,8 +38,6 @@ public class LoggingAspectTest {
 
     @Before
     public void setup() {
-
-
         calculationsDAO = new CalculationsDAO(entityManager);
         actualStream = System.out;
         System.setOut(mockStream);
@@ -51,21 +49,10 @@ public class LoggingAspectTest {
     }
 
     @Test
-    public void testSingleCall() throws IOException {
-        when(entityManager.getTransaction()).thenReturn(entityTransaction);
-        doNothing().when(entityTransaction).begin();
-        doNothing().when(entityTransaction).commit();
-
-        calculationsDAO.save(new CalculationsDTO());
-
-        verify(System.out, times(1)).write(any());
-    }
-
-    @Test
-    public void testMultipleCalls() throws IOException {
+    public void testMultipleCallsForDaoLogger() throws IOException {
         CalculationsDTO emptyCalculation = new CalculationsDTO();
         CalculationsDTO calculationWithParameters = new CalculationsDTO("1-1", 0.0, "");
-        List<String> patterns = new ArrayList<>(Arrays.asList(asPattern(emptyCalculation), asPattern(calculationWithParameters)));
+        List<String> patterns = new ArrayList<>(Arrays.asList(asRegexPattern(emptyCalculation), asRegexPattern(calculationWithParameters)));
 
         mockEntityManagerMethods();
         saveAll(emptyCalculation, calculationWithParameters);
@@ -84,7 +71,7 @@ public class LoggingAspectTest {
         }
     }
 
-    private String asPattern(CalculationsDTO calculationsDTO) {
+    private String asRegexPattern(CalculationsDTO calculationsDTO) {
         return ".*The dto is : " +
                 "CalculationsDTO\\{" +
                 "expression='" + calculationsDTO.getExpression() + '\'' +
@@ -104,10 +91,12 @@ public class LoggingAspectTest {
             calculationsDAO.save(dto);
         }
     }
+
     private List<byte[]> getAllArguments() throws IOException {
         ArgumentCaptor<byte[]> captor = ArgumentCaptor.forClass(byte[].class);
-        verify(System.out, times(2)).write(captor.capture());
+        verify(System.out,times(2)).write(captor.capture());
         return captor.getAllValues();
     }
+
 
 }
