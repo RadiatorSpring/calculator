@@ -1,0 +1,88 @@
+{
+  "name": "calculator-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "karma": {
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/karma/-/karma-4.3.0.tgz",
+      "integrity": "sha512-NSPViHOt+RW38oJklvYxQC4BSQsv737oQlr/r06pCM+slDOr4myuI1ivkRmp+3dVpJDfZt2DmaPJ2wkx+ZZuMQ==",
+      "requires": {
+        "bluebird": "^3.3.0",
+        "body-parser": "^1.16.1",
+        "braces": "^3.0.2",
+        "chokidar": "^3.0.0",
+        "colors": "^1.1.0",
+        "connect": "^3.6.0",
+        "core-js": "^3.1.3",
+        "di": "^0.0.1",
+        "dom-serialize": "^2.2.0",
+        "flatted": "^2.0.0",
+        "glob": "^7.1.1",
+        "graceful-fs": "^4.1.2",
+        "http-proxy": "^1.13.0",
+        "isbinaryfile": "^3.0.0",
+        "lodash": "^4.17.14",
+        "log4js": "^4.0.0",
+        "mime": "^2.3.1",
+        "minimatch": "^3.0.2",
+        "optimist": "^0.6.1",
+        "qjobs": "^1.1.4",
+        "range-parser": "^1.2.0",
+        "rimraf": "^2.6.0",
+        "safe-buffer": "^5.0.1",
+        "socket.io": "2.1.1",
+        "source-map": "^0.6.1",
+        "tmp": "0.0.33",
+        "useragent": "2.3.0"
+      }
+    },
+    "karma-chrome-launcher": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-3.1.0.tgz",
+      "integrity": "sha512-3dPs/n7vgz1rxxtynpzZTvb9y/GIaW8xjAwcIGttLbycqoFtI7yo1NGnQi6oFTherRE+GIhCAHZC4vEqWGhNvg==",
+      "requires": {
+        "which": "^1.2.1"
+      }
+    },
+    "karma-cli": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/karma-cli/-/karma-cli-2.0.0.tgz",
+      "integrity": "sha512-1Kb28UILg1ZsfqQmeELbPzuEb5C6GZJfVIk0qOr8LNYQuYWmAaqP16WpbpKEjhejDrDYyYOwwJXSZO6u7q5Pvw==",
+      "requires": {
+        "resolve": "^1.3.3"
+      }
+    },
+    "karma-firefox-launcher": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/karma-firefox-launcher/-/karma-firefox-launcher-1.2.0.tgz",
+      "integrity": "sha512-j9Zp8M8+VLq1nI/5xZGfzeaEPtGQ/vk3G+Y8vpmFWLvKLNZ2TDjD6cu2dUu7lDbu1HXNgatsAX4jgCZTkR9qhQ==",
+      "requires": {
+        "is-wsl": "^2.1.0"
+      }
+    },
+    "karma-ui5": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/karma-ui5/-/karma-ui5-1.0.1.tgz",
+      "integrity": "sha512-sxnTzfJ7NIWnqOsAbkSLhAO9AC2bkZXNu666n8sGAKHo2/fPFkXMEBYZyBXIO5WOBVv2gV+wt9ZDIfaL4LzFxw==",
+      "requires": {
+        "@ui5/fs": "^1.1.0",
+        "@ui5/project": "^1.0.2",
+        "@ui5/server": "^1.1.2",
+        "http-proxy": "^1.17.0",
+        "js-yaml": "^3.13.1"
+      }
+    }
+  },
+  "dependencies": {
+    "karma-cli": "^2.0.0",
+    "karma-firefox-launcher": "^1.2.0"
+  }
+}

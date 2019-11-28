@@ -39,6 +39,29 @@
                     <attachClasses>true</attachClasses>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.11</version>
+                <configuration>
+                    <complianceLevel>1.8</complianceLevel>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <verbose>true</verbose>
+                    <Xlint>ignore</Xlint>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <!-- use this goal to weave all your test classes -->
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -113,16 +136,57 @@
                             <host>hanatrial.ondemand.com</host>
                             <application>mycalculator</application>
                             <source>
-                                ${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war,
-                                ${project.basedir}\..\calculator-ui\target\calculator-ui-1.0-SNAPSHOT.war
+                                ${project.build.directory}\${project.artifactId}-1.0-SNAPSHOT.war
                             </source>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.7.6</version>
+                        <executions>
+                            <!--                            <execution>-->
+                            <!--                                <id>install node and npm</id>-->
+                            <!--                                <goals>-->
+                            <!--                                    <goal>install-node-and-npm</goal>-->
+                            <!--                                </goals>-->
+                            <!--                                <configuration>-->
+                            <!--                                    <nodeVersion>v10.15.3</nodeVersion>-->
+                            <!--                                    <npmVersion>6.9.0</npmVersion>-->
+                            <!--                                </configuration>-->
+                            <!--                            </execution>-->
+                            <!--                            <execution>-->
+                            <!--                                <id>npm install</id>-->
+                            <!--                                <goals>-->
+                            <!--                                    <goal>npm</goal>-->
+                            <!--                                </goals>-->
+                            <!--                                <configuration>-->
+                            <!--                                    <arguments>install</arguments>-->
+                            <!--                                </configuration>-->
+                            <!--                            </execution>-->
+                            <execution>
+                                <id>javascript tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>karma</goal>
+                                </goals>
+                                <configuration>
+                                    <karmaConfPath>karma.conf.js</karmaConfPath>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
@@ -189,7 +253,6 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-
 
 
         <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
@@ -322,11 +385,21 @@
         </dependency>
 
         <dependency>
-            <groupId>SAP</groupId>
-            <artifactId>calculator-ui</artifactId>
-            <type>war</type>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
