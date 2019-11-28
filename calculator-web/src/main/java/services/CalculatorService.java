@@ -32,7 +32,7 @@ public class CalculatorService implements Job {
         this.computable = computable;
     }
 
-    double compute(String expression) throws WebException {
+    public double compute(String expression) throws WebException {
         if (!isEmptyExpression(expression)) {
             try {
                 return computable.compute(expression);
