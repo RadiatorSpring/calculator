@@ -12,8 +12,6 @@ import java.util.List;
 
 public class CalculationsDAO {
     private static final String FIND_ALL = "CalculationsDTO_findAll";
-    private static final String FIND_ALL_NOT_EVALUATED = "CalculationsDTO_findAllNotEvaluated";
-    private static final String FIND_HISTORY_WITH_SESSION_ID = "ExpressionDTO_findHistoryWithSessionId";
     private EntityManager entityManager;
     private static final Logger logger = LoggerFactory.getLogger(CalculationsDAO.class);
 
@@ -35,11 +33,6 @@ public class CalculationsDAO {
         return query.getResultList();
     }
 
-    public List<CalculationsDTO> getAllNotEvaluated() {
-        Query<CalculationsDTO> query = (Query<CalculationsDTO>) entityManager
-                .createNamedQuery(FIND_ALL_NOT_EVALUATED, CalculationsDTO.class);
-        return query.getResultList();
-    }
 
     public void save(CalculationsDTO calculationsDTO) {
         CalculationsDTO exists = this.getEntity(calculationsDTO.getExpression());

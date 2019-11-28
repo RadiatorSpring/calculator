@@ -3,8 +3,8 @@ package web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.enums.Errors;
-import models.wrappers.ErrorCodeMessage;
 import models.wrappers.CalculationResult;
+import models.wrappers.ErrorCodeMessage;
 import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.CalculationsDTO;
@@ -17,6 +17,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.isNull;
 import static models.errors.ExceptionMessages.DOES_NOT_EXIST;

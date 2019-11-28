@@ -4,16 +4,14 @@ import calculator.Calculator;
 import calculator.Computable;
 import calculator.exceptions.CannotDivideByZeroException;
 import exceptions.WebException;
-import models.errors.ExceptionMessages;
-import org.quartz.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import persistence.dao.CalculationsDAO;
 import persistence.dao.ExpressionResultDAO;
 import persistence.dto.CalculationsDTO;
 import persistence.dto.ExpressionResultDTO;
 
-import javax.inject.Inject;
 import java.util.EmptyStackException;
 import java.util.List;
 
@@ -21,7 +19,6 @@ import static models.errors.ExceptionMessages.*;
 
 public class CalculatorService implements Job {
     private Computable computable;
-    private final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
     private CalculationsDAO calculationsDAO;
     private ExpressionResultDAO expressionResultDAO;
 
@@ -31,7 +28,7 @@ public class CalculatorService implements Job {
         this.expressionResultDAO = new ExpressionResultDAO();
     }
 
-    public CalculatorService(Computable computable, ExpressionResultDAO CalculationsDAO) {
+    public CalculatorService(Computable computable) {
         this.computable = computable;
     }
 
@@ -40,16 +37,12 @@ public class CalculatorService implements Job {
             try {
                 return computable.compute(expression);
             } catch (CannotDivideByZeroException e) {
-                logger.error(e.getMessage());
                 throw new WebException(CANNOT_DIVIDE_BY_ZERO);
             } catch (IllegalArgumentException e) {
-                logger.error(e.getMessage());
                 throw new WebException(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE);
             } catch (EmptyStackException e) {
-                logger.error(e.getMessage());
                 throw new WebException(EMPTY_STACK_EXCEPTION_MESSAGE);
             } catch (Exception e) {
-                logger.error(e.getMessage());
                 throw new WebException(GENERAL_EXCEPTION_MESSAGE);
             }
         }
@@ -61,6 +54,7 @@ public class CalculatorService implements Job {
         else return expression.isEmpty();
     }
 
+    @SuppressWarnings("RedundantThrows")
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         List<ExpressionResultDTO> list = expressionResultDAO.getAllNotEvaluated();
