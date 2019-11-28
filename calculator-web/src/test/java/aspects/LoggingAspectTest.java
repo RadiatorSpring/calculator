@@ -90,7 +90,7 @@ public class LoggingAspectTest {
                 "expression='" + calculationsDTO.getExpression() + '\'' +
                 ", evaluation=" + calculationsDTO.getEvaluation() +
                 ", error='" + calculationsDTO.getError() + '\'' + '}' +
-                ".*\\r\\n";
+                ".*\\r*\\n*";
     }
 
     private void mockEntityManagerMethods() {
