@@ -1,0 +1,6 @@
+<?xml version = "1.0"?>
+<dataset>
+    <calculations expression="1-2" error="null" evaluation="-1"/>
+    <calculations expression="2-2" error="null" evaluation="0"/>
+    <calculations expression=" " error="The expression parameter cannot be empty" evaluation="0"/>
+</dataset>
