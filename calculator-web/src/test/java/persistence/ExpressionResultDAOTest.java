@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(JpaUnitRunner.class)
-public class ExpressionResultDAOTest  extends BaseDAOTest {
+public class ExpressionResultDAOTest extends BaseDAOTest {
     private static final String INITIAL_STATE = "C:\\Users\\i516445\\IdeaProjects\\calculator\\calculator-web\\src\\test\\resources\\expressionResultData.xml";
 
 
@@ -39,10 +39,8 @@ public class ExpressionResultDAOTest  extends BaseDAOTest {
     @Before
     public void setup() throws Exception {
         expressionResultDAO = new ExpressionResultDAO(PERSISTENCE_UNIT_NAME);
-
         createTestDBClasses();
         populateDB(INITIAL_STATE);
-
     }
 
     @Test
@@ -53,9 +51,14 @@ public class ExpressionResultDAOTest  extends BaseDAOTest {
         assertEquals(list.size(), expectedSize);
     }
 
+    @Test
+    public void testUpdate() {
+        long testId = 1L;
+        expressionResultDAO.updateIsEvaluated(testId);
 
-
-
+        ExpressionResultDTO expressionResultDTO = expressionResultDAO.getEntity(testId);
+        assertTrue(expressionResultDTO.isEvaluated());
+    }
 
 
 }
