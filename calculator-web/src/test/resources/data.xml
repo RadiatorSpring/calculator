@@ -1,6 +1,0 @@
-<?xml version = "1.0"?>
-<dataset>
-<calculations expression="1-2" error="null" evaluation="0"/>
-<calculations expression="2-2" error="null" evaluation="0"/>
-<calculations expression="21-20" error="Is not evaluated" evaluation="0"/>
-</dataset>

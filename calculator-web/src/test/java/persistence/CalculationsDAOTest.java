@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(JpaUnitRunner.class)
 public class CalculationsDAOTest extends BaseDAOTest {
     private static final String PERSISTENCE_UNIT_NAME = "test";
-    private static final String INITIAL_STATE = "C:\\Users\\i516445\\IdeaProjects\\calculator\\calculator-web\\src\\test\\resources\\data.xml";
+    private static final String INITIAL_STATE = "C:\\Users\\i516445\\IdeaProjects\\calculator\\calculator-web\\src\\test\\resources\\calculationData.xml";
 
     @PersistenceContext(unitName = PERSISTENCE_UNIT_NAME)
     private EntityManager entityManager;
