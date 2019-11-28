@@ -6,8 +6,9 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <changeSet id="production" author="alex">
-        <preConditions >
+        <preConditions onFail="MARK_RAN" >
             <not>
+                <dbms type="hana"/>
                 <tableExists tableName="expression_result"/>
             </not>
         </preConditions>
@@ -41,7 +42,7 @@
             primary key (id)
             );
             create table calculations(
-            expression varchar(255),
+            expression varchar(255) primary key,
             error varchar(255),
             evaluation double
             );
