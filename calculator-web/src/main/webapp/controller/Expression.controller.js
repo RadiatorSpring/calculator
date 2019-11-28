@@ -11,7 +11,7 @@ sap.ui.define([
         onInit: function () {
             let map = this.getMapCalculations();
             if (this.isEmpty(map)) {
-                this.updateHistoryModel();
+                this.updateHistoryTable();
             }
         },
         isEmpty:function(map){
@@ -19,6 +19,7 @@ sap.ui.define([
         },
 
         onPost: function () {
+            this.clearErrorText();
             var expression = this.getView().byId("expression").getValue();
             var оBody = {
                 expression: expression
@@ -58,12 +59,13 @@ sap.ui.define([
                 message: sIsNotEvaluated
             };
             this.updateSessionStorage(id, historyTableItem);
-            this.updateHistoryModel();
+            this.updateHistoryTable();
         },
         updateSessionStorage: function (id, historyTableItem) {
             let updatedSessionStorage = this.getMapCalculations();
             updatedSessionStorage[id] = historyTableItem;
             var sUpdatedSessionStorage = JSON.stringify(updatedSessionStorage);
+
             sessionStorage.setItem(this.mapName, sUpdatedSessionStorage);
         },
         onGet: async function (id, intervalCallback) {
@@ -79,8 +81,6 @@ sap.ui.define([
                     this.updateHistory(evaluation, id)
                     clearInterval(intervalCallback);
                 }
-
-
             }.bind(this))
         },
         isStatusOK: function (xhr) {
@@ -108,7 +108,7 @@ sap.ui.define([
         updateHistory: function (evaluation, id) {
             let historyTableItem = this.createHistoryTableItem(evaluation, id);
             this.updateSessionStorage(id, historyTableItem);
-            this.updateHistoryModel();
+            this.updateHistoryTable();
         },
         createHistoryTableItem: function (evaluation, id) {
             let map = this.getMapCalculations();
@@ -132,7 +132,7 @@ sap.ui.define([
             return parsedEvaluation.result !== undefined;
         },
 
-        updateHistoryModel: function () {
+        updateHistoryTable: function () {
             let historyMap = this.getMapCalculations();
             let reversedHistory = this.reverseHistory(historyMap);
             let modelBindingName = "history";
@@ -160,6 +160,9 @@ sap.ui.define([
             var oResponse = JSON.parse(xhr.responseText);
             let sError = oResponse.message;
             this.getView().byId(sErrorTextID).setText(sError)
+        },
+        clearErrorText:function () {
+            this.getView().byId("errorText").setText("");
         },
 
     })

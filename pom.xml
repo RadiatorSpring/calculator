@@ -14,8 +14,6 @@
         <module>calculator-console</module>
         <module>calculator-web</module>
         <module>calculator-console-tests</module>
-        <module>calculator-ui</module>
-
 
 
     </modules>

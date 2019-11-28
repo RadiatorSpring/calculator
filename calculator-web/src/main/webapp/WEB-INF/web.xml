@@ -31,10 +31,7 @@
 
     <login-config>
         <auth-method>BASIC</auth-method>
-        <form-login-config>
-            <form-login-page>/login</form-login-page>
-            <form-error-page>/error</form-error-page>
-        </form-login-config>
+
     </login-config>
 
     <security-constraint>
@@ -59,5 +56,8 @@
             config.listener.CalculatorListener
         </listener-class>
     </listener>
+
+
+
 
 </web-app>

@@ -23,7 +23,7 @@ sap.ui.require([
         When.onTheAppPage.iFillInputWithAnExpression();
         When.onTheAppPage.iPressCalculateButton();
 
-        Then.onTheAppPage.iShouldSeeResolvedExpression();
+        Then.onTheAppPage.iShouldSeeTableWithOneEntry();
         Then.iTeardownMyApp();
     });
 
@@ -34,7 +34,7 @@ sap.ui.require([
         When.onTheAppPage.iFillInputWithAnExpression();
         When.onTheAppPage.iPressCalculateButton();
 
-        Then.onTheAppPage.iShouldSeeTableWithOneEntry();
+        Then.onTheAppPage.iShouldSeeResolvedExpression();
         Then.iTeardownMyApp();
     });
 
