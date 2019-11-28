@@ -28,8 +28,8 @@ public class LoggingAspect {
 
     @AfterThrowing(value = "pointCutInService(expression)", throwing = "exception")
     public void logErrorInService(String expression, Exception exception) {
-        logger.error("The expression is " + expression);
-        logger.error("The error is " + exception);
+        logger.error("The expression " + expression
+                + "- Has thrown " + exception);
     }
 
 }
