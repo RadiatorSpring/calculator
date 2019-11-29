@@ -35,11 +35,11 @@ public class CalculatorDBServiceIT extends BaseDBTest {
 
         webPage.executePostRequest(expression);
 
-        ExpressionResultDTO foundDTO = expressionResultDAO.getEntity(testId);
+        ExpressionResultDTO expressionResultDTO = expressionResultDAO.getEntity(testId);
         CalculationsDTO calculationsDTO = calculationsDAO.getEntity(expression);
 
-        assertEquals(testId, foundDTO.getId());
-        assertEquals(expression, foundDTO.getExpression());
+        assertEquals(testId, expressionResultDTO.getId());
+        assertEquals(expression, expressionResultDTO.getExpression());
         assertEquals(0d, calculationsDTO.getEvaluation(), 0.01);
         assertEquals("", calculationsDTO.getError());
     }
@@ -47,6 +47,7 @@ public class CalculatorDBServiceIT extends BaseDBTest {
     @Test
     public void testWithWrongExpression() throws IOException {
         String expression = "1--1";
+
         webPage.executePostRequest(expression);
 
         ExpressionResultDTO foundDTO = expressionResultDAO.getEntity(testId);
